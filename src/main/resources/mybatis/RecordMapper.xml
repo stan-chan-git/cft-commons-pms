@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cft.commons.pms.dao.RecordDAO">
+
+	<select id="getLastPK" resultType="String">
+		<![CDATA[
+		SELECT MAX(ID) from APP_DAILY_RECORD
+		]]>
+	</select>
+	<select id="findLastMonthRecord" resultType="Record">
+		<include refid="recordCommonSQL" />
+		<where>
+			record.today
+			BETWEEN #{startDate} AND #{endDate}
+			AND record.userid = #{userId}
+		</where>
+	</select>
+
+	<sql id="recordCommonSQL">
+	<![CDATA[
+		SELECT * FROM APP_DAILY_RECORD record 
+	]]>
+	</sql>
+
+	<insert id="createDailyRecord">
+		<![CDATA[
+			INSERT INTO APP_DAILY_RECORD(
+				id,
+				toDay,
+				hours,
+				mainTask,
+				taskTypes,
+				taskContent, 
+				userId,
+				opDate,
+				isExpired,
+				isApproval,
+				type)
+			VALUES (
+				#{id},
+				#{toDay},
+				#{hours},
+				#{mainTask},
+				#{taskType}, 
+				#{taskContent}, 
+				#{userId},
+				#{opDate},
+				'T',
+				'F',
+				#{type}
+			);
+		]]>
+	</insert>
+</mapper> 

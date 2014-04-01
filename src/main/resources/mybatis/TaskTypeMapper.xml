@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+    <!DOCTYPE mapper 
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cft.commons.pms.dao.TaskTypeDAO">
+	<select id="getMainTaskTypes" resultType="TaskType">
+		<include refid="taskTypeCommon" />
+		<where>
+			task.superTask IS NULL
+		</where>
+	</select>
+	<select id="getSubTaskTypes" resultType="TaskType">
+		<include refid="taskTypeCommon" />
+		<where>
+			task.superTask = #{taskId}
+		</where>
+	</select>
+	<sql id="taskTypeCommon">
+		SELECT task.id as id,task.mainTask as taskName FROM APP_TASK_TYPES task
+	</sql>
+</mapper> 

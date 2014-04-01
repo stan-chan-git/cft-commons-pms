@@ -1,0 +1,54 @@
+*{
+	font-size:12px;
+}
+body {
+    font-family:helvetica,tahoma,verdana,sans-serif;
+    padding:20px;
+    font-size:13px;
+    margin:0;
+}
+h2 {
+    font-size:18px;
+    font-weight:bold;
+    margin:0;
+    margin-bottom:15px;
+}
+.demo-info{
+	background:#FFFEE6;
+	color:#8F5700;
+	padding:12px;
+}
+.demo-tip{
+	width:16px;
+	height:16px;
+	margin-right:8px;
+	float:left;
+}
+.rtitle {
+	font-weight: bold;
+	padding: 5px 10px;
+	background: #336699;
+	color: #fff;
+}
+
+.ccs3Logout { display:inline; font-size:12px; text-align:center; font-family:Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
+
+a:link {text-decoration:none;color:#330000;}
+a:hover {text-decoration:none;color:#336699;}
+a:active {text-decoration:none;color:#300000;}
+a:visited {text-decoration:none;color:#336699;}
+
+.menuItem {
+    font-size:14px;
+    font-weight:bold;
+    margin:12px;
+}
+
+.formLabel {
+    font-size:12px;
+    font-weight:bold;
+}
+
+.formField {
+    font-size:14px;
+}

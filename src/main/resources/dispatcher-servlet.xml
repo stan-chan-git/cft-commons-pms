@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+
+	<!-- =========================== Auto IOC cache component scan =============================== -->
+	<context:component-scan base-package="cft.commons.pms" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+
+	<!-- ======= Content Negotiating to different views (JSON, XML,JSP,RSS) ====================== -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="xml" value="application/xml" />
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="defaultContentType" value="text/html" />
+		<property name="favorPathExtension" value="true" />
+		<property name="favorParameter" value="true" />
+		<property name="ignoreAcceptHeader" value="true" />
+
+		<property name="defaultViews">
+			<list>
+				<!-- JSON View -->
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<property name="extractValueFromSingleKeyModel" value="true" />
+					<property name="objectMapper">
+						<bean class="org.codehaus.jackson.map.ObjectMapper">
+							<property name="serializationInclusion">
+								<value type="org.codehaus.jackson.map.annotate.JsonSerialize$Inclusion">NON_NULL</value>
+							</property>
+						</bean>
+					</property>
+				</bean>
+
+				<!-- XML View -->
+				<!--<bean class="org.springframework.web.servlet.view.xml.MarshallingView"> -->
+				<bean class="cft.commons.core.helper.xstream.OverrideMarshallingView">
+					<property name="marshaller" ref="xmlCDATAMarshaller" />
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+	<!-- ================== Spring View Resolver Definition ================================= -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="2" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="3" />
+	</bean>
+
+
+	<bean id="xmlCDATAMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+
+		<property name="streamDriver">
+			<bean class="cft.commons.core.helper.xstream.CDATAStaxDriver" />
+		</property>
+		<property name="converters">
+			<list>
+				<ref bean="xStreamDateTimeConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="xStreamDateTimeConverter" class="cft.commons.core.helper.xstream.XStreamDateTimeConverter">
+		<constructor-arg name="dateFormat" value="yyyy-MM-dd'T'HH:mm:ss" />
+	</bean>
+
+
+	<!-- ============================ For output json directly =========================================== -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+
+
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="cft.commons.core.web.intereptor.WebStopWatchInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- ======================= Using Annotation Handler Mapping =========================== -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- ============================= Resolving User Locales =============================== -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="zh_TW" />
+	</bean>
+
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="lang" />
+	</bean>
+	
+	
+	<!-- ======================== Shiro AOP Security Configuration ========================= -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
+
+</beans>

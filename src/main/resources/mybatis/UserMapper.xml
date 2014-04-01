@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+    <!DOCTYPE mapper 
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cft.commons.pms.dao.UserDAO">
+
+	<resultMap id="userResultMap" type="User">
+		<id property="userId" column="USERID" />
+		<result property="loginName" column="LOGINNAME" />
+		<result property="password" column="PASSWORD" />
+		<result property="email" column="EMAIL" />
+		<result property="name" column="NAME" />
+		<result property="salt" column="SALT" />
+		<result property="phone" column="PHONE" />
+		<result property="office" column="OFFICE" />
+		<result property="dept" column="DEPT" />
+		<result property="status" column="STATUS" />
+		<result property="remark" column="REMARK" />
+		<result property="language" column="LANGUAGE" />
+
+		<collection property="roleList" ofType="Role">
+			<id property="roleId" column="ROLE_ID" />
+			<result property="name" column="ROLE_NAME" />
+			<result property="permissions" column="ROLE_PERMISSIONS" />
+			<result property="status" column="ROLE_STATUS" />
+			<result property="remark" column="ROLE_REMARK" />
+		</collection>
+	</resultMap>
+
+	<!-- ==================== Common SQL =========================== -->
+	<sql id="getUser">
+	<![CDATA[
+	SELECT t_user.*
+		  ,t_role.roleId AS ROLE_ID
+		  ,t_role.name AS ROLE_NAME
+	      ,t_role.permissions AS ROLE_PERMISSIONS
+	      ,t_role.status AS ROLE_STATUS
+	      ,t_role.remark AS ROLE_REMARK
+	FROM APP_USER t_user
+	LEFT JOIN APP_USER_ROLE t_ur on t_ur.userId = t_user.userId 
+	LEFT JOIN APP_ROLE t_role on t_role.roleId = t_ur.roleId and t_role.status = 'active'
+	]]>
+	</sql>
+
+
+	<select id="getUserByLoginName" parameterType="String"
+		resultMap="userResultMap">
+		<include refid="getUser" />
+		<where><![CDATA[ t_user.LOGINNAME = #{loginName} ]]></where>
+	</select>
+
+	<select id="isExistUser" parameterType="String" resultType="Integer">
+	<![CDATA[
+	SELECT COUNT(1)	FROM APP_USER
+	WHERE LOGINNAME = #{loginName}
+	]]>
+	</select>
+
+
+	<select id="getUserByUserId" parameterType="String" resultMap="userResultMap">
+		SELECT t_user.*
+		,t_role.roleId AS ROLE_ID
+		,t_role.name AS ROLE_NAME
+		,t_role.permissions AS ROLE_PERMISSIONS
+		,t_role.status AS ROLE_STATUS
+		,t_role.remark AS
+		ROLE_REMARK
+		FROM APP_USER t_user
+		LEFT JOIN
+		APP_USER_ROLE t_ur on t_ur.userId = t_user.userId
+		LEFT JOIN APP_ROLE
+		t_role on
+		t_role.roleId = t_ur.roleId and t_role.status = 'active'
+		WHERE t_user.USERID = #{userId}
+	</select>
+
+	<select id="getLastPK" resultType="String">
+		<![CDATA[
+		SELECT MAX(USERID) from APP_USER
+		]]>
+	</select>
+
+	<select id="getUserList" resultType="User">
+		<![CDATA[
+		select * from APP_USER
+		]]>
+		<where>
+			<if test="params.user.userId != null and params.user.userId != ''">
+					<![CDATA[ USERID like CONCAT('%',#{params.user.userId},'%') ]]>
+			</if>
+			<if test="params.user.loginName != null and params.user.loginName != '' ">
+					<![CDATA[ AND LOGINNAME like CONCAT('%',#{params.user.loginName},'%') ]]>
+			</if>
+			<if test="params.user.name != null and params.user.name != '' ">
+					<![CDATA[ AND NAME like CONCAT('%',#{params.user.name},'%') ]]>
+			</if>
+			<if test="params.user.status != null and params.user.status != '' ">
+					<![CDATA[ AND STATUS = #{params.user.status}  ]]>
+			</if>
+		</where>
+		<![CDATA[ order by USERID ]]>
+	</select>
+
+
+	<insert id="insertUser">
+ 	<![CDATA[
+ 	INSERT INTO app_user
+		  (
+			userId,
+			loginName,
+			password,
+			salt,
+			name,
+			email,
+			phone,
+			office,
+			dept,
+			status,
+			remark,
+			language
+		  )
+		  VALUES
+		  (
+		   	#{userId},
+			#{loginName},
+			#{password},
+			#{salt},
+			#{name},
+			#{email},
+			#{phone},
+			#{office},
+			#{dept},
+			#{status},
+			#{remark},
+			#{language}
+		  )
+	]]>
+	</insert>
+
+	<delete id="deleteUser">
+		delete from app_user
+		where userId = #{userId}
+	</delete>
+	<delete id="deleteUserRole">
+		delete from APP_USER_ROLE
+		where userId = #{userId}
+	</delete>
+
+
+	<update id="updateUser">
+	<![CDATA[
+	update APP_USER set 
+		name =	#{name},
+		email=	#{email},
+		phone=	#{phone},
+		office=	#{office},
+		dept=	#{dept},
+		status=	#{status},
+		remark=	#{remark},
+		language= #{language}
+	where userId = #{userId}
+	]]>
+	</update>
+
+	<update id="changeUserPassword">
+	<![CDATA[
+	update APP_USER set 
+		salt = #{salt},
+		password = #{password}
+	where userId = #{userId}
+	]]>
+	</update>
+
+	<insert id="insertUserRole">
+ 	<![CDATA[
+ 	insert into APP_USER_ROLE
+		  (
+			userId,
+			roleId
+		  )
+		  VALUES
+		  (
+		   	#{userId},
+			#{roleId}
+		  )
+	]]>
+	</insert>
+
+</mapper> 

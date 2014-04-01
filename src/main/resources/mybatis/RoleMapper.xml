@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+    <!DOCTYPE mapper 
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cft.commons.pms.dao.RoleDAO">
+
+    <select id="getRoleByRoleId" parameterType="String" resultType="Role">
+   	    SELECT * FROM APP_ROLE WHERE ROLEID = #{roleId}
+    </select>
+
+	<select id="getLastPK"  resultType="String">
+		<![CDATA[
+		SELECT MAX(ROLEID) from APP_ROLE
+		]]>
+	</select>
+	
+	<select id="getRoleList"  resultType="Role">
+		<![CDATA[
+		select * FROM APP_ROLE
+		]]>
+		 <where>
+			<if test="roleId != null and roleId != '' ">
+				<![CDATA[ AND ROLEID like CONCAT('%',#{roleId},'%')  ]]>
+			</if>
+			<if test="name != null and name != '' ">
+				<![CDATA[ AND NAME like CONCAT('%',#{name},'%')  ]]>
+			</if>
+			<if test="permissions != null and permissions != '' ">
+				<![CDATA[ AND PERMISSIONS like CONCAT('%',#{permissions},'%')  ]]>
+			</if>
+			<if test="status != null and status != '' ">
+				<![CDATA[ AND STATUS = #{status}  ]]>
+			</if>
+			</where>
+			<![CDATA[ order by ROLEID]]>
+	</select>
+	<select id="getRolePage"  resultType="Role">
+		<![CDATA[
+		SELECT * FROM APP_ROLE
+		]]>
+		<where>
+			<if test="params.role.roleId != null and params.role.params.roleId != '' ">
+				<![CDATA[ AND ROLEID like CONCAT('%',#{params.role.roleId},'%')  ]]>
+			</if>
+			<if test="params.role.name != null and params.role.name != '' ">
+				<![CDATA[ AND NAME like CONCAT('%',#{params.role.name},'%')  ]]>
+			</if>
+			<if test="params.role.permissions != null and params.role.permissions != '' ">
+				<![CDATA[ AND PERMISSIONS like CONCAT('%',#{params.role.permissions},'%')  ]]>
+			</if>
+			<if test="params.role.status != null and params.role.status != '' ">
+				<![CDATA[ AND STATUS = #{params.role.status}  ]]>
+			</if>
+		</where>
+		<![CDATA[ order by ROLEID]]>
+	</select>
+
+	<insert id="insertRole">
+ 	<![CDATA[
+ 	INSERT INTO APP_ROLE
+		  (
+			roleId,
+			name,
+			permissions,
+			status,
+			remark
+		  )
+		  VALUES
+		  (
+		   	#{roleId},
+			#{name},
+			#{permissions},
+			#{status},
+			#{remark}
+		  )
+	]]>
+	</insert>
+	
+	<update id="updateRole">
+	<![CDATA[
+	update APP_ROLE set 
+		name = #{name},
+		permissions = #{permissions},
+		status=	#{status},
+		remark=	#{remark}
+	where ROLEID = #{roleId}
+	]]>
+	</update>
+	
+	<update id="disableRole">
+	<![CDATA[
+	update APP_ROLE set status = 'inactive'	where roleId = #{roleId}
+	]]>
+	</update>
+
+</mapper> 

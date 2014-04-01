@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- =========================JNDI DataSource Pool Configuration====================== 
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/oracle_media" /> -->
+
+	<!-- ================ DataSource for development and unit test ========================== -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+		<property name="driverClassName" value="${dataSource.jdbc.driverClassName}" />
+		<property name="url" value="${dataSource.jdbc.url}" />
+		<property name="username" value="${dataSource.jdbc.username}" />
+		<property name="password" value="${dataSource.jdbc.password}" />
+		<property name="initialSize" value="30" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="10" />
+		<property name="maxActive" value="100" />
+		<property name="defaultAutoCommit" value="true" />
+	</bean>
+
+	<!--  
+	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:tcp://localhost/~/test" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean> -->
+	
+	
+	<!-- =================== Transaction Manager Configuration =============================== -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+
+	<!-- ===================== Spring JdbcTemplate ORM Framework ============================= 
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource2" />
+	</bean> -->
+
+	<!-- ========================= MyBatis ORM Framework ===================================== -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  		<property name="dataSource" ref="dataSource" />
+  		<property name="mapperLocations" value="classpath:/mybatis/*Mapper.xml" />
+  		<property name="typeAliasesPackage" value="cft.commons.pms.model" />
+  		<property name="plugins">
+  			<bean class="cft.commons.pms.plugins.PageInterceptor"></bean>
+  		</property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+    	<property name="basePackage" value="cft.commons.pms.dao" />  
+	</bean> 
+
+
+</beans>  

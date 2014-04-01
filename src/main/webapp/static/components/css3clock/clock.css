@@ -1,0 +1,31 @@
+@font-face {
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.container {width: 200px; margin: 0 auto; overflow: hidden; }
+
+.clock {width:150px; margin:0 auto; padding:5px; border:0px solid #333; color:#fff; }
+
+#Date { font-family:Arial, Helvetica, sans-serif; font-size:10px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+
+.ccs3clul { width:150px; margin:0 auto; padding:0px; list-style:none; text-align:center; }
+.ccs3clli { display:inline; font-size:14px; text-align:center; font-family:Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
+
+#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:0px; padding-right:0px; }
+
+@-webkit-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 10px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 16px #00c6ff; }	
+}
+
+
+@-moz-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 10px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 16px #00c6ff; }	
+}
