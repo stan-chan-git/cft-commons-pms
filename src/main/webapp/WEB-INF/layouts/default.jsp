@@ -10,42 +10,41 @@
 <html>
 <head>
 <title>PMS系统</title>
-<%@ include file="/static/commons/header-easyui.jsp"%>
+<%@ include file="/static/commons/header-bootstrap.jsp"%>
 <%@ include file="/static/commons/meta.jsp"%>
 <%@ include file="/static/commons/spring-taglibs.jsp"%>
 <!-- ////////////////////////////////// -->
 <!-- //      Start Stylesheets       // -->
 <!-- ////////////////////////////////// -->
 <style type="text/css">
-.leftMenuList {
-	padding: 0px 5px 1px;
-	margin-top: -1px;
-	position: relative;
-}
-
-.leftMenuList li {
-	height: 39px;
-	line-height: 39px;
-	border-top: 1px dotted #D8D8D8;
-	overflow: hidden;
-}
-
-.leftMenuList a {
-	text-decoration: none;
-	color: #666;
-	outline: medium none;
-}
+body { padding-top: 70px; }
 </style>
+<link rel="stylesheet" type="text/css"
+	href="${ctx}/static/styles/question.css">
 <!-- ////////////////////////////////// -->
 <!-- //      Javascript Files        // -->
 <!-- ////////////////////////////////// -->
-<script type="text/javascript" src="${ctx}/static/js/mmcms-1.0.js"></script>
 <script type="text/javascript">
-	$(function(){
-		$(".leftMenuList a").mouseover(function(){
-			$(this).css("color","#FF4E00");
-		}).mouseout(function(){
-			$(this).css("color","#666");
+	$(function() {
+		$(".leftMenuList a").mouseover(function() {
+			$(this).css("color", "#FF4E00");
+		}).mouseout(function() {
+			$(this).css("color", "#666");
+		});
+		var accordion_head = $('.accordion > li > a'), accordion_body = $('.accordion li > .sub-menu');
+		// Open the first tab on load
+		accordion_head.first().addClass('active').next().slideDown(200);
+		// Click function
+		accordion_head.on('click', function(event) {
+			// Disable header links
+			event.preventDefault();
+			// Show and hide the tabs on click
+			if ($(this).attr('class') != 'active') {
+				accordion_body.slideUp('normal');
+				$(this).next().stop(true, true).slideToggle('normal');
+				accordion_head.removeClass('active');
+				$(this).addClass('active');
+			}
 		});
 	});
 	function showMsg() {
@@ -59,49 +58,19 @@
 </script>
 <sitemesh:head />
 </head>
-<body class="easyui-layout">
+<body>
+
+	<!--这个层很有用，必须要，否则可能不兼容。-->
+<%-- 	<%@ include file="/WEB-INF/layouts/footer.jsp"%> --%>
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
-	<div data-options="region:'west',split:true" title="菜单"
-		style="width: 150px; height: 100%;">
-		<div class="easyui-accordion"
-			data-options="fit:true,border:false">
-			<div title="Demo" style="padding: 10px;">
-				<ul	class="leftMenuList">
-					<li>
-						<a href="javascript:void(0);" onclick="showMsg();">提示消息</a> 
-					</li>
-					<li>
-						<a href="${ctx}/easyui/application">分页demo</a>
-					</li>
-					<li>
-						<a href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801489930&response_type=code&redirect_uri=http://localhost/easyui/tweibo.do">腾讯微博授权</a>
-					</li>
-				</ul>
-			</div>
-			<shiro:hasPermission name="system:admin">
-			<div title="admin" style="padding: 10px;" >
-				<ul	class="leftMenuList">
-					<li>
-						<a href="${ctx}/view/userManage">用户管理</a>
-					</li>
-					<li>
-						<a href="${ctx}/view/roleManage">权限管理</a>
-					</li>
-				</ul>
-			</div>
-			</shiro:hasPermission>
-			<div title="Title31" style="padding: 10px" data-options="selected:true">
-				<ul	class="leftMenuList">
-					<li>
-						<a href="${ctx}/view/fillLog">填写日志</a>
-					</li>
-				</ul>
-			</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 .col-xs-3 .col-sm-3" 
+				style="padding-left: 0px;padding-right: 2px;border-bottom-color:#E7E7E7">
+			
+			<%@ include file="/WEB-INF/layouts/left.jsp"%></div>
+			<div class="col-md-9 col-xs-9 col-sm-9" style="padding: 0px;padding-left: 10px;"><sitemesh:body /></div>
 		</div>
 	</div>
-	<div data-options="region:'center',title:'Center'">
-		<sitemesh:body />
-	</div>
-	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
 </body>
 </html>

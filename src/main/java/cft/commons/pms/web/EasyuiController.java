@@ -2,14 +2,16 @@ package cft.commons.pms.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cft.commons.core.model.display.JqPageObject;
 import cft.commons.pms.model.EasyuiApplication;
 import cft.commons.pms.plugins.Page;
 import cft.commons.pms.plugins.PaginationObject;
@@ -42,17 +44,17 @@ public class EasyuiController extends BaseController{
 
 	@RequestMapping(value = "/findAllApplication")
 	public @ResponseBody
-	PaginationObject findAllApplication(@RequestParam("rows")String pageSize,@RequestParam("page")String pageNo) {
-		log.info("pageNo:"+pageNo+"==================pageSize:"+pageSize);
-		PaginationObject pno = new PaginationObject();
+	JqPageObject findAllApplication(HttpServletRequest request) {
+		JqPageObject pno = new JqPageObject();
 		Page<EasyuiApplication> pages = new Page<EasyuiApplication>();
-		pages.setPageNo(Integer.parseInt(pageNo));
-		pages.setPageSize(Integer.parseInt(pageSize));
-		
+		pages.setPageNo(1);
+		pages.setPageSize(10);
 		List<EasyuiApplication> pageData = easyuiApplicationService
 				.getAllEasyuiApplication(pages);
 		pno.setRows(pageData);
-		pno.setTotal(String.valueOf(String.valueOf(pages.getTotalRecord())));
+		pno.setPage(1);
+		pno.setRecords(pageData.size());
+		pno.setTotal(pages.getTotalPage());
 		return pno;
 	}
 }

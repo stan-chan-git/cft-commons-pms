@@ -1,19 +1,32 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<div data-options="region:'north'"
-	style="height: 100px; width: 100%; background-color: #F0F0F0;">
-	<div
-		style="float: left; text-align: center; padding: 15px;">
-		<span style="font-size: 5em;">PMS</span>
-	</div>
-	<div style="float: right; height: 100%;">
-		<div style="height: 80%;"></div>
-		<div style="padding-right: 50px;">
+<%
+	request.setAttribute("ctx", request.getContextPath());
+%>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="navbar-header">
+				<a href="${ctx}/" class="navbar-brand"> PMS </a>
+			</div>
 			<shiro:user>
-				<spring:message code="label.welcome" />, <shiro:principal />
-				<a href="${ctx}/uams/logout?<%=Math.random()%>"><spring:message
-						code="label.logout" /></a>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="javascript:void(-1);">
+								<spring:message code="label.welcome" />,<shiro:principal />
+							</a>
+						</li>
+							
+						<li>
+							<a href="${ctx}/uams/logout?<%=Math.random()%>"> 
+								<spring:message code="label.logout" />
+							</a>
+						</li>
+					</ul>
+				</div>
 			</shiro:user>
 		</div>
 	</div>
 
-</div>
+</nav>

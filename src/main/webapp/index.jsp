@@ -24,5 +24,14 @@ currentUser.getPrincipal();
 <br>
 <shiro:hasPermission name="news:create"> news:create </shiro:hasPermission>
 <shiro:hasPermission name="news:ivaild"> news:ivaild </shiro:hasPermission>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+<div style="height: 100px;">casd</div>
+
 </body>
 </html>
