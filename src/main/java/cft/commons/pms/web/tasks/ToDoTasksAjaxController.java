@@ -24,20 +24,7 @@ public class ToDoTasksAjaxController extends BaseController {
 	@Autowired
 	private TaskTypeService taskTypeService;
 
-	@RequestMapping("saveRecord")
-	public @ResponseBody
-	String gotoCreateRecordView(Record record){
-		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
-		record.setUserId(getCurrentUserId());
-		record.setOpDate(simpleFormat.format(new Date()));
-		try {
-			recordService.saveRecord(record);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}
-		return "ok";
-	}
+	
 	@RequestMapping("getTaskTypes")
 	public @ResponseBody List<TaskType> getTaskTypes(String id){
 		List<TaskType> taskTypes =taskTypeService.getSuperTaskTypes(id);

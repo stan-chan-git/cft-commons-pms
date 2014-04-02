@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.pms.model.Record;
 import cft.commons.pms.model.TaskType;
@@ -45,7 +46,19 @@ public class ToDoTasksViewController extends BaseController {
 		model.addAttribute("date", date);
 		return "/tasks/createRecord";
 	}
-	
+	@RequestMapping("saveRecord")
+	public String gotoCreateRecordView(Record record){
+		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+		record.setUserId(getCurrentUserId());
+		record.setOpDate(simpleFormat.format(new Date()));
+		try {
+			recordService.saveRecord(record);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+		return "redirect:/view/fillLog";
+	}
 	
 	
 	public List<List<MyWeekLogDTO>> initTodoCalendar() {

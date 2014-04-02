@@ -39,7 +39,7 @@
 							</c:forEach>
 						</c:if>
 						<c:if test='${week.noWweekMonth == "T"}'>
-							<div><a href="javascript:void(0);" onclick="toCreateRecord('${week.date}');">填写日志</a></div>
+							<div><a href="${ctx}/view/createRecord?date=${week.date}">填写日志</a></div>
 						</c:if>
 					</td>
 				</c:forEach>
@@ -54,8 +54,7 @@ function toCreateRecord(date){
 		title: '填写日志【'+date+'】',
 		width: 700,
 		height: 200,
-		closed: false,
-		cache: false,
+		closeText: 'hide', 
 		href: '${ctx}/view/createRecord?date='+date,
 		modal: true
 	});

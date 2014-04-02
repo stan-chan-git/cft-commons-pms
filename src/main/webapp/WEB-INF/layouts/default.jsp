@@ -24,6 +24,7 @@ body { padding-top: 70px; }
 <!-- ////////////////////////////////// -->
 <!-- //      Javascript Files        // -->
 <!-- ////////////////////////////////// -->
+<script type="text/javascript" src="${ctx}/static/js/commens-pms-1.0.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$(".leftMenuList a").mouseover(function() {

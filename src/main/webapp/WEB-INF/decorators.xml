@@ -4,13 +4,7 @@
 		<pattern>/static/*</pattern>
 		<pattern>/uams/login*</pattern>
 		<pattern>/uams/logout*</pattern>
-		<pattern>/uams/view/toCreateUser*</pattern>
-		<pattern>/uams/view/toUpdateUser*</pattern>
-		<pattern>/view/createUser*</pattern>
-		<pattern>/view/createRole*</pattern>
-		<pattern>/view/createRecord*</pattern>
 		<pattern>/uams/registered*</pattern>
-		
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">
