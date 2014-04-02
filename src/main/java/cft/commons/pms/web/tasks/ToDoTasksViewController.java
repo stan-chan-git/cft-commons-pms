@@ -91,11 +91,12 @@ public class ToDoTasksViewController extends BaseController {
 				boolean hasValid = false;
 				String _date = simpleFormat.format(calendar.getTime());
 				
-				week.setNoWweekMonth((calendar.get(Calendar.WEEK_OF_MONTH) == weekMonth)?"T":"F");
+				
 				
 				//判断是否在当前月历中
 				if(!(index<weekDate || day > ofDate)){
 					hasValid = true;
+					week.setNoWweekMonth((calendar.get(Calendar.WEEK_OF_MONTH) == weekMonth)?"T":"F");
 				}
 				if(hasValid){
 					//搜有月历中的某天是否有写日志
