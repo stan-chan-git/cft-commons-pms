@@ -13,12 +13,26 @@
 <link rel="stylesheet" type="text/css"
 	href="${ctx}/static/dist/css/bootstrap-theme.min.css">
 <script type="text/javascript"
+	src="${ctx}/static/js/jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript"
 	src="${ctx}/static/dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+	src="${ctx}/static/js/jquery-validation/jquery.validate.min.js"></script>
+<script type="text/javascript"
+	src="${ctx}/static/js/jquery-validation/messages_bs_cn.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${ctx}/static/js/jquery-validation/validate.css">
+
 <style type="text/css">
 body {
 	background-color: #eee;
 }
 </style>
+<script type="text/javascript">
+	
+</script>
 </head>
 <body>
 	<center>
@@ -30,55 +44,80 @@ body {
 						<div class="panel panel-default">
 							<div class="panel-heading">用户注册</div>
 							<div class="panel-body">
-								<form id="ff" method="post" action="${ctx}/uams/registeredLogin">
-									<table style="border: 1px dotted #D8D8D8;">
-										<tr>
-											<td>账号:</td>
-											<td><input class="easyui-validatebox" type="text"
-												name="loginName" autocomplete="off" /></td>
-										</tr>
-										<tr>
-											<td>密码:</td>
-											<td><input class="easyui-validatebox" type="password"
-												name="plainPassword" autocomplete="off" /></td>
-										</tr>
-										<tr>
-											<td>重复密码:</td>
-											<td><input class="easyui-validatebox" type="password"
-												name="password" /></td>
-										</tr>
-										<tr>
-											<td>姓名:</td>
-											<td><input class="easyui-validatebox" type="text"
-												name="name" /></td>
-										</tr>
-										<tr>
-											<td>邮箱:</td>
-											<td><input class="easyui-validatebox" type="text"
-												name="email" data-options="validType:'email'" /></td>
-										</tr>
-										<tr>
-											<td>部门:</td>
-											<td><input class="easyui-validatebox" type="text"
-												name="dept" /></td>
-										</tr>
-										<tr>
-											<td>手机:</td>
-											<td><input class="easyui-validatebox" type="text"
-												name="phone" /></td>
-										</tr>
-										<tr>
-											<td>状态:</td>
-											<td><select class="easyui-combobox" name="status"
-												data-options="required:true">
-													<option value="active">活跃</option>
-													<option value="inactive">待用</option>
-											</select></td>
-										</tr>
-										<tr>
-											<td colspan="2"><input type="submit" value="提交" /></td>
-										</tr>
-									</table>
+								<form id="ff" method="post" action="${ctx}/uams/registeredLogin"
+									role="form" class="form-horizontal">
+									<div class="form-group">
+										<label for="loginName" class="col-sm-3 control-label">账号:</label>
+										<div class="col-sm-9">
+											<input type="text" name="loginName"
+												class="{required} form-control" id="loginName"
+												placeholder="Account">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="plainPassword" class="col-sm-3 control-label">密码:</label>
+										<div class="col-sm-9">
+											<input type="password"
+												class="{required:true,minlength:5} form-control"
+												id="plainPassword" name="plainPassword"
+												placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="password" class="col-sm-3 control-label">重复密码:</label>
+										<div class="col-sm-9">
+											<input type="password"
+												class="{required:true,minlength:5,equalTo:'#plainPassword'} form-control"
+												id="password" name="password" placeholder="Password">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="name" class="col-sm-3 control-label">姓名:</label>
+										<div class="col-sm-9">
+											<input type="text" name="name"
+												class="{required} form-control" id="name" placeholder="Name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="email" class="col-sm-3 control-label">邮箱:</label>
+										<div class="col-sm-9">
+											<input type="text" name="email"
+												class="{required email} form-control" id="email"
+												placeholder="Email">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="dept" class="col-sm-3 control-label">部门:</label>
+										<div class="col-sm-9">
+											<input type="text" name="dept" class="form-control" id="dept"
+												placeholder="Dept">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="phone" class="col-sm-3 control-label">手机:</label>
+										<div class="col-sm-9">
+											<input type="text" name="phone" class="form-control"
+												id="phone" placeholder="Phone">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="optionsRadios1" class="col-sm-3 control-label">状态:</label>
+										<div class="col-sm-9">
+											<label class="radio-inline"> <input type="radio"
+												id="inlineCheckbox1" value="active" name="status"
+												checked="checked"> 活跃
+											</label> <label class="radio-inline"> <input type=radio
+												id="inlineCheckbox2" value="inactive" name="status">
+												待用
+											</label>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-offset-2 col-sm-9">
+											<button type="submit" class="btn btn-default">提交</button>
+										</div>
+									</div>
 								</form>
 							</div>
 						</div>

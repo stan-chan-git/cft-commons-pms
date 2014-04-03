@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.model.display.JqPageObject;
@@ -44,15 +45,16 @@ public class EasyuiController extends BaseController{
 
 	@RequestMapping(value = "/findAllApplication")
 	public @ResponseBody
-	JqPageObject findAllApplication(HttpServletRequest request) {
+	JqPageObject findAllApplication(HttpServletRequest request,@RequestParam("rows") Integer pageSize,
+			@RequestParam("page") Integer pageNo) {
 		JqPageObject pno = new JqPageObject();
 		Page<EasyuiApplication> pages = new Page<EasyuiApplication>();
-		pages.setPageNo(1);
-		pages.setPageSize(10);
+		pages.setPageNo(pageNo);
+		pages.setPageSize(pageSize);
 		List<EasyuiApplication> pageData = easyuiApplicationService
 				.getAllEasyuiApplication(pages);
 		pno.setRows(pageData);
-		pno.setPage(1);
+		pno.setPage(pageNo);
 		pno.setRecords(pageData.size());
 		pno.setTotal(pages.getTotalPage());
 		return pno;
