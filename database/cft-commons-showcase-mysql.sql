@@ -1,4 +1,4 @@
-CREATE SCHEMA `showcase` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA `pms` DEFAULT CHARACTER SET utf8 ;
 
 /*
  * Drop Table
@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS app_user_groups;
 /*
  * User Table 
  */
-CREATE TABLE `showcase`.`app_user` (
+CREATE TABLE `app_user` (
   `USERID` VARCHAR(100) NOT NULL,
   `LOGINNAME` VARCHAR(100) NOT NULL,
   `NAME` VARCHAR(100) NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `showcase`.`app_user` (
   UNIQUE INDEX `LOGINNAME_UNIQUE` (`LOGINNAME` ASC),
   INDEX `IDX1_APP_USER` (`LOGINNAME` ASC, `STATUS` ASC));
 
-CREATE TABLE `showcase`.`app_role` 
+CREATE TABLE `app_role` 
    (`ROLEID` VARCHAR(20) NOT NULL, 
 	`NAME` VARCHAR(255) NOT NULL, 
 	`PERMISSIONS` VARCHAR(1000), 
@@ -40,13 +40,13 @@ CREATE TABLE `showcase`.`app_role`
 	 PRIMARY KEY (`ROLEID`)
    );
    
-CREATE TABLE `showcase`.`APP_USER_ROLE` 
+CREATE TABLE `APP_USER_ROLE` 
    (`USERID` VARCHAR(20) NOT NULL, 
 	`ROLEID` VARCHAR(20) NOT NULL, 
 	 CONSTRAINT `APP_USER_ROLE_PK` PRIMARY KEY (`USERID`, `ROLEID`)
    );
 -- Table "app_daily_record" DDL
-CREATE TABLE `showcase`.`app_daily_record` (
+CREATE TABLE `app_daily_record` (
   `id` varchar(20) NOT NULL DEFAULT '',
   `today` varchar(100) DEFAULT NULL,
   `mainTask` varchar(20) DEFAULT NULL,
@@ -57,22 +57,23 @@ CREATE TABLE `showcase`.`app_daily_record` (
   `isExpired` varchar(2) DEFAULT NULL,
   `isApproval` varchar(2) DEFAULT NULL,
   `type` varchar(2) DEFAULT NULL,
+  `hours` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Table "app_task_types" DDL
 
-CREATE TABLE `showcase`.`app_task_types` (
+CREATE TABLE `app_task_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mainTask` varchar(100) DEFAULT NULL,
   `superTask` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 -- Table "app_user_groups" DDL
 
-CREATE TABLE `showcase`.`app_user_groups` ( 	
+CREATE TABLE `app_user_groups` ( 	
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `learder` varchar(100) DEFAULT NULL,
   `crew` varchar(100) DEFAULT NULL,
@@ -81,12 +82,12 @@ CREATE TABLE `showcase`.`app_user_groups` (
 /*
 *Sample Data
 */
-TRUNCATE `showcase`.`app_user`;
-TRUNCATE `showcase`.`app_role`;
-TRUNCATE `showcase`.`app_user_role`;
-TRUNCATE `showcase`.`app_daily_record`;
-TRUNCATE `showcase`.`app_task_types`;
-TRUNCATE `showcase`.`app_user_groups`;
+TRUNCATE `app_user`;
+TRUNCATE `app_role`;
+TRUNCATE `app_user_role`;
+TRUNCATE `app_daily_record`;
+TRUNCATE `app_task_types`;
+TRUNCATE `app_user_groups`;
 
 
 insert into app_user (userId,loginname, name, email, password, salt, phone, office, dept, language, status, remark) values('U1001','ceditor','Messi','admin@spring.org','70b2e3b7a573e9010daaf72c861689cc5f2bd80f','41d005939da010b5','28888888','LHK11','CHB7','en_US','active','');
