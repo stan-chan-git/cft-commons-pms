@@ -66,11 +66,11 @@ body { padding-top: 70px; }
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-3 .col-xs-3 .col-sm-3" 
+			<div class="col-lg-4 .col-xs-3 .col-sm-3" 
 				style="padding-left: 0px;padding-right: 2px;border-bottom-color:#E7E7E7">
 			
 			<%@ include file="/WEB-INF/layouts/left.jsp"%></div>
-			<div class="col-md-9 col-xs-9 col-sm-9" style="padding: 0px;padding-left: 10px;"><sitemesh:body /></div>
+			<div class="col-lg-4 col-xs-9 col-sm-9" style="padding: 0px;padding-left: 10px;"><sitemesh:body /></div>
 		</div>
 	</div>
 </body>

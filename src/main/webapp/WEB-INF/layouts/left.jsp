@@ -20,5 +20,32 @@
 				<li><a href="${ctx}/view/fillLog"><em>01</em>填写日志<span>87</span></a></li>
 			</ul>
 		</li>
+		
+		<li id="one" class="files"><a href="#one">Authorization</a>
+			<ul class="sub-menu">
+				<li><a href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do"><em>01</em>腾讯微博授权<span>87</span></a></li>
+				<li><a href=""><em>01</em>新浪微博授权<span>87</span></a></li>
+				<li><a href=""><em>01</em>Instagram授权<span>87</span></a></li>
+				<li><a href=""><em>01</em>FaceBook授权<span>87</span></a></li>
+			</ul>
+		</li>
+		
+		<li id="one" class="files"><a href="#one">Tencent API</a>
+			
+		</li>
+		
+		<li id="one" class="files"><a href="#one">Sina API</a>
+			<ul class="sub-menu">
+				
+			</ul>
+		</li>
+		
+		<li id="one" class="files"><a href="#one">Instagram API</a>
+			
+		</li>
+		
+		<li id="one" class="files"><a href="#one">FaceBook API</a>
+			
+		</li>
 	</ul>
 </div>
