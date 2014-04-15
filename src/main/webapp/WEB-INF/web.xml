@@ -102,4 +102,8 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/sina/*</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/tencent/*</url-pattern>
+	</servlet-mapping>
 </web-app>
