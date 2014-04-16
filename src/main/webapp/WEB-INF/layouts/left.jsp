@@ -10,7 +10,9 @@
 		
 		<li id="one" class="files"><a href="#one">Sina API</a>
 			<ul class="sub-menu">
-				
+				<li><a href="${ctx}/sina/sina_statuses_update"><em>01</em>发布一条微博信息</a></li>						
+				<li><a href="${ctx}/sina/sina_statuses_upload"><em>02</em>上传图片并发布一条微博</a></li>
+				<li><a href="#statuses/repost"><em>04</em>转发一条微博信息</a></li>				
 			</ul>
 		</li>
 		

@@ -20,15 +20,16 @@ public class TencentWeiBoController {
 	private static final String APP_KEY = "801495189";
 	private static final String CLIENT_SECET = "ff66b84d1e37af0b630639de332ef996";
 	private static final String REDIRECT_URL = "http://localhost:8088/pms/tencent/tweibo.do";
-	//调用API需要的部分
+	//调用API需要的公共部分
+	private static final String COMMON_URL = "https://open.t.qq.com/api";
 
 	/* 回调地址  */
 	@RequestMapping(value = "tweibo.do")
 	public String tweibo(String code, String openid, String openkey,HttpServletRequest request) throws IOException {
 		//获取code，通过code发出请求获取access_token
 		String url = "https://open.t.qq.com/cgi-bin/oauth2/access_token?client_id=" + APP_KEY
-				+ "&client_secret=" + CLIENT_SECET + "&redirect_uri=" + REDIRECT_URL
-				+ "&grant_type=authorization_code&code=" + code;
+				     + "&client_secret=" + CLIENT_SECET + "&redirect_uri=" + REDIRECT_URL
+				     + "&grant_type=authorization_code&code=" + code;
 		
 		//发出请求，成功则返回带access_token的url字符串
 		String result = HttpClientUtils.httpGet(url, 9000, 9000);
@@ -49,10 +50,6 @@ public class TencentWeiBoController {
 			request.getSession().setAttribute("tencent_token", tencent_token);
 		    request.getSession().setAttribute("openid", openid);
 			request.getSession().setAttribute("openkey", openkey);
-			//在页面使用，提示授权成功
-			request.setAttribute("tencent_info", "success");
-		}else{
-			request.setAttribute("tencent_info", "failure");
 		}
 		
 		return "easyui/layout";
@@ -71,7 +68,7 @@ public class TencentWeiBoController {
 		}
 		
 		
-		String url = "https://open.t.qq.com/api/t/add";
+		String url = COMMON_URL + "/t/add";
 		
 		Map<String,String> nvpMap = new HashMap<String,String>();
 		//私有参数
@@ -90,8 +87,12 @@ public class TencentWeiBoController {
 System.out.println(result);
 		/** 将字符串转成JSON,获取需要的信息    **/
 		JSONObject jsonObject = new JSONObject(result);
-		//String errorcode = jsonObject.getString("errorcode");
-		//String msg = jsonObject.getString("msg");
+		String errorcode = jsonObject.getString("errorcode");
+		String ret = jsonObject.getString("ret");
+		
+		if(Integer.parseInt(errorcode) == 0 && Integer.parseInt(ret) == 0){
+			request.setAttribute("text_weibo", "发表成功！请登录腾讯微博查看");
+		}
 		
 		return "tencent/result";
 	}

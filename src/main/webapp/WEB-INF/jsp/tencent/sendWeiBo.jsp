@@ -9,7 +9,7 @@
 <body>
 <p style="color:blue">发送一条微博消息>>></p>
 <form action="${pageContext.request.contextPath}/tencent/sendWeiBo.do" method="post">
-微博内容：<textarea name="content" rows="5" cols="40"></textarea>
+微博内容：<textarea name="content" rows="5" cols="40">这是测试微博.......</textarea>
 <br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="submit" value="发送" />
