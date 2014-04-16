@@ -10,7 +10,6 @@
 
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
-
 	<!-- =========================== Auto IOC cache component scan =============================== -->
 	<context:component-scan base-package="cft.commons.pms" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
