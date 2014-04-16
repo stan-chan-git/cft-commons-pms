@@ -84,7 +84,7 @@ $(function(){
 	  <img alt="腾讯微博" src="${ctx}/static/images/tencent.jpg" style="width:37px;height:38px" />
 	  <!-- 如果已经授权，则不显示按钮 -->
 	  <c:choose>
-		  <c:when test="${tencent_token != null && tencent_token != ''}">
+		  <c:when test="${sessionScope.tencent_token != null && sessionScope.tencent_token != ''}">
 		                   腾讯微博已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>

@@ -5,6 +5,9 @@
 		<li id="one" class="files"><a href="#one">Tencent API</a>
 		    <ul class="sub-menu">
 		        <li><a href="${ctx}/view/addWeiBoView.do">发送一条微博消息</a></li>
+		        <li><a href="${ctx}/tencent/getReview.do">获取单条微博的评论列表</a>
+		        <li><a href="${ctx}/tencent/forwardWeiBo.do">转发一条微博</a>
+		        <li><a href="">获取关注的人的最新微博</a>
 		    </ul>
 		</li>
 		
