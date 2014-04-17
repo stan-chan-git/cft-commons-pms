@@ -124,9 +124,11 @@ public class SinaWeiBoController {
 			itemsMap.put("pic",content);
 			SinaUtil.postMethodRequestWithFile(uploadUrl, params, header, itemsMap);
 			
-			return "sina/sina_statuses_upload";// 成功页面
+			request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
+			return "sina/sinareturn"; // 返回页面
 		}
-		return "sina/sinafunction";	// 失败页面
+		request.getSession().setAttribute("sinareturn", "发含有图片的微博失败");
+		return "sina/sinareturn";	// 失败页面
 	}
 	
 	/*转发一条微博信息controller*/
