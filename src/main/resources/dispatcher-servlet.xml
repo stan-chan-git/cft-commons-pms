@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:aspectj-autoproxy proxy-target-class="true" /> 
 
 	<!-- =========================== Auto IOC cache component scan =============================== -->
 	<context:component-scan base-package="cft.commons.pms" use-default-filters="false">

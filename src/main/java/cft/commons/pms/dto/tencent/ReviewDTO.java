@@ -4,7 +4,7 @@ public class ReviewDTO {
 	private String id;// 评论id
 	private String text;// 评论内容
 	private String nick;// 评论人
-	private Integer timestamp;// 评论时间
+	private int timestamp;// 评论时间
 
 	public String getId() {
 		return id;
@@ -30,11 +30,11 @@ public class ReviewDTO {
 		this.nick = nick;
 	}
 
-	public Integer getTimestamp() {
+	public int getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Integer timestamp) {
+	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
 	}
 }
