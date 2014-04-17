@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>success</title>
+<title>Insert title here</title>
 </head>
 <body>
-${success},现在你可以调用API了
+HSLDHLKSSLKJ
 </body>
 </html>

@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
 encoding//database/cft-commons-showcase-mysql.sql=UTF-8
 encoding//src/main/java=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/instagram/comment.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/instagram/follow.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/instagram/instagramApi.jsp=UTF-8
 encoding//src/main/webapp/index.jsp=UTF-8
