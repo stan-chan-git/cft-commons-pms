@@ -8,21 +8,20 @@
 <title></title>
 </head>
 <body>
-<table width="100%" border="0">
-<tr align="center">
-<td>评论Id</td>
-<td>评论时间</td>
-<td>评论内容</td>
-<td>评论人</td>
-</tr>
+<c:choose>
+<c:when test="${message == null || message == ''}">
 <c:forEach items="${reList}" var="re">
-<tr align="center">
-<td width="30%">${re.id}</td>
-<td width="30%">${re.timestamp}</td>
-<td width="20%">${re.text}</td>
-<td width="20%">${re.nick}</td>
-</tr>
+<div style="border:2px solid #7CFC00;background-color:#E0FFFF">
+<label>评论人昵称：</label>${re.nick}
+<br>
+<label>评论内容：</label>${re.text}
+</div>
+<br>
 </c:forEach>
-</table>
+</c:when>
+<c:otherwise>
+${message}
+</c:otherwise>
+</c:choose>
 </body>
 </html>
