@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.sina.SinaComDto;
@@ -110,7 +112,7 @@ public class SinaWeiBoController {
 	
 	/*发图片微博controller*/
 	@RequestMapping(value ="sinaStatusesUpload.do")
-	public String sina_Statuses_upload(HttpServletRequest request) throws IOException {
+	public String sina_Statuses_upload(@RequestParam("pic") MultipartFile file,Model model,HttpServletRequest request) throws IOException {
 		String access_token = (String) request.getSession().getAttribute("sina_token");
 		
 		if (access_token!= null && !access_token.equals("") ) {
@@ -120,7 +122,7 @@ public class SinaWeiBoController {
 			params.put("access_token", access_token);
 			params .put("status", "能不能发送图片");
 			Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
-			byte[] content = SinaUtil.readFileImage("C:\\Users\\user\\Pictures\\test.jpg");
+			byte[] content = file.getBytes();
 			itemsMap.put("pic",content);
 			SinaUtil.postMethodRequestWithFile(uploadUrl, params, header, itemsMap);
 			
