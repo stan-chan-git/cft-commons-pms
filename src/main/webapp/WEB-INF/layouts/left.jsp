@@ -13,9 +13,13 @@
 		
 		<li id="one" class="files"><a href="#one">Sina API</a>
 			<ul class="sub-menu">
-				<li><a href="${ctx}/sina/sina_statuses_update"><em>01</em>发布一条微博信息</a></li>						
-				<li><a href="${ctx}/sina/sina_statuses_upload"><em>02</em>上传图片并发布一条微博</a></li>
-				<li><a href="#statuses/repost"><em>04</em>转发一条微博信息</a></li>				
+				<li><a href="${ctx}/view/sina_statuses_update"><em>01.1</em>发布一条微博信息</a></li>						
+				<li><a href="${ctx}/view/sina_statuses_upload"><em>01.2</em>上传图片并发布一条微博</a></li>
+				<li><a href="${ctx}/sina/sinaCommentsToMe.do"><em>02</em>获取评论列表</a></li>
+				<li><a href="${ctx}/view/sina_statuses_repost"><em>04.1</em>转发一条微博信息</a></li>
+				<li><a href="${ctx}/sina/sinaStatuseFriends.do"><em>04.2</em>转发某条微博信息</a></li>			
+				<li><a href="${ctx}/sina/sinaStatuseFriends.do"><em>05</em>获取关注人的信息动态</a></li>
+				<li><a href="${ctx}/sina/sinaStatusesUpload.do"><em>06</em>点击转发图片</a></li>		
 			</ul>
 		</li>
 		

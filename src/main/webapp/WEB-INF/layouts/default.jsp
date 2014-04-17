@@ -67,6 +67,11 @@ $(function(){
 		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
 	});
 	
+	/**  新浪微博授权按钮点击事件     **/
+	$("#sina_btn").click(function(){
+		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
+	});
+	
 })
 </script>
 <sitemesh:head />
@@ -95,7 +100,14 @@ $(function(){
 	  
 	  <!-- 新浪微博授权按钮 -->
 	  <img alt="新浪微博" src="${ctx}/static/images/sina.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">新浪微博授权</button>
+	  <c:choose>
+		  <c:when test="${sina_token != null && sina_token != ''}">
+		                   新浪微博已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+	  <button class="btn btn-default" id="sina_btn">新浪微博授权</button>
+		  </c:otherwise>
+	  </c:choose>	  
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- instagram授权按钮 -->
