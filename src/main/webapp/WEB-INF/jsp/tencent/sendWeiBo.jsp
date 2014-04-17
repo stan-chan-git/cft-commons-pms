@@ -7,12 +7,14 @@
 <title>发送一条微博消息</title>
 </head>
 <body>
-<p style="color:blue">发送一条微博消息>>></p>
-<form action="${pageContext.request.contextPath}/tencent/sendWeiBo.do" method="post">
-微博内容：<textarea name="content" rows="5" cols="40">这是测试微博.......</textarea>
-<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="submit" value="发送" />
+<form action="${pageContext.request.contextPath}/tencent/sendWeiBo.do" role="form" method="post">
+<div class="form-group">
+<label>微博内容:</label>
+<textarea class="form-control" name="content" rows="5" cols="40">这是测试微博.......</textarea>
+</div>
+<div class="form-group">
+<input class="btn btn-default" type="submit" value="发送" />
+</div>
 </form>
 </body>
 </html>
