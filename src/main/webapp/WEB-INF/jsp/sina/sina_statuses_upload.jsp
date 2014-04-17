@@ -23,7 +23,7 @@
 
 	<div id="ShuRu"
 		style="border: 5px solid #3399FF; border-radius: 25px; moz-border-radius: 25px; width: 600px; height: 400px; padding-top: 30px;">
-		<form class="form-horizontal" role="form" action="https://upload.api.weibo.com/2/statuses/upload.json" method="post"  enctype="multipart/form-data">
+		<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/sina/sinaStatusesUpload.do" method="post" enctype="multipart/form-data">
 			
 			<div class="form-group">
 				<label class="col-sm-4 control-label" style="color:blue">上传图片并发布一条微博>>></label>
