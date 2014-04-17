@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>发布一条微博信息</title>
+<title>上传图片并发布一条微博</title>
 <link rel="stylesheet" type="text/css"
 	href="${ctx}/static/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -23,8 +23,12 @@
 
 	<div id="ShuRu"
 		style="border: 5px solid #3399FF; border-radius: 25px; moz-border-radius: 25px; width: 600px; height: 400px; padding-top: 30px;">
-		<form class="form-horizontal" role="form" action="https://api.weibo.com/2/statuses/update.json" method="post" >
-
+		<form class="form-horizontal" role="form" action="https://upload.api.weibo.com/2/statuses/upload.json" method="post" >
+			
+			<div class="form-group">
+				<label class="col-sm-4 control-label" style="color:blue">上传图片并发布一条微博>>></label>
+			</div>
+			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">access_token</label>
 				<div class="col-sm-8">
@@ -35,19 +39,19 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Content</label>
 				<div class="col-sm-8" >
-					<input type="text" class="form-control" name="status" value="新浪微博图片信息发布测试！" >
+					<textarea class="form-control" rows="3" name="status" >新浪微博图片信息发布测试！</textarea>
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Picture</label>
 				<div class="col-sm-8" >
-					<input type="file" class="form-control" name="pic" >
+					<input type="file" name="pic" >
 				</div>
 			</div>
 
 			<div class="form-group">
-				<div class="col-sm-offset-8 ">
+				<div class="col-sm-offset-9 ">
 					<button type="submit" class="btn btn-default">Send</button>
 				</div>
 			</div>
