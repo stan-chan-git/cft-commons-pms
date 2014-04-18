@@ -6,7 +6,7 @@
 		<li id="one" class="files"><a href="#one">Tencent API</a>
 		    <ul class="sub-menu">
 		        <li><a href="${ctx}/view/addWeiBoView.do">发送一条微博</a></li>
-		        <li><a href="${ctx}/view/addPicWeiBoView.do">发送一条微博</a></li>
+		        <li><a href="${ctx}/view/addPicWeiBoView.do">发送一条带图片的微博</a></li>
 		        <li><a href="${ctx}/tencent/getView.do?state=comments">获取单条微博的评论列表</a>
 		        <li><a href="${ctx}/tencent/getView.do?state=forward">转发一条微博</a>
 		        <li><a href="${ctx}/tencent/getFocusPeopleWeiBo.do">获取关注的人的最新微博</a>
@@ -28,11 +28,11 @@
 		<li id="one" class="files"><a href="#one">Instagram API</a>
 			
 		<ul class="sub-menu">
-				<li><a href="**"><em>01</em>发布照片<span></span></a></li>
-				<li><a href="comment.do"><em>01</em>获取各个不同的社交平台上最新的回复<span></span></a></li>
-				<li><a href="goComment.do"><em>01</em>创建评论<span></span></a></li>
-				<li><a href="followFirend.do"><em>01</em>获取关注人的信息动态<span></span></a></li>
-				<li><a href="likeMedia.do"><em>01</em>分享一个like，并且获取这个like的在各个平台上的信息<span></span></a></li>
+				<li><a href="**"><em>01</em>发布照片</a></li>
+				<li><a href="comment.do"><em>01</em>获取各个不同的社交平台上最新的回复</a></li>
+				<li><a href="goComment.do"><em>01</em>创建评论</a></li>
+				<li><a href="followFirend.do"><em>01</em>获取关注人的信息动态</a></li>
+				<li><a href="likeMedia.do"><em>01</em>分享一个like，并且获取这个like的在各个平台上的信息</a></li>
 			</ul>	
 			
 		</li>
