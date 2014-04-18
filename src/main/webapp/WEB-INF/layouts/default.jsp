@@ -25,42 +25,9 @@ body { padding-top: 70px; }
 <!-- ////////////////////////////////// -->
 <script type="text/javascript" src="${ctx}/static/js/commens-pms-1.0.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$(".leftMenuList a").mouseover(function() {
-			$(this).css("color", "#FF4E00");
-		}).mouseout(function() {
-			$(this).css("color", "#666");
-		});
-		var accordion_head = $('.accordion > li > a'), accordion_body = $('.accordion li > .sub-menu');
-		// Open the first tab on load
-		accordion_head.first().addClass('active').next().slideDown(200);
-		// Click function
-		accordion_head.on('click', function(event) {
-			// Disable header links
-			event.preventDefault();
-			// Show and hide the tabs on click
-			if ($(this).attr('class') != 'active') {
-				accordion_body.slideUp('normal');
-				$(this).next().stop(true, true).slideToggle('normal');
-				accordion_head.removeClass('active');
-				$(this).addClass('active');
-			}
-		});
-	});
-	function showMsg() {
-		$.messager.show({
-			title : '渐进显示信息3',
-			msg : '3秒钟后消失',
-			timeout : 3000,
-			showType : 'show'
-		});
-	}
-	
-<!--//////////////////////// -->
-<!--/// 下面部分为授权按钮点击事件/// -->
-<!--//////////////////////// -->
+
 $(function(){
-	
+
 	/**  腾讯微博授权按钮点击事件     **/
 	$("#tencent_btn").click(function(){
 		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
@@ -80,7 +47,41 @@ $(function(){
 	$("#facebook_btn").click(function(){
 		alert("come in");
 		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
-})
+	});	
+});
+$(document).ready(function(){
+	$(".leftMenuList a").mouseover(function() {
+		$(this).css("color", "#FF4E00");
+	}).mouseout(function() {
+		$(this).css("color", "#666");
+	});
+	var accordion_head = $('.accordion > li > a'), accordion_body = $('.accordion li > .sub-menu');
+	// Open the first tab on load
+	accordion_head.first().addClass('active').next().slideDown(200);
+	// Click function
+	accordion_head.on('click', function(event) {
+		// Disable header links
+		event.preventDefault();
+		// Show and hide the tabs on click
+		if ($(this).attr('class') != 'active') {
+			accordion_body.slideUp('normal');
+			$(this).next().stop(true, true).slideToggle('normal');
+			accordion_head.removeClass('active');
+			$(this).addClass('active');
+		}
+	});
+});
+
+<!--//////////////////////// -->
+<!--/// 下面部分为授权按钮点击事件/// -->
+<!--//////////////////////// -->
+function init_but_click(){
+	alert(1);
+	window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+}
+
+	
+
 </script>
 <sitemesh:head />
 </head>
@@ -125,7 +126,7 @@ $(function(){
 		             instagram已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
-	  <button class="btn btn-default" id="instagram_btn">instagram授权</button>
+	  <button class="btn btn-default" id="instagram_btn" onclick="init_but_click();">instagram授权</button>
 		  </c:otherwise>
 	  </c:choose>	
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
