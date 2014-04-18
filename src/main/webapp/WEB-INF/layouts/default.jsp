@@ -76,6 +76,9 @@ $(function(){
 		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
 	});
 	
+	/**  facebook授权按钮点击事件     **/
+	$("#facebook_btn").click(function(){
+		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
 })
 </script>
 <sitemesh:head />
@@ -127,9 +130,15 @@ $(function(){
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- Facebook授权按钮 -->
-	  <img alt="instagram" src="${ctx}/static/images/facebook.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">Facebook授权</button>
-	  
+	  <img alt="facebook" src="${ctx}/static/images/facebook.jpg" style="width:37px;height:38px" />
+	  <c:choose>
+		  <c:when test="${facebook_token != null && facebook_token != ''}">
+		             facebook已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+			<button class="btn btn-default" id="facebook_btn">Facebook授权</button>
+	     </c:otherwise>
+	  </c:choose>	
 	  <br><br><br>
 		<div class="row">
 			<div class="col-lg-4 .col-xs-3 .col-sm-3" 
