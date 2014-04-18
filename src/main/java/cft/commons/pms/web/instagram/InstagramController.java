@@ -115,15 +115,23 @@ public class InstagramController {
 		for (int i = 0; i < data.length(); i++) {
 			JSONObject jo = (JSONObject) data.get(i);
 			String joString = jo.toString(i);
-
+            String userId=jo.getString("id");
 			String userName = jo.getString("username");
 			String profile_picture = jo.getString("profile_picture");
 			// names.add(userName);
 			// names.add(profile_picture);
 			FollowDto follow = new FollowDto();
+			
 			follow.setUsername(userName);
 			follow.setPhoto(profile_picture);
 			names.add(follow);
+			
+			//获取用户信息
+			String userUrl="https://api.instagram.com/v1/users/"+userId+"/media/recent/?access_token="+instagram_token;
+			String userResult = HttpClientUtils.httpGet(userUrl, 9000, 9000);
+			 
+			System.out.println("userResult"+userResult);
+			System.out.println(userId);
 			System.out.println(joString);
 			System.out.println(userName);
 			System.out.println("names=========" + names.size());
@@ -305,4 +313,23 @@ public class InstagramController {
 		return "instagram/comment";
 	
 	}
+	
+	
+	//获取流行的media
+	@RequestMapping(value="popular.do")
+	public String popularMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
+		  
+		uid = (String) request.getSession().getAttribute("uid");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		
+		String popuLarUrl="https://api.instagram.com/v1/media/popular?access_token="+instagram_token;
+		
+		String popularResult=HttpClientUtils.httpGet(popuLarUrl, 9000, 9000);
+		 
+		System.out.println("popularResult="+popularResult);
+		
+		return "instagram/popular";
+		
+	}
+	
 }

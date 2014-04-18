@@ -201,8 +201,8 @@ public class TencentWeiBoController {
 		//请求url
 		String url = COMMON_URL + "/statuses/home_timeline?"
 				     + "format=json"
-				     + "&pageflag=0"
-				     + "&pagetime=0"
+				     + "&pageflag=1"
+				     + "&pagetime=1397805731"
 				     + "&reqnum=20"
 				     + "&type=3"
 				     + "&contenttype=0"
@@ -227,24 +227,35 @@ System.out.println(result);
         
         	//用uid排除自己的微博
         	if(!request.getSession().getAttribute("openid").equals(uid)){
-	        	WeiBoDTO wb = new WeiBoDTO();
-	        	wb.setId((String)obj.get("id"));
-	        	wb.setNick((String)obj.get("nick"));
-	        	wb.setType((Integer)obj.get("type"));
-	        	wb.setTimestamp((Integer)obj.get("timestamp"));
-	        	wb.setText((String)obj.get("text"));
-	        	
-	        	if((Integer)obj.get("type") == 2){
-	        		JSONObject source = (JSONObject)obj.get("source");
-	        		wb.setOrigtext((String)source.get("origtext"));
-	        	}
-	        	
-	        	focusList.add(wb);	
+        		//获取当前日期
+        		String nowDate = Utils.getNowDate();
+        		//获取微博发表人气
+        		String wbDate = Utils.getDate((Integer)obj.get("timestamp"));
+        		
+        		//获取当前日期发表的微博,排除其他微博
+        		if(wbDate.equals(nowDate)){
+        			WeiBoDTO wb = new WeiBoDTO();
+		        	wb.setId((String)obj.get("id"));
+		        	wb.setNick((String)obj.get("nick"));
+		        	wb.setType((Integer)obj.get("type"));
+		        	//wb.setTimestamp((Integer)obj.get("timestamp"));	        	
+		        	wb.setText((String)obj.get("text"));
+		        	
+		        	//判断此微博是不是转发的
+		        	if((Integer)obj.get("type") == 2){
+		        		JSONObject source = (JSONObject)obj.get("source");
+		        		wb.setOrigtext((String)source.get("origtext"));
+		        	}
+		        	
+		        	focusList.add(wb);	
+        		}
         	}
         }
         
         if(focusList != null && !focusList.isEmpty()){
         	request.setAttribute("focusList", focusList);
+        }else{
+        	request.setAttribute("message", "今天好友没有动态");
         }
         
 		
