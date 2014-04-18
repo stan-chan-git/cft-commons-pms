@@ -25,10 +25,9 @@
 		out.println(currentUser.hasRole("R1001"));
 		currentUser.getPrincipal();
 	%>
-	<shiro:principal />
+
 	<br>
-	<shiro:hasPermission name="news:create"> news:create </shiro:hasPermission>
-	<shiro:hasPermission name="news:ivaild"> news:ivaild </shiro:hasPermission>
+	
 	<form id="signupForm" method="get" action="${ctx}/view/test.do">
 		<p>
 			<label for="firstname">Firstname</label> <input id="firstname"

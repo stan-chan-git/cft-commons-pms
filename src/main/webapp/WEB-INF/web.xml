@@ -113,6 +113,9 @@
 	</servlet-mapping>
 		
 
+    <welcome-file-list>
+        <welcome-file>/easyui/layout</welcome-file>
+    </welcome-file-list>
 	
 	<session-config>
      <session-timeout>30</session-timeout>

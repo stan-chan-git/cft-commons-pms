@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sitemesh"
 	uri="http://www.opensymphony.com/sitemesh/decorator"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%
 	request.setAttribute("ctx", request.getContextPath());
 %>
@@ -89,7 +88,7 @@ $(function(){
 	
 	
 	
-	<div class="container">
+	<div class="container" style="margin-top:60px">
 	  <!-- 腾讯微博授权按钮 -->
 	  <img alt="腾讯微博" src="${ctx}/static/images/tencent.jpg" style="width:37px;height:38px" />
 	  <!-- 如果已经授权，则不显示按钮 -->
