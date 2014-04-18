@@ -14,7 +14,7 @@
 
 
 
-	<table align="center" >
+	<table  border="1">
          <tr align="center">
             <th>链接</th>
             <th>图片</th>
