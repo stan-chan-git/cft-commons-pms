@@ -90,12 +90,25 @@ System.out.println(result);
 	/* *
 	 * 将获取到的timestamp格式的时间转换成标准时间格式，如：yyyy-MM-dd HH:mm
 	 * */
-	public static String getDate(int timestamp){
-		Date date = new Date(timestamp * 1000);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	public static String getDate(Integer timestamp){
+		Long wbTime = Long.parseLong(timestamp.toString());
+		Date date = new Date(wbTime * 1000);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String sendDate = sdf.format(date);
 	    
 		return sendDate;
+	}
+	
+	
+	/* *
+	 * 获取当前日期，如：yyyy-MM-dd
+	 * */
+	public static String getNowDate(){
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		String nowDate = sdf.format(date);
+		
+		return nowDate;
 	}
 	
 	
