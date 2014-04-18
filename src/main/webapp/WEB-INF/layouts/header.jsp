@@ -8,13 +8,12 @@
 			<div class="navbar-header">
 				<a href="${ctx}/" class="navbar-brand"> PMS </a>
 			</div>
-			<shiro:user>
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<a href="javascript:void(-1);">
-								<spring:message code="label.welcome" />,<shiro:principal />
+								<spring:message code="label.welcome" />
 							</a>
 						</li>
 							
@@ -25,7 +24,6 @@
 						</li>
 					</ul>
 				</div>
-			</shiro:user>
 		</div>
 	</div>
 

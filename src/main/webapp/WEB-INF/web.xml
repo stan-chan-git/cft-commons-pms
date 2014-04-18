@@ -42,7 +42,7 @@
 
 
 	<!-- ============================ Shiro Security filter ============================ -->
-	<filter>
+	<!-- <filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
@@ -51,7 +51,7 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
+	</filter-mapping> -->
 
 	<!-- ============================ sitemesh ============================ -->
 	<filter>
@@ -113,6 +113,9 @@
 	</servlet-mapping>
 		
 
+    <welcome-file-list>
+        <welcome-file>/easyui/layout</welcome-file>
+    </welcome-file-list>
 	
 	<session-config>
      <session-timeout>30</session-timeout>
