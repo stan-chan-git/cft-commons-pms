@@ -7,13 +7,24 @@
 <title>发送一条微博消息</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/tencent/sendPicWeiBo.do" role="form" method="post" enctype="multipart/form-data">
+<form action="https://open.t.qq.com/api/t/add_pic" role="form" method="post" enctype="multipart/form-data">
 <div class="form-group">
 <label>微博内容:</label>
 <textarea class="form-control" name="content" rows="5" cols="40">这是带图片的测试微博.......</textarea>
 <br>
-<input type="file" name="file" />
+<input type="file" name="pic" />
 </div>
+
+<!-- 请求需要的参数  -->
+<input type="hidden" name="format" value="json" />
+<input type="hidden" name="clientip" value="${clientip}" />
+<input type="hidden" name="access_token" value="${sessionScope.tencent_token}" />
+<input type="hidden" name="openid" value="${sessionScope.openid}" />
+<input type="hidden" name="openkey" value="${sessionScope.openkey}" />
+<input type="hidden" name="oauth_consumer_key" value="801495189" />
+<input type="hidden" name="oauth_version" value="2.a" />
+<input type="hidden" name="scope" value="all" />
+
 <div class="form-group">
 <input class="btn btn-default" type="submit" value="发送" />
 </div>

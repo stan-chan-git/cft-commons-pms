@@ -9,7 +9,7 @@
 </head>
 <body>
 <c:forEach items="${wbList}" var="wb">
-<div style="width:300px;height:150px;border:2px solid #7CFC00;background-color:#E0FFFF">
+<div style="width:300px;height:200px;border:2px solid #7CFC00;background-color:#E0FFFF">
 <label>昵称:</label>${wb.nick}
 <br>
 <label>微博内容:</label>${wb.text}
