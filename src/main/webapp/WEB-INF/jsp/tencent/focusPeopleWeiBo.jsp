@@ -8,6 +8,11 @@
 <title></title>
 </head>
 <body>
+<c:choose>
+<c:when test="${message != null && message != ''}">
+${message}
+</c:when>
+<c:otherwise>
 <c:forEach items="${focusList}" var="f">
 <div style="width:300px;height:150px;border:2px solid #7CFC00;background-color:#E0FFFF">
 <label>昵称:</label>${f.nick}
@@ -15,11 +20,13 @@
 <label>微博内容:</label>${f.text}
 <c:if test="${f.origtext != null && f.origtext != ''}">
 <div style="width:200px;height:75px;background-color:#DBDBDB;border:2px solid #D9D9D9;margin-left:50px">
-${f.origtext}
+
 </div>
 </c:if>
 </div>
 <br>
 </c:forEach>
+</c:otherwise>
+</c:choose>
 </body>
 </html>
