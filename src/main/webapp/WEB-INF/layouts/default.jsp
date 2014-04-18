@@ -6,7 +6,6 @@
 <%
 	request.setAttribute("ctx", request.getContextPath());
 %>
-<!DOCTYPE html>
 <html>
 <head>
 <title>PMS系统</title>
@@ -68,11 +67,10 @@ $(function(){
 		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
 	});
 	
-	/**  instagram按钮点击事件     **/
-	$("#instagram_btn").click(function(){
-		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+	/**  新浪微博授权按钮点击事件     **/
+	$("#sina_btn").click(function(){
+		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
 	});
-	
 	
 })
 </script>
@@ -91,7 +89,7 @@ $(function(){
 	  <img alt="腾讯微博" src="${ctx}/static/images/tencent.jpg" style="width:37px;height:38px" />
 	  <!-- 如果已经授权，则不显示按钮 -->
 	  <c:choose>
-		  <c:when test="${tencent_info == 'success'}">
+		  <c:when test="${sessionScope.tencent_token != null && sessionScope.tencent_token != ''}">
 		                   腾讯微博已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
@@ -102,20 +100,19 @@ $(function(){
 	  
 	  <!-- 新浪微博授权按钮 -->
 	  <img alt="新浪微博" src="${ctx}/static/images/sina.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">新浪微博授权</button>
+	  <c:choose>
+		  <c:when test="${sina_token != null && sina_token != ''}">
+		                   新浪微博已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+	  <button class="btn btn-default" id="sina_btn">新浪微博授权</button>
+		  </c:otherwise>
+	  </c:choose>	  
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- instagram授权按钮 -->
 	  <img alt="instagram" src="${ctx}/static/images/instagram.jpg" style="width:37px;height:38px" />
-	 	  <!-- 如果已经授权，则不显示按钮 -->
-	  <c:choose>
-		  <c:when test="${instagram_info == 'success'}">
-		          instagram已授权,30分钟后失效
-		  </c:when>
-		  <c:otherwise>
-			  <button class="btn btn-default" id="instagram_btn">instagram授权</button>
-		  </c:otherwise>
-	  </c:choose>
+	  <button class="btn btn-default">Instagram授权</button>
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- Facebook授权按钮 -->

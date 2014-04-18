@@ -8,8 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<aop:aspectj-autoproxy proxy-target-class="true" />
-
+	<aop:aspectj-autoproxy proxy-target-class="true" /> 
 
 	<!-- =========================== Auto IOC cache component scan =============================== -->
 	<context:component-scan base-package="cft.commons.pms" use-default-filters="false">
@@ -130,6 +129,27 @@
 	
 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
     	<property name="securityManager" ref="securityManager"/>
+	</bean>
+
+	<!-- ======================== fileupload ========================= -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件的最大尺寸为1MB -->
+		<property name="maxUploadSize">
+			<value>5048576</value>
+		</property>
+	</bean>
+	<!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->
+	<!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<!-- 遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/jsp/error_fileupload.jsp页面 -->
+				<prop
+					key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>
+			</props>
+		</property>
 	</bean>
 
 </beans>

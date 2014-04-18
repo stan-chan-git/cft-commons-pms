@@ -5,14 +5,22 @@
 
 		<li id="one" class="files"><a href="#one">Tencent API</a>
 		    <ul class="sub-menu">
-		        <li><a href="${ctx}/view/addWeiBoView.do">发送一条微博消息</a></li>
+		        <li><a href="${ctx}/view/addWeiBoView.do">发送一条微博</a></li>
+		        <li><a href="${ctx}/tencent/getView.do?state=comments">获取单条微博的评论列表</a>
+		        <li><a href="${ctx}/tencent/getView.do?state=forward">转发一条微博</a>
+		        <li><a href="${ctx}/tencent/getFocusPeopleWeiBo.do">获取关注的人的最新微博</a>
 		    </ul>
 
 		</li>
 		
 		<li id="one" class="files"><a href="#one">Sina API</a>
 			<ul class="sub-menu">
-				
+				<li><a href="${ctx}/view/sina_statuses_update"><em>01.1</em>发布一条微博信息</a></li>						
+				<li><a href="${ctx}/view/sina_statuses_upload"><em>01.2</em>上传图片并发布一条微博</a></li>
+				<li><a href="${ctx}/sina/sinaCommentsToMe.do"><em>02</em>获取评论列表</a></li>
+				<li><a href="${ctx}/view/sina_statuses_repost"><em>04.1</em>转发一条微博信息</a></li>
+				<li><a href="${ctx}/sina/sinaStatuseFriends.do"><em>04.2</em>转发某条微博信息</a></li>			
+				<li><a href="${ctx}/sina/sinaStatuseFriends.do"><em>05</em>获取关注人的信息动态</a></li>
 			</ul>
 		</li>
 		

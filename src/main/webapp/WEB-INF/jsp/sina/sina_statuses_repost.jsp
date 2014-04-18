@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>发布一条微博信息</title>
+<title>转发一条微博信息</title>
 <link rel="stylesheet" type="text/css"
 	href="${ctx}/static/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
@@ -23,8 +23,12 @@
 
 	<div id="ShuRu"
 		style="border: 5px solid #3399FF; border-radius: 25px; moz-border-radius: 25px; width: 600px; height: 400px; padding-top: 30px;">
-		<form class="form-horizontal" role="form" action="https://api.weibo.com/2/statuses/update.json" method="post" >
-
+		<form class="form-horizontal" role="form" action="${pageContext.request.contextPath}/sina/sinaStatusesRepost.do" method="post" >
+			
+			<div class="form-group">
+				<label class="col-sm-4 control-label" style="color:blue">转发一条微博信息>>></label>
+			</div>
+			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">access_token</label>
 				<div class="col-sm-8">
@@ -33,14 +37,21 @@
 			</div>
 
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Content</label>
-				<div class="col-sm-8" >
-					<input type="text" class="form-control" name="status" value="新浪微博文字信息发布测试！" >
+				<label class="col-sm-3 control-label">要转发的微博ID</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="id" value="3700015002212363">
 				</div>
 			</div>
-
+			
 			<div class="form-group">
-				<div class="col-sm-offset-8 ">
+				<label class="col-sm-3 control-label">Content</label>
+				<div class="col-sm-8" >				
+					<textarea class="form-control" rows="3" name="status" >新浪转发微博信息发布测试！</textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-9 ">
 					<button type="submit" class="btn btn-default">Send</button>
 				</div>
 			</div>
