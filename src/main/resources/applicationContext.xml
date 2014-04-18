@@ -48,7 +48,7 @@
 
 	<import resource="classpath:/constants/globalConstants.xml" />
 	<import resource="applicationContext-jdbc.xml" />
-	<import resource="applicationContext-shiro.xml" />
+	<!-- <import resource="applicationContext-shiro.xml" /> -->
 
 	<!--
 

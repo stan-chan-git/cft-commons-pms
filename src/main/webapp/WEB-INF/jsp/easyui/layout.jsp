@@ -8,6 +8,6 @@
 <title>The Test Layout</title>
 </head>
 <body>
-	
+Welcome,User
 </body>
 </html>
