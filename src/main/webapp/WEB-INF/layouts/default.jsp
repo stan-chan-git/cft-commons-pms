@@ -72,6 +72,11 @@ $(function(){
 		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
 	});
 	
+	/**  instagram授权按钮点击事件     **/
+	$("#instagram_btn").click(function(){
+		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+	});
+	
 })
 </script>
 <sitemesh:head />
@@ -112,7 +117,14 @@ $(function(){
 	  
 	  <!-- instagram授权按钮 -->
 	  <img alt="instagram" src="${ctx}/static/images/instagram.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">Instagram授权</button>
+	    <c:choose>
+		  <c:when test="${instagram_token != null && sina_token != ''}">
+		             instagram已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+	  <button class="btn btn-default" id="instagram_btn">instagram授权</button>
+		  </c:otherwise>
+	  </c:choose>	
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- Facebook授权按钮 -->
