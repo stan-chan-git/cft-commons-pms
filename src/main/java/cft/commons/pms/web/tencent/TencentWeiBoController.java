@@ -69,7 +69,8 @@ public class TencentWeiBoController {
     
     /* 发送一条微博消息   */	
 	@RequestMapping(value="sendWeiBo.do")
-	public String sendWeiBo(String content,HttpServletRequest request) throws Exception{
+	public @ResponseBody
+	String sendWeiBo(String content,HttpServletRequest request) throws Exception{
 		
 		String url = COMMON_URL + "/t/add";
 		
@@ -97,10 +98,10 @@ public class TencentWeiBoController {
 		
 		//根据官方文档,当errcode=0&&ret=0即请求成功
 		if(errcode == 0 && ret == 0){
-			request.setAttribute("success_info", "发表成功！请登录腾讯微博查看");
+			return "success";
 		}
 		
-		return "tencent/result";
+		return "failure";
 	}
 	
 	

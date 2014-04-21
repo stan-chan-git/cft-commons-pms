@@ -15,7 +15,8 @@
 //public class ViewController {
 //    
 //	@RequestMapping("addWeiBoView.do")
-//	public String addWeiBoView(){
+//	public String addWeiBoView(Model model) throws Exception{
+//		model.addAttribute("clientip", Utils.getClientIP());
 //		return "tencent/sendWeiBo";
 //	}
 //	
@@ -23,7 +24,6 @@
 //	@RequestMapping("addPicWeiBoView.do")
 //	public String addPicWeiBo(Model model) throws UnknownHostException{
 //		model.addAttribute("clientip", Utils.getClientIP());
-//		
 //		return "tencent/sendPicWeiBo";
 //	}
 //	
