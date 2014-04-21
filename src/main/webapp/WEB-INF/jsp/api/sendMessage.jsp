@@ -20,12 +20,12 @@ $(function(){
 	var instagram_label = $("#instagram_label");//Instagram label
 	var facebook_label = $("#facebook_label");//FaceBook label
 	
+	//获取发表内容
+	
+	
 	//发送按钮点击事件
 	$("#send").click(function(){
-		//获取发表内容
 		var content = $("#content").val();
-	console.log(content);
-		
 		
 		//判断是否选择了平台
 		if(tencent.is(":checked") == false && sina.is(":checked") == false && instagram.is(":checked") == false && facebook.is(":checked") == false){
@@ -43,9 +43,10 @@ $(function(){
 				send.after("<div id='tip' class='alert alert-warning' style='margin-left:115px;margin-top:20px'>Please According To The Instructions!</div>");
 				return false;
 			}
+			
+			//腾讯微博API调用函数
+			sendTencentWeiBo(content);
 		}
-		
-		window.location.href= path + "/api/sendMessage.do?content=" + content;
 		
 	});
 	
