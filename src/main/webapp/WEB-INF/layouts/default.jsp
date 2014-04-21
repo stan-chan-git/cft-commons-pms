@@ -45,7 +45,7 @@ $(function(){
 	
 	/**  facebook授权按钮点击事件     **/
 	$("#facebook_btn").click(function(){
-		alert("come in");
+		//alert("come in");
 		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
 	});	
 });
@@ -122,7 +122,7 @@ function init_but_click(){
 	  <!-- instagram授权按钮 -->
 	  <img alt="instagram" src="${ctx}/static/images/instagram.jpg" style="width:37px;height:38px" />
 	    <c:choose>
-		  <c:when test="${instagram_token != null && sina_token != ''}">
+		  <c:when test="${instagram_token != null && instagram_token != ''}">
 		             instagram已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
