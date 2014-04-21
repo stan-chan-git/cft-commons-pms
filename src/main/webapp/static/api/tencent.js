@@ -1,5 +1,5 @@
 //发一条文字微博
-function sendWeiBo(content){
+function sendTencentWeiBo(content){
 	$.post("/pms/tencent/sendWeiBo.do",
 			
 			{
