@@ -1,7 +1,4 @@
-target/
 .classpath
-.settings
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.next
-release.properties
+target/
+.gitignore
+
