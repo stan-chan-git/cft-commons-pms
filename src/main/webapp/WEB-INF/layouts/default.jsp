@@ -8,6 +8,7 @@
 <html>
 <head>
 <title>PMS系统</title>
+<%@ include file="/static/commons/api.jsp" %>
 <%@ include file="/static/commons/header-bootstrap.jsp"%>
 <%@ include file="/static/commons/meta.jsp"%>
 <%@ include file="/static/commons/spring-taglibs.jsp"%>
