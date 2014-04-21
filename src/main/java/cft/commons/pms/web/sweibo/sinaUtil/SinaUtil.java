@@ -19,6 +19,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class SinaUtil {
 
+	/*日期格式化*/
 	public static String SinaDateFormat(String date) throws ParseException {
 		
 		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("ENGLISH", "CHINA"));
@@ -28,6 +29,7 @@ public class SinaUtil {
 		return format.format(tempdate);	
 	}
 	
+	/*重写post方式*/
 	public static String postMethodRequestWithFile(String url, Map<String, String> params, Map<String, String> header, Map<String, byte[]> itemsMap){
 		System.out.println("post request is begin! url =" + url);
 		HttpClient hc = new HttpClient();
@@ -78,6 +80,8 @@ public class SinaUtil {
 		return "";
 	}
 	
+	/*图片文件转换*/
+	@SuppressWarnings("resource")
 	public static byte[] readFileImage(String filename) throws IOException {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(
 				new FileInputStream(filename));
