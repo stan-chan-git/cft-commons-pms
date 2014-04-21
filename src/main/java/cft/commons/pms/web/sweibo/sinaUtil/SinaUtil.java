@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -94,6 +95,14 @@ public class SinaUtil {
 		}
 		bufferedInputStream.close();
 		return bytes;
+	}
+	
+	public static Map<String, String> header = new HashMap<String, String>();
+	
+	static{
+		header.put("Accept-Language", "zh-CN,zh;q=0.8");
+		header.put("User-Agent", "test sina api");
+		header.put("Accept-Charset", "utf-8;q=0.7,*;q=0.3");
 	}
 	
 }
