@@ -23,7 +23,8 @@ $(function(){
 	//发送按钮点击事件
 	$("#send").click(function(){
 		//获取发表内容
-		var content = $("#content").text();
+		var content = $("#content").val();
+	console.log(content);
 		
 		
 		//判断是否选择了平台
