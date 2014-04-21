@@ -42,7 +42,7 @@
 
 
 	<!-- ============================ Shiro Security filter ============================ -->
-	<filter>
+	<!-- <filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
@@ -51,7 +51,7 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
+	</filter-mapping> -->
 
 	<!-- ============================ sitemesh ============================ -->
 	<filter>
@@ -106,8 +106,21 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/tencent/*</url-pattern>
 	</servlet-mapping>
+
+		<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/instagram/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/facebook/*</url-pattern>
+	</servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>layout.jsp</welcome-file>
+    </welcome-file-list>
 	
 	<session-config>
-	    <session-timeout>30</session-timeout>
+     <session-timeout>30</session-timeout>
 	</session-config>
 </web-app>

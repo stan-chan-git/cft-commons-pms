@@ -88,6 +88,8 @@ public class TencentWeiBoController {
 		//发出请求,返回字符串结果
 		String result = HttpClientUtils.httpPost(nvpMap, url, 5000, 5000);
 
+        System.out.println(result);
+
 		/** 将字符串转成JSON,获取需要的信息    **/
 		JSONObject jsonObject = new JSONObject(result);
 		int errcode = (Integer)jsonObject.get("errcode");
@@ -199,8 +201,8 @@ public class TencentWeiBoController {
 		//请求url
 		String url = COMMON_URL + "/statuses/home_timeline?"
 				     + "format=json"
-				     + "&pageflag=0"
-				     + "&pagetime=0"
+				     + "&pageflag=1"
+				     + "&pagetime=1397805731"
 				     + "&reqnum=20"
 				     + "&type=3"
 				     + "&contenttype=0"
@@ -243,6 +245,8 @@ System.out.println(result);
         
         if(focusList != null && !focusList.isEmpty()){
         	request.setAttribute("focusList", focusList);
+        }else{
+        	request.setAttribute("message", "今天好友没有动态");
         }
         
 		
