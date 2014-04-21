@@ -14,4 +14,5 @@ public class SinaConstants {
 	 *
 	 */
 	public static final String StatusesUpdateUrl = "https://api.weibo.com/2/statuses/update.json";
+	public static final String StatusesUploadUrl = "https://upload.api.weibo.com/2/statuses/upload.json";
 }
