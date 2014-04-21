@@ -124,7 +124,7 @@ public class SinaWeiBoController {
 			Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
 			byte[] content = file.getBytes();
 			itemsMap.put("pic",content);
-			SinaUtil.postMethodRequestWithFile(uploadUrl, params, header, itemsMap);
+			SinaUtil.postMethodRequestWithFile(uploadUrl, params, SinaUtil.header, itemsMap);
 			
 			request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
 			return "sina/sinareturn"; // 返回页面
@@ -283,11 +283,5 @@ public class SinaWeiBoController {
 		return "sina/sinareturn"; // 失败页面
 	}
 
-	public static Map<String, String> header = new HashMap<String, String>();
-	
-	static{
-		header.put("Accept-Language", "zh-CN,zh;q=0.8");
-		header.put("User-Agent", "test sina api");
-		header.put("Accept-Charset", "utf-8;q=0.7,*;q=0.3");
-	}
+
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 
 public class SinaUtil {
 
+	/*日期格式化*/
 	public static String SinaDateFormat(String date) throws ParseException {
 		
 		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("ENGLISH", "CHINA"));
@@ -28,6 +30,7 @@ public class SinaUtil {
 		return format.format(tempdate);	
 	}
 	
+	/*重写post方式*/
 	public static String postMethodRequestWithFile(String url, Map<String, String> params, Map<String, String> header, Map<String, byte[]> itemsMap){
 		System.out.println("post request is begin! url =" + url);
 		HttpClient hc = new HttpClient();
@@ -78,6 +81,8 @@ public class SinaUtil {
 		return "";
 	}
 	
+	/*图片文件转换*/
+	@SuppressWarnings("resource")
 	public static byte[] readFileImage(String filename) throws IOException {
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(
 				new FileInputStream(filename));
@@ -90,6 +95,14 @@ public class SinaUtil {
 		}
 		bufferedInputStream.close();
 		return bytes;
+	}
+	
+	public static Map<String, String> header = new HashMap<String, String>();
+	
+	static{
+		header.put("Accept-Language", "zh-CN,zh;q=0.8");
+		header.put("User-Agent", "test sina api");
+		header.put("Accept-Charset", "utf-8;q=0.7,*;q=0.3");
 	}
 	
 }
