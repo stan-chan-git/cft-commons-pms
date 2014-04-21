@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
-import org.springframework.stereotype.Service;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.web.tencent.Utils;
 
-@Service
+
 public class TencentService {
 	private static final String APP_KEY = "801495189";
 	//调用API需要的公共部分
@@ -38,7 +37,7 @@ public class TencentService {
 		//发出请求,返回字符串结果
 		String result = HttpClientUtils.httpPost(nvpMap, url, 5000, 5000);
 
-        System.out.println(result);
+        //System.out.println(result);
 
 		/** 将字符串转成JSON,获取需要的信息    **/
 		JSONObject jsonObject = new JSONObject(result);
