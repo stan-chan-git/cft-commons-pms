@@ -44,7 +44,7 @@ $(function(){
 			}
 		}
 		
-		//window.location.href= path + "/api/sendMessage.do?content=" + content;
+		window.location.href= path + "/api/sendMessage.do?content=" + content;
 		
 	});
 	
