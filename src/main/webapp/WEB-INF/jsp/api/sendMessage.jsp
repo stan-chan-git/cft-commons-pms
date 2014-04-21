@@ -129,6 +129,6 @@ $(function(){
 <input id="send" class="btn btn-default" style="margin-left:115px;margin-top:20px" type="button" value="发送" />
 </div>
 </form>
-<div id="info"></div>
+<div id="info" style="margin-left:115px;margin-top:20px"></div>
 </body>
 </html>
