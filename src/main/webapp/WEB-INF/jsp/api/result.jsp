@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-${fail_info}
+${tencent_info}<br>
+${sina_info}<br>
 </body>
 </html>
