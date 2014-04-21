@@ -52,7 +52,7 @@
 		<!-- 统一四大平台 -->
 		<li id="one" class="files"><a href="#one">API</a>
 			<ul class="sub-menu">
-					<li><a href="#">发布一条新消息</a></li>
+					<li><a href="${ctx}/view/sendMsgView.do">发布一条新消息</a></li>
 			</ul>
 		</li>
 		
