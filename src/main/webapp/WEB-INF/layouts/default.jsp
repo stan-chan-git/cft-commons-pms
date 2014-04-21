@@ -45,7 +45,7 @@ $(function(){
 	
 	/**  facebook授权按钮点击事件     **/
 	$("#facebook_btn").click(function(){
-		alert("come in");
+		//alert("come in");
 		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
 	});	
 });
