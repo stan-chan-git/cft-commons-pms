@@ -8,6 +8,7 @@
 <html>
 <head>
 <title>PMS系统</title>
+<%@ include file="/static/commons/api.jsp" %>
 <%@ include file="/static/commons/header-bootstrap.jsp"%>
 <%@ include file="/static/commons/meta.jsp"%>
 <%@ include file="/static/commons/spring-taglibs.jsp"%>
@@ -25,11 +26,31 @@ body { padding-top: 70px; }
 <!-- ////////////////////////////////// -->
 <script type="text/javascript" src="${ctx}/static/js/commens-pms-1.0.js"></script>
 <script type="text/javascript">
-<!--//////////////////////// -->
-<!--/// 下面部分为授权按钮点击事件/// -->
-<!--//////////////////////// -->
 
 $(function(){
+
+	/**  腾讯微博授权按钮点击事件     **/
+	$("#tencent_btn").click(function(){
+		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
+	});
+	
+	/**  新浪微博授权按钮点击事件     **/
+	$("#sina_btn").click(function(){
+		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
+	});
+	
+	/**  instagram授权按钮点击事件     **/
+	$("#instagram_btn").click(function(){
+		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+	});
+	
+	/**  facebook授权按钮点击事件     **/
+	$("#facebook_btn").click(function(){
+		//alert("come in");
+		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
+	});	
+});
+$(document).ready(function(){
 	$(".leftMenuList a").mouseover(function() {
 		$(this).css("color", "#FF4E00");
 	}).mouseout(function() {
@@ -52,30 +73,15 @@ $(function(){
 	});
 });
 
+<!--//////////////////////// -->
+<!--/// 下面部分为授权按钮点击事件/// -->
+<!--//////////////////////// -->
+function init_but_click(){
+	alert(1);
+	window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+}
 
-$(function(){
-
-	/**  腾讯微博授权按钮点击事件     **/
-	$("#tencent_btn").click(function(){
-		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
-	});
 	
-	/**  新浪微博授权按钮点击事件     **/
-	$("#sina_btn").click(function(){
-		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
-	});
-	
-	/**  instagram授权按钮点击事件     **/
-	$("#instagram_btn").click(function(){
-		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
-	});
-	
-	/**  facebook授权按钮点击事件     **/
-	$("#facebook_btn").click(function(){
-		// alert("come in");
-		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do&scope=email,read_stream";
-	});	
-});
 
 </script>
 <sitemesh:head />
@@ -117,7 +123,7 @@ $(function(){
 	  <!-- instagram授权按钮 -->
 	  <img alt="instagram" src="${ctx}/static/images/instagram.jpg" style="width:37px;height:38px" />
 	    <c:choose>
-		  <c:when test="${instagram_token != null && sina_token != ''}">
+		  <c:when test="${instagram_token != null && instagram_token != ''}">
 		             instagram已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
