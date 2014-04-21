@@ -38,7 +38,7 @@ public class SinaService {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("access_token", sina_token);
 			params.put("status", status);
-			String upString = HttpClientUtils.httpPost(params, Url, 3000, 3000);
+			String upString = HttpClientUtils.httpPost(params, Url, 5000, 5000);
 
 			/* 将返回值转成JSON，获取需要的信息 */
 			JSONObject jsonObject = new JSONObject(upString);
