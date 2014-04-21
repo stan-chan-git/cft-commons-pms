@@ -112,13 +112,26 @@ $(function(){
 	  
 	  <!-- instagram授权按钮 -->
 	  <img alt="instagram" src="${ctx}/static/images/instagram.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">Instagram授权</button>
+	    <c:choose>
+		  <c:when test="${instagram_token != null && sina_token != ''}">
+		             instagram已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+	  <button class="btn btn-default" id="instagram_btn" onclick="init_but_click();">instagram授权</button>
+		  </c:otherwise>
+	  </c:choose>	
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  <!-- Facebook授权按钮 -->
-	  <img alt="instagram" src="${ctx}/static/images/facebook.jpg" style="width:37px;height:38px" />
-	  <button class="btn btn-default">Facebook授权</button>
-	  
+	  <img alt="facebook" src="${ctx}/static/images/facebook.jpg" style="width:37px;height:38px" />
+	  <c:choose>
+		  <c:when test="${facebook_token != null && facebook_token != ''}">
+		  		facebook_btnfacebook已授权,30分钟后失效
+		  </c:when>
+		  <c:otherwise>
+			<button class="btn btn-default" id="facebook_btn">Facebook授权</button>
+	     </c:otherwise>
+	  </c:choose>	
 	  <br><br><br>
 		<div class="row">
 			<div class="col-lg-4 .col-xs-3 .col-sm-3" 
