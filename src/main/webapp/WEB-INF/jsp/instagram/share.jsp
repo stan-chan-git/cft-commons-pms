@@ -8,11 +8,16 @@
 <title>Insert title here</title>
   
   <script type="text/javascript">  
-function postToWb(){  
+function postToWb(){ 
+var s=document.getElementById("img1").src;
+alert(s);
 var _t = encodeURI(document.title);
 var _url = encodeURI(window.location);  
 var _appkey = encodeURI("801495189"); 
-var _pic =encodeURI("${share.url}");
+
+var imgs=document.getElementsByTagName("img")[4].src;
+
+var _pic =encodeURI(imgs);
 var _site = 'www.baidu.com';
 var _u = 'http://v.t.qq.com/share/share.php?title='+_t+'&url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic;  
 window.open( _u,'转播到腾讯微博', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );  
@@ -21,6 +26,26 @@ window.open( _u,'转播到腾讯微博', 'width=700, height=680, top=0, left=0, 
 
 </script>   
   
+<script type="text/javascript">
+
+
+
+
+function sinaWeibo(){  
+	var b=document.getElementById("img1").src;
+	var img=document.getElementsByTagName("img").src;
+	alert(img);
+	var _t = encodeURI(document.title);
+	var _url = encodeURI(window.location);  
+	var _appkey = encodeURI("4281626272"); 
+	var _pic =encodeURI(img);
+	var _site = 'www.baidu.com';
+	var _u = 'http://service.weibo.com/staticjs/weiboshare.html?title='+_t+'&url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic;  
+	window.open( _u,'转播到新浪微博', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );  
+	}  
+   
+</script>
+
 
 </head>
 <body>
@@ -38,8 +63,8 @@ window.open( _u,'转播到腾讯微博', 'width=700, height=680, top=0, left=0, 
                 <td>${share.title }</td>
                 <td>${share.author_name}</td>
 				<td>${share.type}</td>
-				<td style="width:3cm;height:3cm;"><img alt="" src="${share.url}" width="50px" height="50px"></td>
-				<td><a href="**">新浪</a><a href="javascript:void(0)" onclick="postToWb();" class="tmblog">腾讯微博</a>  <a href="**">Facebook</a></td>
+				<td style="width:3cm;height:3cm;"><img alt="" id="img1"  onclick="postToWb();"  src="${share.url}" width="50px" height="50px"></td>
+				<td><a href="javascript:void(0)" onclick="sinaWeibo();" class="snblog">新浪微博</a><a href="javascript:void(0)" onclick="postToWb();" class="tmblog">腾讯微博</a>  <a href="**">Facebook</a></td>
 			</tr>
 		</c:forEach>
 	</table>
