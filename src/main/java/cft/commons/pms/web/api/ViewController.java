@@ -14,4 +14,10 @@ public class ViewController {
 		model.addAttribute("clientip", Utils.getClientIP());
 		return "api/sendMessage";
 	}
+	
+	
+	@RequestMapping(value="sendPicMsgView.do")
+	public String sendPicMsgView(Model model){
+		return "api/sendPicMessage";
+	}
 }
