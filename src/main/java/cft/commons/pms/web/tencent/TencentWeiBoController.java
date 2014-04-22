@@ -235,12 +235,13 @@ public class TencentWeiBoController {
 	
 	/*  获取关注的人的最新微博    */
 	@RequestMapping(value="getFocusPeopleWeiBo.do")
-	public String getFocusPeopleWeiBo(HttpServletRequest request) throws Exception{
+	public @ResponseBody
+	String getFocusPeopleWeiBo(HttpServletRequest request) throws Exception{
 		//请求url
 		String url = COMMON_URL + "/statuses/home_timeline?"
 				     + "format=json"
-				     + "&pageflag=1"
-				     + "&pagetime=1397805731"
+				     + "&pageflag=0"
+				     + "&pagetime=0"
 				     + "&reqnum=20"
 				     + "&type=3"
 				     + "&contenttype=0"
@@ -267,8 +268,8 @@ System.out.println(result);
         	if(!request.getSession().getAttribute("openid").equals(uid)){
         		//获取当前日期
         		String nowDate = Utils.getNowDate();
-        		//获取微博发表人气
-        		String wbDate = Utils.getDate((Integer)obj.get("timestamp"));
+        		//获取微博发表时间
+        		String wbDate = Utils.timestampToDate((Integer)obj.get("timestamp"));
         		
         		//获取当前日期发表的微博,排除其他微博
         		if(wbDate.equals(nowDate)){
@@ -276,8 +277,9 @@ System.out.println(result);
 		        	wb.setId((String)obj.get("id"));
 		        	wb.setNick((String)obj.get("nick"));
 		        	wb.setType((Integer)obj.get("type"));
-		        	//wb.setTimestamp((Integer)obj.get("timestamp"));	        	
+		        	wb.setTimestamp((Integer)obj.get("timestamp"));	
 		        	wb.setText((String)obj.get("text"));
+		        	wb.setDate(Utils.getWeiBoTime((Integer)obj.get("timestamp")));//将获取的timestamp转换时间格式
 		        	
 		        	//判断此微博是不是转发的
 		        	if((Integer)obj.get("type") == 2){
@@ -290,14 +292,47 @@ System.out.println(result);
         	}
         }
         
-        if(focusList != null && !focusList.isEmpty()){
-        	request.setAttribute("focusList", focusList);
+        //将list拼接成字符串需要的变量
+        String resultData = "";
+        String content ="";
+    	String begin = "{\"weibo\":[";
+    	String end = "]}";
+        
+        if(focusList == null || focusList.isEmpty()){
+             return "";
         }else{
-        	request.setAttribute("message", "今天好友没有动态");
+        	
+        	//若长度为1，则不需要加逗号,否则需注意加逗号
+            if(focusList.size() == 1){	
+        		String weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
+        				       ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
+        				       ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
+        				       ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"" +
+        	                   "}";
+        		
+        		content = content + weibo;
+            }else if(focusList.size() > 1){
+            	for(int i = 0 ; i < focusList.size() - 1 ; i++){
+	        		String weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
+	        				       ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
+	        				       ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
+	        				       ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
+	        	                   "},";
+	        		
+	        		content = content + weibo;
+	        	}
+	        	
+	        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size()).getId() + "\"" +
+				                    ",\"content\":" + "\"" + focusList.get(focusList.size()).getText() + "\"" +
+				                    ",\"name\":" + "\"" + focusList.get(focusList.size()).getNick() + "\"" +
+				                    ",\"time\":" + "\"" + focusList.get(focusList.size()).getDate() + "\"" +
+	                                "}";
+            }
+        	
+        	resultData = begin + content + end;
         }
         
-		
-		return "tencent/focusPeopleWeiBo";
+        return resultData;
 	}
 	
 	
