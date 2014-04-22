@@ -52,6 +52,16 @@ $(function(){
 		                        }
 			                 }
 			                );
+			
+			//新浪微博    发布新微博API调用函数
+			sinaStatusesUpdate(content,
+					           //回调函数，提示是否发布成功
+					           function(msg){
+		                          if("undefined" != msg){
+		                        	 $("#info").append(msg+"<br>");
+		                          }
+			                   }
+			                );
 		}
 		
 	});
