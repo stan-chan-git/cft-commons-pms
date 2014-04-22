@@ -7,11 +7,13 @@ function sinaStatusesUpdate(status){
 			},
 			// 回调函数
 			function(data){
-			   if(data == "success"){
-				   $("#info").append("新浪微博发布成功");
-			   }else{
-				   ${"#info"}.append("新浪微博发布失败");
-			   }
+			   if("undefined" != callback){
+				   if(data == "success"){
+					   callback("新浪微博发布成功");
+				   }else{
+					   callback("新浪微博发布失败");
+				   }
+			   }   
 			},
 			// 返回数据类型
 			"json");
