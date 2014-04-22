@@ -252,7 +252,7 @@ public class TencentWeiBoController {
 				     + "&" + COMMON_PARAM;
 		
 		String result = HttpClientUtils.httpGet(url, 5000, 5000);
-System.out.println(result);
+//System.out.println(result);
 		/*将返回的字符串转换成JSON,获取需要的数据*/
         JSONObject json = new JSONObject(result);
         JSONObject data = json.getJSONObject("data");
@@ -299,7 +299,7 @@ System.out.println(result);
     	String end = "]}";
         
         if(focusList == null || focusList.isEmpty()){
-             return "";
+             return "failure";
         }else{
         	
         	//若长度为1，则不需要加逗号,否则需注意加逗号
