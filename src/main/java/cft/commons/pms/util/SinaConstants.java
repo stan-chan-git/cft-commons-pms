@@ -16,4 +16,5 @@ public class SinaConstants {
 	public static final String Access_TokenUrl = "https://api.weibo.com/oauth2/access_token";
 	public static final String StatusesUpdateUrl = "https://api.weibo.com/2/statuses/update.json";
 	public static final String StatusesUploadUrl = "https://upload.api.weibo.com/2/statuses/upload.json";
+	public static final String StatusesFriendsTimelineUrl = "https://api.weibo.com/2/statuses/friends_timeline.json";
 }
