@@ -6,62 +6,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
-
   
   <script type="text/javascript">  
 function postToWb(){  
-var s=document.getElementById("img1").src;
-alert(s);
 var _t = encodeURI(document.title);
 var _url = encodeURI(window.location);  
 var _appkey = encodeURI("801495189"); 
-var _pic =encodeURI(s);
+var _pic =encodeURI("${share.url}");
 var _site = 'www.baidu.com';
 var _u = 'http://v.t.qq.com/share/share.php?title='+_t+'&url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic;  
 window.open( _u,'转播到腾讯微博', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );  
 }  
-</script>  
-
-<!-- <script type="text/javascript" charset="utf-8">
-(function(){
-  var _w = 72 , _h = 16;
-  var param = {
-    url:location.href,
-    type:document.title,
-    count:'1', /**是否显示分享数，1显示(可选)*/
-    appkey:'4281626272', /**您申请的应用appkey,显示分享来源(可选)*/
-    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
-    pic:'', /**分享图片的路径(可选)*/
-    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
-    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
-    dpc:1
-  }
-  var temp = [];
-  for( var p in param ){
-    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
-  }
-  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://service.weibo.com/staticjs/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
-})()
-</script> -->
 
 
-<script type="text/javascript">
-
-function sinaWeibo(){  
-	var s=document.getElementById("img1").src;
-	alert(s);
-	var _t = encodeURI(document.title);
-	var _url = encodeURI(window.location);  
-	var _appkey = encodeURI("4281626272"); 
-	var _pic =encodeURI(s);
-	var _site = 'www.baidu.com';
-	var _u = 'http://service.weibo.com/staticjs/weiboshare.html?title='+_t+'&url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic;  
-	window.open( _u,'转播到新浪微博', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );  
-	}  
-   
-
-</script>
-
+</script>   
   
 
 </head>
@@ -80,8 +38,8 @@ function sinaWeibo(){
                 <td>${share.title }</td>
                 <td>${share.author_name}</td>
 				<td>${share.type}</td>
-				<td style="width:3cm;height:3cm;"><img  id="img1"  alt=""  onclick="postToWb();"  src="${share.url}" width="50px" height="50px"></td>
-				<td><a href="javascript:void(0)" onclick="sinaWeibo();" class="snblog">新浪微博</a><a href="javascript:void(0)" onclick="postToWb();" class="tmblog">腾讯微博</a>  <a href="**">Facebook</a></td>
+				<td style="width:3cm;height:3cm;"><img alt="" src="${share.url}" width="50px" height="50px"></td>
+				<td><a href="**">新浪</a><a href="javascript:void(0)" onclick="postToWb();" class="tmblog">腾讯微博</a>  <a href="**">Facebook</a></td>
 			</tr>
 		</c:forEach>
 	</table>
