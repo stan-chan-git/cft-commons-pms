@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.tencent.ReviewDTO;
 import cft.commons.pms.dto.tencent.WeiBoDTO;
+import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
 
 @Controller
 public class TencentWeiBoController {
@@ -102,6 +103,42 @@ public class TencentWeiBoController {
 		}
 		
 		return "failure";
+	}
+	
+	
+	/* 发布一条带图片的微博    */
+	@RequestMapping(value="sendPicWeiBo.do")
+	public @ResponseBody
+	String sendPicWeiBo(String content,HttpServletRequest request) throws Exception{
+		
+		String url = COMMON_URL + "/t/add_pic";
+		
+		Map<String,String> nvpMap = new HashMap<String,String>();
+		Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
+		
+		//API需要的参数
+		nvpMap.put("format", "json");
+		nvpMap.put("content", content);
+		nvpMap.put("clientip", Utils.getClientIP());
+		nvpMap.put("access_token", (String)request.getSession().getAttribute("tencent_token"));
+		nvpMap.put("openid", (String)request.getSession().getAttribute("openid"));
+		nvpMap.put("openkey", (String)request.getSession().getAttribute("openkey"));
+		nvpMap.put("oauth_consumer_key", APP_KEY);
+		nvpMap.put("oauth_version", "2.a");
+		nvpMap.put("scope", "all");
+		
+		//读入图片,转成字节
+		byte[] b = SinaUtil.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
+		itemsMap.put("pic", b);
+		
+		//发出请求
+		String info = SinaUtil.postMethodRequestWithFile(url, nvpMap, SinaUtil.header, itemsMap);
+		
+		if(info.equals("")){
+			return "failure";
+		}
+		
+		return "success";
 	}
 	
 	
@@ -293,5 +330,4 @@ System.out.println(result);
         
 		return "count=" +count + ",mcount="+mcount;
 	}
-	
 }
