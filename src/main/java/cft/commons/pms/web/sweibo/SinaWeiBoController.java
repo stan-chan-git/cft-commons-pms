@@ -57,8 +57,8 @@ public class SinaWeiBoController {
 
 		String access_token = "";// 从result中获取access_token的值
 
-		if (result != null && !result.equals("")) {//取消授权
-			
+		if (result != null && !result.equals("")) {// 取消授权
+
 			if (result.contains("access_token")) {
 				access_token = result.split(",")[0];
 				access_token = access_token.substring(17, access_token.length() - 1);
@@ -89,9 +89,8 @@ public class SinaWeiBoController {
 
 	/* 发文字微博controller */
 	@RequestMapping(value = "sinaStatusesUpdate.do")
-	public @ResponseBody String
-	sina_Statuses_update(String status, HttpServletRequest request)
-			throws IOException {
+	public @ResponseBody
+	String sina_Statuses_update(String status, HttpServletRequest request) throws IOException {
 		System.out.println("==========123");
 		System.out.println(request.getSession().getAttribute("sina_token"));
 		String access_token = (String) request.getSession().getAttribute("sina_token");
@@ -122,26 +121,36 @@ public class SinaWeiBoController {
 
 	/* 发图片微博controller */
 	@RequestMapping(value = "sinaStatusesUpload.do")
-	public String sina_Statuses_upload(@RequestParam("pic") MultipartFile file, Model model,
-			HttpServletRequest request) throws IOException {
+	public @ResponseBody
+	String sina_Statuses_upload(@RequestParam("pic") MultipartFile file, String status,
+			Model model, HttpServletRequest request) throws IOException {
 		String access_token = (String) request.getSession().getAttribute("sina_token");
-
+		String picString = request.getSession().getServletContext().getRealPath("/")
+				+ "\\static\\images\\test.jpg";
+		System.out.println(picString);
 		if (access_token != null && !access_token.equals("")) {
 
 			String uploadUrl = "https://upload.api.weibo.com/2/statuses/upload.json";
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("access_token", access_token);
-			params.put("status", "能不能发送图片");
+			params.put("status", status);
 			Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
-			byte[] content = file.getBytes();
+			byte[] content = SinaUtil.readFileImage(picString);
+			// byte[] content = file.getBytes();
 			itemsMap.put("pic", content);
-			SinaUtil.postMethodRequestWithFile(uploadUrl, params, SinaUtil.header, itemsMap);
+			String returnString = SinaUtil.postMethodRequestWithFile(uploadUrl, params,
+					SinaUtil.header, itemsMap);
 
-			request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
-			return "sina/sinareturn"; // 返回页面
+			JSONObject jsonObject = new JSONObject(returnString);
+			Long id = (Long) jsonObject.get("id");
+
+			if (id != null) {
+				request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
+				return "success"; // 返回页面
+			}
 		}
 		request.getSession().setAttribute("sinareturn", "发含有图片的微博失败");
-		return "sina/sinareturn"; // 失败页面
+		return "failure"; // 失败页面
 	}
 
 	/* 转发一条微博信息controller */
