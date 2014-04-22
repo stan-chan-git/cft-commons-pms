@@ -39,4 +39,16 @@ function sendTencentPicWeiBo(content,callback){
 			
 		    //返回的数据类型
 	        "json");
+}	
+	
+//获取好友最新动态(即最新微博)
+function getFocusPeopleWeiBo(callback){
+	$.post("/pms/tencent/getFocusPeopleWeiBo.do",
+			
+		   function(data){
+		      callback(data); 
+	       },
+	
+		   //返回的数据类型
+	       "json");
 }
