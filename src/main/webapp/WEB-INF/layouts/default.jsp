@@ -12,6 +12,7 @@
 <%@ include file="/static/commons/meta.jsp"%>
 <%@ include file="/static/commons/spring-taglibs.jsp"%>
 <%@ include file="/static/commons/jstl-taglibs.jsp" %>
+<%@ include file="/static/commons/api.jsp" %>
 <!-- ////////////////////////////////// -->
 <!-- //      Start Stylesheets       // -->
 <!-- ////////////////////////////////// -->
