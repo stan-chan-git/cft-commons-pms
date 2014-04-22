@@ -1,33 +1,45 @@
 /**
  * 发布一条文字信息
  */
-function writeNewPost(){
-		
+function writeNewPost(msg,callback){
+		//与其他平台不一样，用js发布消息
 		FB.init({
 			appId : '137410796429161',
 			status : true,
 			xfbml : true
 		});
-		
+		//检验是否登录
 		FB.getLoginStatus(function(response) {
 			if (response.status === 'connected') {
 				alert("已登录");
 				var uid = response.authResponse.userID;
 				var facebookToken = response.authResponse.accessToken;
-				postFBmsg(document.getElementById("msg").value,facebookToken);
+				postFBmsg(msg,facebookToken);
 			} else {
 				FB.login(function (response){
 					
 					if (response.status === 'connected') {
 						alert("回调");
 						var facebookToken = response.authResponse.accessToken;
-						postFBmsg(document.getElementById("msg").value,facebookToken);
+						postFBmsg(msg,facebookToken);
 					}
 				});
 			}
 		});
+		
+		//回调函数
+		function(data){
+		  if(typeof(callback) != "undefined"){
+			  if(data == "success"){
+				  callback("Facebook发布成功!");
+			  }else{
+				  callback("Facebook发布失败!");
+			  }
+		  }
+		}
 }
-	
+
+//发布消息API调用
 function postFBmsg(msg,facebookToken){
 	FB.api('/me/feed', 'post', {
 		message : msg,
