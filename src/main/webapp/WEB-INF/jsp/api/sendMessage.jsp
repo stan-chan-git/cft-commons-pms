@@ -20,11 +20,10 @@ $(function(){
 	var instagram_label = $("#instagram_label");//Instagram label
 	var facebook_label = $("#facebook_label");//FaceBook label
 	
-	//获取发表内容
-	
 	
 	//发送按钮点击事件
 	$("#send").click(function(){
+		//获取发表内容
 		var content = $("#content").val();
 		
 		//判断是否选择了平台
@@ -44,12 +43,24 @@ $(function(){
 				return false;
 			}
 			
-			//腾讯微博API调用函数
-			sendTencentWeiBo(content,function(msg){
-				                        if("undefined" != msg){
-				                        	$("#info").append(msg+"<br>");
-				                        }
-			                         }
+			//腾讯微博    发布新微博API调用函数
+			sendTencentWeiBo(content,
+					         //回调函数，提示是否发布成功
+					         function(msg){
+		                        if(typeof(msg) != "undefined"){
+		                        	$("#info").append(msg+"<br>");
+		                        }
+			                 }
+			                );
+			
+			//新浪微博    发布新微博API调用函数
+			sinaStatusesUpdate(content,
+					           //回调函数，提示是否发布成功
+					           function(msg){
+		                          if(typeof(msg) != "undefined"){
+		                        	 $("#info").append(msg+"<br>");
+		                          }
+			                   }
 			                );
 		}
 		
@@ -67,7 +78,7 @@ $(function(){
 		//复选框被选中,判断是否已经授权
 		if(tencent.is(":checked") == true){
 			if(tencent_token == "null" || tencent_token == "" ){
-				$("#tencent_tip").append("请先授权!")
+				$("#tencent_tip").append("请先授权!");
 			}
 		}
 	});
@@ -80,7 +91,7 @@ $(function(){
 		//复选框被选中,判断是否已经授权
 		if(sina.is(":checked") == true){
 			if(sina_token == "null" || sina_token == "" ){
-				$("#sina_tip").append("请先授权!")
+				$("#sina_tip").append("请先授权!");
 			}
 		}
 	});
@@ -93,7 +104,7 @@ $(function(){
 		//复选框被选中,判断是否已经授权
 		if(instagram.is(":checked") == true){
 			if(instagram_token == "null" || instagram_token == "" ){
-				$("#instagram_tip").append("请先授权!")
+				$("#instagram_tip").append("请先授权!");
 			}
 		}
 	});
@@ -106,7 +117,7 @@ $(function(){
 		//复选框被选中,判断是否已经授权
 		if(facebook.is(":checked") == true){
 			if(facebook_token == "null" || facebook_token == "" ){
-				$("#facebook_tip").append("请先授权!")
+				$("#facebook_tip").append("请先授权!");
 			}
 		}
 	});
