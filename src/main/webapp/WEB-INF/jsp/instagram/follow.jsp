@@ -19,26 +19,32 @@
   <h1>获取关注的好友列表</h1>
 
 
-       <a href="http://instagram.com/p/myoN3Yo7aN/">評論</a>
-     <img src="http://origincache-prn.fbcdn.net/1516658_437535329716044_514212709_a.jpg">
-		<table>
-
-
+      
+    
+	<table  border="1" style="width:3cm;height:3cm;">
+         <tr align="center">
+             <th>标题</th>
+            <th>好友名字</th>
+            <th>好友头像</th>
+			<th>发布的类型</th>
+			<th >图像</th>
+			
+		</tr>
+		<c:forEach var="names" items="${names }">
 			<tr>
-				<td>名字</td>
-				<td>图片</td>
+                <td>${names.title }</td>
+                <td>${names.username}</td>
+                 <td><img alt=""  src="${names.photo}" width="50px" height="50px"></td>
+				<td>${names.type}</td>
+				<td style="width:3cm;height:3cm;"><img alt=""  src="${names.url}" width="50px" height="50px"></td>
+				
 			</tr>
-			<c:forEach var="name" items="${names }">
-				<tr>
-					<th>${name.username}</th>
-					<th><img src="${name.photo}"></th>
-				</tr>
-			</c:forEach>
-		</table>
+		</c:forEach>
+	</table>
 
 
 
-	</h1>
+	
 
 
 </body>

@@ -27,10 +27,11 @@ import cft.commons.pms.dto.sina.SinaComDto;
 import cft.commons.pms.dto.sina.SinaDTO;
 import cft.commons.pms.util.SinaConstants;
 import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
+
 /**
  * 
  * @author luffy
- *
+ * 
  */
 @Controller
 public class SinaWeiBoController {
@@ -40,7 +41,7 @@ public class SinaWeiBoController {
 	public String getOauth2Access_token(String code, Model model, HttpServletRequest request)
 			throws IOException {
 
-		/*通过回调地址获取code，再去访问新浪微博获取access_token*/
+		/* 通过回调地址获取code，再去访问新浪微博获取access_token */
 		String Url = SinaConstants.Access_TokenUrl;
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("client_id", SinaConstants.APP_KEY);
@@ -48,7 +49,7 @@ public class SinaWeiBoController {
 		params.put("redirect_uri", SinaConstants.REDIRECT_URL);
 		params.put("code", code);
 		String result = HttpClientUtils.httpPost(params, Url, 5000, 5000);
-		
+
 		String access_token = "";// 从result中获取access_token的值
 
 		if (result != null && !result.equals("")) {// 取消授权
@@ -110,15 +111,14 @@ public class SinaWeiBoController {
 	/* 发图片微博controller */
 	@RequestMapping(value = "sinaStatusesUpload.do")
 	public @ResponseBody
-	String sina_Statuses_upload(@RequestParam("pic") MultipartFile file, String status,
-			Model model, HttpServletRequest request) throws IOException {
-		
+	String sina_Statuses_upload(String status, HttpServletRequest request) throws IOException {
+
 		String access_token = (String) request.getSession().getAttribute("sina_token");
-		
-		/*获取图片路径*/
+
+		/* 获取图片路径 */
 		String picString = request.getSession().getServletContext().getRealPath("/")
 				+ "\\static\\images\\test.jpg";
-		
+
 		if (access_token != null && !access_token.equals("")) {
 
 			String Url = SinaConstants.StatusesUploadUrl;
@@ -129,8 +129,8 @@ public class SinaWeiBoController {
 			byte[] content = SinaUtil.readFileImage(picString);
 			// byte[] content = file.getBytes();
 			itemsMap.put("pic", content);
-			String returnString = SinaUtil.postMethodRequestWithFile(Url, params,
-					SinaUtil.header, itemsMap);
+			String returnString = SinaUtil.postMethodRequestWithFile(Url, params, SinaUtil.header,
+					itemsMap);
 
 			if (!returnString.equals("")) {
 				return "success"; // 返回页面
