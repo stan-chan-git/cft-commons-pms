@@ -62,6 +62,16 @@ $(function(){
 		                          }
 			                   }
 			                );
+			
+			//Facebook 发布新消息API调用函数
+			writeNewPost(content,
+			             //回调函数，提示是否发布成功
+			             function(msg){
+                            if(typeof(msg) != "undefined"){
+                        	   $("#info").append(msg+"<br>");
+                            }
+	                     }
+			            );
 		}
 		
 	});
