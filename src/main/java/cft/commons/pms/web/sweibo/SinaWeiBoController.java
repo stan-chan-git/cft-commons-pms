@@ -25,36 +25,30 @@ import org.springframework.web.multipart.MultipartFile;
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.sina.SinaComDto;
 import cft.commons.pms.dto.sina.SinaDTO;
+import cft.commons.pms.util.SinaConstants;
 import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
-
+/**
+ * 
+ * @author luffy
+ *
+ */
 @Controller
 public class SinaWeiBoController {
-
-	private static final String APP_KEY = "4281626272";
-	private static final String CLIENT_SECET = "69eade123bb72a88abadcdde95e8e6ae";
-	private static final String REDIRECT_URL = "http://localhost:8088/pms/sina/sinaweibo.do";
 
 	/* 授权controller */
 	@RequestMapping(value = "sinaweibo.do")
 	public String getOauth2Access_token(String code, Model model, HttpServletRequest request)
 			throws IOException {
 
-		System.out.println("===========code===========");
-		System.out.println(code);
-		System.out.println("===========code===========");
-
-		// 通过回调地址获取code，再去访问新浪微博获取access_token
-		String url = "https://api.weibo.com/oauth2/access_token";
-		Map<String, String> nvpMap = new HashMap<String, String>();
-		nvpMap.put("client_id", APP_KEY);
-		nvpMap.put("client_secret", CLIENT_SECET);
-		nvpMap.put("redirect_uri", REDIRECT_URL);
-		nvpMap.put("code", code);
-		String result = HttpClientUtils.httpPost(nvpMap, url, 9000, 9000);
-		System.out.println("===========result===========");
-		System.out.println(result);
-		System.out.println("===========result===========");
-
+		/*通过回调地址获取code，再去访问新浪微博获取access_token*/
+		String Url = SinaConstants.Access_TokenUrl;
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("client_id", SinaConstants.APP_KEY);
+		params.put("client_secret", SinaConstants.CLIENT_SECET);
+		params.put("redirect_uri", SinaConstants.REDIRECT_URL);
+		params.put("code", code);
+		String result = HttpClientUtils.httpPost(params, Url, 5000, 5000);
+		
 		String access_token = "";// 从result中获取access_token的值
 
 		if (result != null && !result.equals("")) {// 取消授权
@@ -63,18 +57,12 @@ public class SinaWeiBoController {
 				access_token = result.split(",")[0];
 				access_token = access_token.substring(17, access_token.length() - 1);
 			}
-			System.out.println("===========access_token===========");
-			System.out.println(access_token);
-			System.out.println("===========access_token===========");
 
 			String uid = "";// 从result中获取uid的值
 			if (result.contains("uid")) {
 				uid = result.split(",")[3];
 				uid = uid.substring(7, uid.length() - 2);
 			}
-			System.out.println("===========uid===========");
-			System.out.println(uid);
-			System.out.println("===========uid===========");
 
 			// 返回access_token和uid到jsp页面
 			request.getSession().setAttribute("sina_token", access_token);
@@ -124,13 +112,16 @@ public class SinaWeiBoController {
 	public @ResponseBody
 	String sina_Statuses_upload(@RequestParam("pic") MultipartFile file, String status,
 			Model model, HttpServletRequest request) throws IOException {
+		
 		String access_token = (String) request.getSession().getAttribute("sina_token");
+		
+		/*获取图片路径*/
 		String picString = request.getSession().getServletContext().getRealPath("/")
 				+ "\\static\\images\\test.jpg";
-		System.out.println(picString);
+		
 		if (access_token != null && !access_token.equals("")) {
 
-			String uploadUrl = "https://upload.api.weibo.com/2/statuses/upload.json";
+			String Url = SinaConstants.StatusesUploadUrl;
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("access_token", access_token);
 			params.put("status", status);
@@ -138,15 +129,13 @@ public class SinaWeiBoController {
 			byte[] content = SinaUtil.readFileImage(picString);
 			// byte[] content = file.getBytes();
 			itemsMap.put("pic", content);
-			String returnString = SinaUtil.postMethodRequestWithFile(uploadUrl, params,
+			String returnString = SinaUtil.postMethodRequestWithFile(Url, params,
 					SinaUtil.header, itemsMap);
 
 			if (!returnString.equals("")) {
-				request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
 				return "success"; // 返回页面
 			}
 		}
-		request.getSession().setAttribute("sinareturn", "发含有图片的微博失败");
 		return "failure"; // 失败页面
 	}
 
@@ -161,11 +150,11 @@ public class SinaWeiBoController {
 		if (access_token != null && !access_token.equals("")) {
 
 			String repostUrl = "https://api.weibo.com/2/statuses/repost.json";
-			Map<String, String> reMap = new HashMap<String, String>();
-			reMap.put("access_token", access_token);
-			reMap.put("id", id);
-			reMap.put("status", status);
-			String reString = HttpClientUtils.httpPost(reMap, repostUrl, 3000, 3000);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("access_token", access_token);
+			params.put("id", id);
+			params.put("status", status);
+			String reString = HttpClientUtils.httpPost(params, repostUrl, 3000, 3000);
 
 			System.out.println(reString);
 			// 将返回值转成JSON，获取需要的信息
