@@ -42,30 +42,49 @@ $(function(){
 				send.after("<div id='tip' class='alert alert-warning' style='margin-left:115px;margin-top:20px'>Please According To The Instructions!</div>");
 				return false;
 			}
-			
-			//腾讯微博    发布带图片的新微博API调用函数
-			sendTencentPicWeiBo(content,
-					         //回调函数，提示是否发布成功
-					         function(msg){
-		                        if(typeof(msg) != "undefined"){
-		                        	$("#info").append(msg+"<br>");
-		                        }
-			                 }
-			                );
-			
-			//新浪微博    发布带图片的新微博API调用函数
-			sinaStatusesUpload(content,
-					           //回调函数,提示是否发布成功
-					           function(msg){
-				                  if(typeof(msg) != "undefined"){
-				                	  $("#info").append(msg+"<br>");
-				                  }
-			                   }
-			                  );
-			//Facebook 发布新消息API调用函数
-			
 		}
-		
+			
+/**********************************************************************************/
+/***********************判断是否选中，选中则发表到对应平台************************************/
+/**********************************************************************************/			
+			if(tencent.is(":checked") == true){
+				//腾讯微博    发布新微博API调用函数
+				sendTencentPicWeiBo(content,
+						         //回调函数，提示是否发布成功
+						         function(msg){
+			                        if(typeof(msg) != "undefined"){
+			                        	$("#info").append(msg+"<br>");
+			                        }
+				                 }
+				                );
+			}
+			
+			
+			if(sina.is(":checked") == true){
+				//新浪微博    发布新微博API调用函数
+				sinaStatusesUpload(content,
+						           //回调函数，提示是否发布成功
+						           function(msg){
+			                          if(typeof(msg) != "undefined"){
+			                        	 $("#info").append(msg+"<br>");
+			                          }
+				                   }
+				                );
+			}
+			
+			
+			/* if(facebook.is(":checked") == true){
+				//Facebook 发布新消息API调用函数
+				writeNewPost(content,
+				             //回调函数，提示是否发布成功
+				             function(msg){
+	                            if(typeof(msg) != "undefined"){
+	                        	   $("#info").append(msg+"<br>");
+	                            }
+		                     }
+				            );
+			} */
+			
 	});
 	
 /////////////////////////////////////////////////////////////////////////////////////////////
