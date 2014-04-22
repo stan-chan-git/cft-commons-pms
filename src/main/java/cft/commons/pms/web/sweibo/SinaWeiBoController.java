@@ -141,10 +141,7 @@ public class SinaWeiBoController {
 			String returnString = SinaUtil.postMethodRequestWithFile(uploadUrl, params,
 					SinaUtil.header, itemsMap);
 
-			JSONObject jsonObject = new JSONObject(returnString);
-			Long id = (Long) jsonObject.get("id");
-
-			if (id != null) {
+			if (!returnString.equals("")) {
 				request.getSession().setAttribute("sinareturn", "发含有图片的微博成功");
 				return "success"; // 返回页面
 			}
