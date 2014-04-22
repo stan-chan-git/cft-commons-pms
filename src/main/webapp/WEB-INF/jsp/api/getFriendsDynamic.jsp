@@ -8,7 +8,7 @@
 <script type="text/javascript">
 $(function(){
 	getFocusPeopleWeiBo(function(data){
-		                    if(data != ""){
+		                    if(data != "failure"){
 		                    	var obj = JSON.parse(data);
 		                    	
 		                    	
