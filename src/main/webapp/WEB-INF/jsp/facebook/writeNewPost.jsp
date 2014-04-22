@@ -50,7 +50,7 @@
 		});
 	} 
 	
-	function caaAPI(cllback){
+	/* function caaAPI(cllback){
 		FB.getLoginStatus(function(response) {
 			if (response.status === 'connected') {
 				alert("已登录");
@@ -68,7 +68,7 @@
 				});
 			}
 		});
-	}
+	} */
 	 
 	/* 
 	
@@ -82,7 +82,7 @@
 	test("ss",function(data){
 		alert(date);
 	}); 
-	
+	//依次输出：1，ok，ssok
 	 */
 	
 </script>
