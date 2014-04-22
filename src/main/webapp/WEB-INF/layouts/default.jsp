@@ -136,7 +136,7 @@ function init_but_click(){
 	  <img alt="facebook" src="${ctx}/static/images/facebook.jpg" style="width:37px;height:38px" />
 	  <c:choose>
 		  <c:when test="${facebook_token != null && facebook_token != ''}">
-		  		facebook_btnfacebook已授权,30分钟后失效
+		  		facebook已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
 			<button class="btn btn-default" id="facebook_btn">Facebook授权</button>
