@@ -7,7 +7,7 @@ function sendTencentWeiBo(content,callback){
 			},
 			//回调函数
 			function(data){
-			  if("undefined" != callback){
+			  if(typeof(callback) != "undefined"){
 				  if(data == "success"){
 					  callback("腾讯微博发布成功!");
 				  }else{

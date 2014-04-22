@@ -47,7 +47,7 @@ $(function(){
 			sendTencentWeiBo(content,
 					         //回调函数，提示是否发布成功
 					         function(msg){
-		                        if("undefined" != msg){
+		                        if(typeof(msg) != "undefined"){
 		                        	$("#info").append(msg+"<br>");
 		                        }
 			                 }
@@ -57,7 +57,7 @@ $(function(){
 			sinaStatusesUpdate(content,
 					           //回调函数，提示是否发布成功
 					           function(msg){
-		                          if("undefined" != msg){
+		                          if(typeof(msg) != "undefined"){
 		                        	 $("#info").append(msg+"<br>");
 		                          }
 			                   }
