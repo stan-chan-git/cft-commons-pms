@@ -43,8 +43,8 @@ $(function(){
 				return false;
 			}
 			
-			//腾讯微博    发布新微博API调用函数
-			sendTencentWeiBo(content,
+			//腾讯微博    发布带图片的新微博API调用函数
+			sendTencentPicWeiBo(content,
 					         //回调函数，提示是否发布成功
 					         function(msg){
 		                        if(typeof(msg) != "undefined"){
@@ -54,24 +54,16 @@ $(function(){
 			                );
 			
 			//新浪微博    发布新微博API调用函数
-			sinaStatusesUpdate(content,
-					           //回调函数，提示是否发布成功
+			sinaStatusesUpload(content,
+					           //回调函数,提示是否发布成功
 					           function(msg){
-		                          if(typeof(msg) != "undefined"){
-		                        	 $("#info").append(msg+"<br>");
-		                          }
+				                  if(typeof(msg) != "undefined"){
+				                	  $("#info").append(msg+"<br>");
+				                  }
 			                   }
-			                );
-			
+			                  );
 			//Facebook 发布新消息API调用函数
-			writeNewPost(content,
-			             //回调函数，提示是否发布成功
-			             function(msg){
-                            if(typeof(msg) != "undefined"){
-                        	   $("#info").append(msg+"<br>");
-                            }
-	                     }
-			            );
+			
 		}
 		
 	});
@@ -140,13 +132,19 @@ $(function(){
 <div class="form-group">
 	<span class="col-sm-3 label label-success">微博内容:</span>
 	<div class="col-sm-8">
-	<textarea id="content"  class="form-control" name="content" rows="5" cols="70">这是测试微博.......</textarea>
+		<textarea id="content"  class="form-control" name="content" rows="5" cols="70">测试带图片的微博.......</textarea>
+	</div>
 </div>
+<br><br>
+<div class="form-group" style="padding-top:100px">
+    <span class="col-sm-3 label label-success">图&nbsp;&nbsp;&nbsp;&nbsp;片:</span>
+    <div class="col-sm-8">
+    	<img style="width:200px;height:133px;" src="/pms/static/images/test.jpg" />
+    </div>
 </div>
-
 <br>
 <!-- 选择要发送的平台 -->
-<div class="form-group" style="margin-left:115px;padding-top:100px">
+<div class="form-group" style="margin-left:115px;padding-top:110px">
 	<input type="checkbox" id="tencent" />&nbsp;<label class="label label-info" id="tencent_label">腾讯微博</label><label id="tencent_tip" style="color:red"></label><br>
 	<input type="checkbox" id="sina" />&nbsp;<label class="label label-danger" id="sina_label">新浪微博</label><label id="sina_tip" style="color:red"></label><br>
 	<input type="checkbox" id="instagram" />&nbsp;<label class="label label-default" id="instagram_label">Instagram</label><label id="instagram_tip" style="color:red"></label><br>
