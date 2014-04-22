@@ -18,6 +18,7 @@ import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
+import cft.commons.pms.dto.instagram.ShareDto;
 
 @Controller
 public class InstagramController {
@@ -152,8 +153,7 @@ public class InstagramController {
 		uid = (String) request.getSession().getAttribute("uid");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
-		String mdeiaId = "https://api.instagram.com/v1/users/self/feed?access_token="
-				+ instagram_token;
+		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;
 
 		String result2 = HttpClientUtils.httpGet(mdeiaId, 9000, 9000);
 		List<CommentDto> comments = new ArrayList<CommentDto>();
@@ -330,6 +330,60 @@ public class InstagramController {
 		
 		return "instagram/popular";
 		
+	}
+	
+	//分享
+	@RequestMapping(value="share.do")
+	public String shareMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
+		
+		
+		uid = (String) request.getSession().getAttribute("uid");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		// 获取媒体的的信息和id
+		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;
+
+		String result2 = HttpClientUtils.httpGet(mdeiaId, 9000, 9000);
+		
+		List<ShareDto> share = new ArrayList<ShareDto>();
+		JSONObject jsonComment = new JSONObject(result2);
+		JSONArray data = jsonComment.getJSONArray("data");
+		System.out.println("data" + data);
+		for (int i = 0; i < data.length(); i++) {
+			JSONObject jo = (JSONObject) data.get(i);
+			//String joString = jo.toString();
+			String MediaId = jo.getString("id");
+			String link = jo.getString("link");
+		
+		request.getRequestURI();
+		String shareUrl="http://api.instagram.com/oembed?url="+link;
+		
+		String shareResult=HttpClientUtils.httpGet(shareUrl, 9000, 9000);
+		
+		JSONObject shareMedia = new JSONObject(shareResult);
+		String url = shareMedia.getString("url");
+		String author_name=shareMedia.getString("author_name");
+		String type=shareMedia.getString("type");
+		String title=shareMedia.getString("title");
+		
+		ShareDto shareDto=new ShareDto();
+		
+		shareDto.setTitle(title);
+		shareDto.setAuthor_name(author_name);
+		shareDto.setType(type);
+		shareDto.setUrl(url);
+		
+		System.out.println(url);
+		System.out.println(title);
+		System.out.println(author_name);
+		share.add(shareDto);
+		
+		
+		
+	}
+		
+	
+		request.setAttribute("share", share);
+		return "instagram/share";
 	}
 	
 }
