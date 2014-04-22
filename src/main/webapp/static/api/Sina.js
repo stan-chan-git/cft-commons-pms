@@ -1,5 +1,5 @@
 //发一条文字微博
-function sinaStatusesUpdate(status){
+function sinaStatusesUpdate(status,callback){
 	$.post("/pms/sina/sinaStatusesUpdate.do",
 			// 参数
 			{
@@ -9,9 +9,9 @@ function sinaStatusesUpdate(status){
 			function(data){
 			   if("undefined" != callback){
 				   if(data == "success"){
-					   callback("新浪微博发布成功");
+					   callback("新浪微博发布成功!");
 				   }else{
-					   callback("新浪微博发布失败");
+					   callback("新浪微博发布失败!");
 				   }
 			   }   
 			},
