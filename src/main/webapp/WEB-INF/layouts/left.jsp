@@ -40,7 +40,7 @@
 		
 		<li id="one" class="files"><a href="#one">FaceBook API</a>
 			<ul class="sub-menu">
-				<li><a href=""><em>01</em>Write new post</a></li>
+				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write new post</a></li>
 				<li><a href=""><em>02</em>Get friendlist</a></li>
 				<li><a href=""><em>03</em>...</a></li>
 				<li><a href=""><em>04</em>...</a></li>
@@ -48,5 +48,14 @@
 				<li><a href=""><em>06</em>...</a></li>
 			</ul>
 		</li>
+		
+		
+		<!-- 统一四大平台 -->
+		<li id="one" class="files"><a href="#one">API</a>
+			<ul class="sub-menu">
+					<li><a href="${ctx}/view/sendMsgView.do">发布一条新消息</a></li>
+			</ul>
+		</li>
+		
 	</ul>
 </div>
