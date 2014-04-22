@@ -181,10 +181,10 @@ public class SinaWeiBoController {
 		// 有授权或者获取到token
 		if (access_token != null && !access_token.equals("")) {
 
-			String friendUrl = "https://api.weibo.com/2/comments/to_me.json?" + "access_token="
+			String Url = "https://api.weibo.com/2/comments/to_me.json?" + "access_token="
 					+ access_token + "&since_id=" + since_id;
 
-			String tomeString = HttpClientUtils.httpGet(friendUrl, 3000, 3000);
+			String tomeString = HttpClientUtils.httpGet(Url, 3000, 3000);
 			System.out.println(tomeString);
 
 			// 将返回值转成JSON，获取需要的信息
@@ -234,7 +234,8 @@ public class SinaWeiBoController {
 
 	/* 获取关注人的微博controller */
 	@RequestMapping(value = "sinaStatuseFriends.do")
-	public String sina_Comments_friends(HttpServletRequest request) throws IOException,
+	public @ResponseBody
+	String sina_Comments_friends(HttpServletRequest request) throws IOException,
 			ParseException {
 
 		String access_token = (String) request.getSession().getAttribute("sina_token");
@@ -242,10 +243,10 @@ public class SinaWeiBoController {
 		// 有授权或者获取到token
 		if (access_token != null && !access_token.equals("")) {
 
-			String friendUrl = "https://api.weibo.com/2/statuses/friends_timeline.json?"
-					+ "access_token=" + access_token;
+			String Url = SinaConstants.StatusesFriendsTimelineUrl 
+					+ "?access_token=" + access_token;
 
-			String friendString = HttpClientUtils.httpGet(friendUrl, 3000, 3000);
+			String friendString = HttpClientUtils.httpGet(Url, 5000, 5000);
 			System.out.println(friendString);
 
 			// 将返回值转成JSON，获取需要的信息
@@ -258,36 +259,58 @@ public class SinaWeiBoController {
 				List<SinaDTO> sinaDTOs = new ArrayList<SinaDTO>();
 				for (int i = 0; i < statuses.length(); i++) {// 提取对应信息
 					JSONObject tempStatuses = (JSONObject) statuses.get(i);
-					String text = tempStatuses.getString("text");
-					String created_at = tempStatuses.getString("created_at");
-					Long id = tempStatuses.getLong("id");
+					String content = tempStatuses.getString("text");//内容
+					String time = tempStatuses.getString("created_at");//创建时间
+					Long id = tempStatuses.getLong("id");//微博ID
 					JSONObject tempUser = tempStatuses.getJSONObject("user");
-					String screen_name = (String) tempUser.get("screen_name");
-					String userIdStr = tempUser.getString("idstr");
+					String name = (String) tempUser.get("screen_name");//作者名字
+					String userIdStr = tempUser.getString("idstr");//作者ID
 
 					// 非自己的微博写入DTO
 					if (!userIdStr.equals(uid)) {
 						SinaDTO sinaDTO = new SinaDTO();
 						sinaDTO.setId(id);
-						sinaDTO.setCreated_at(SinaUtil.SinaDateFormat(created_at));
-						sinaDTO.setText(text);
+						sinaDTO.setTime(SinaUtil.SinaDateFormat(time));
+						sinaDTO.setContent(content);
 						sinaDTO.setUserId(userIdStr);
-						sinaDTO.setScreen_name(screen_name);
+						sinaDTO.setName(name);
 
 						sinaDTOs.add(sinaDTO);
 					}
 				}
-
-				request.getSession().setAttribute("sinareturn", "获取评论列表信息成功");
-				request.getSession().setAttribute("sinaDTOs", sinaDTOs);
-				return "sina/sina_statuses_friends";// 成功页面
+				
+				String content = new String();
+				if (sinaDTOs.size()==1) {
+					
+					for (SinaDTO sinaDTO : sinaDTOs) {
+						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
+								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
+								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "}";
+						content = content + SinaWeiBo;
+					}	   
+					
+				}else {
+					
+					for (SinaDTO sinaDTO : sinaDTOs) {
+						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
+								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
+								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "},";
+						content = content + SinaWeiBo;
+					}	   
+					content = content.subSequence(0, content.length()-2) + "}";
+				}
+				
+				System.out.println(content);				
+				//request.getSession().setAttribute("sinareturn", "获取评论列表信息成功");
+				//request.getSession().setAttribute("sinaDTOs", sinaDTOs);
+				return content;// 成功页面
 			}
 			request.getSession().setAttribute("sinareturn", "没有最新好友动态");
 			return "sina/sinareturn"; // 返回页面
 		}
 
-		request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
-		return "sina/sinareturn"; // 失败页面
+		//request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
+		return "failure"; // 失败页面
 	}
 
 }
