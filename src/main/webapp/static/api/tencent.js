@@ -11,7 +11,7 @@ function sendTencentWeiBo(content,callback){
 				  if(data == "success"){
 					  callback("腾讯微博发布成功!");
 				  }else{
-					  callback("腾讯微博发布失败!")
+					  callback("腾讯微博发布失败!");
 				  }
 			  }
 			},
