@@ -45,7 +45,12 @@ $(function(){
 			}
 			
 			//腾讯微博API调用函数
-			sendTencentWeiBo(content);
+			sendTencentWeiBo(content,function(msg){
+				                        if("undefined" != msg){
+				                        	$("#info").append(msg+"<br>");
+				                        }
+			                         }
+			                );
 		}
 		
 	});
