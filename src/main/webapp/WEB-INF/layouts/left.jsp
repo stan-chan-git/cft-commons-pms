@@ -39,7 +39,7 @@
 		
 		<li id="one" class="files"><a href="#one">FaceBook API</a>
 			<ul class="sub-menu">
-				<li><a href=""><em>01</em>Write new post</a></li>
+				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write new post</a></li>
 				<li><a href=""><em>02</em>Get friendlist</a></li>
 				<li><a href=""><em>03</em>...</a></li>
 				<li><a href=""><em>04</em>...</a></li>

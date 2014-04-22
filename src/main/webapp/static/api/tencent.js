@@ -7,7 +7,13 @@ function sendTencentWeiBo(content,callback){
 			},
 			//回调函数
 			function(data){
-			  callback(data,"腾讯微博");  
+			  if("undefined" != callback){
+				  if(data == "success"){
+					  callback("腾讯微博发布成功!");
+				  }else{
+					  callback("腾讯微博发布失败!")
+				  }
+			  }
 			},
 			//返回数据类型
 			"json");

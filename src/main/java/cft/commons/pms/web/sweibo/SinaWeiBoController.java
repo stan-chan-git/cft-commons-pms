@@ -16,8 +16,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cft.commons.core.util.HttpClientUtils;
@@ -87,7 +89,8 @@ public class SinaWeiBoController {
 
 	/* 发文字微博controller */
 	@RequestMapping(value = "sinaStatusesUpdate.do")
-	public String sina_Statuses_update(String status, HttpServletRequest request)
+	public @ResponseBody String
+	sina_Statuses_update(String status, HttpServletRequest request)
 			throws IOException {
 		System.out.println("==========123");
 		System.out.println(request.getSession().getAttribute("sina_token"));
@@ -101,7 +104,7 @@ public class SinaWeiBoController {
 			Map<String, String> upMap = new HashMap<String, String>();
 			upMap.put("access_token", access_token);
 			upMap.put("status", status);
-			String upsString = HttpClientUtils.httpPost(upMap, updateUrl, 3000, 3000);
+			String upsString = HttpClientUtils.httpPost(upMap, updateUrl, 5000, 5000);
 
 			// 将返回值转成JSON，获取需要的信息
 			JSONObject jsonObject = new JSONObject(upsString);
@@ -109,12 +112,12 @@ public class SinaWeiBoController {
 
 			if (id != null) {
 				request.getSession().setAttribute("sinareturn", "发布一条微博信息成功");
-				return "sina/sinareturn";// 成功页面
+				return "success";// 成功页面
 			}
 		}
 
 		request.getSession().setAttribute("sinareturn", "发布一条微博信息失败");
-		return "sina/sinareturn"; // 失败页面
+		return "failure"; // 失败页面
 	}
 
 	/* 发图片微博controller */
