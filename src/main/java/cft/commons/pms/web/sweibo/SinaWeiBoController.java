@@ -297,7 +297,7 @@ public class SinaWeiBoController {
 								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "},";
 						content = content + SinaWeiBo;
 					}	   
-					content = content.subSequence(0, content.length()-2) + "}";
+					content = "[" +content.subSequence(0, content.length()-2) + "}]";
 				}
 				
 				System.out.println(content);	
@@ -306,11 +306,11 @@ public class SinaWeiBoController {
 				return content;// 成功页面
 			}
 			request.getSession().setAttribute("sinareturn", "没有最新好友动态");
-			return "sina/sinareturn"; // 返回页面
+			return "empty"; // 返回页面
 		}
 
 		//request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
-		return "failure"; // 失败页面
+		return "empty"; // 失败页面
 	}
 
 }
