@@ -25,8 +25,8 @@ public class SinaUtil {
 		
 		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("ENGLISH", "CHINA"));
 		Date tempdate = format.parse(date);
-		format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
-		
+		//format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
+		format.applyPattern("yyyy年MM月dd日 HH时mm分");
 		return format.format(tempdate);	
 	}
 	

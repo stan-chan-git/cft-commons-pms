@@ -54,7 +54,7 @@ public class Utils {
 		             + "&" + COMMON_PARAM;
 		
 		String result = HttpClientUtils.httpGet(url, 5000, 5000);
-System.out.println(result);
+
        /* 将返回的结果转换成JSON,获取微博数据    */
 		JSONObject json = new JSONObject(result);
 		JSONObject data = json.getJSONObject("data");
@@ -88,9 +88,21 @@ System.out.println(result);
 	
 	
 	/* *
+	 * 将获取到的timestamp格式的时间转换成标准时间格式,主要用于转换在前台显示的timestamp
+	 * */
+	public static String getWeiBoTime(Integer timestamp){
+		Long wbTime = Long.parseLong(timestamp.toString());
+		Date date = new Date(wbTime * 1000);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月dd日   HH时mm分");
+		String sendDate = sdf.format(date);
+	    
+		return sendDate;
+	}
+	
+	/* *
 	 * 将获取到的timestamp格式的时间转换成标准时间格式，如：yyyy-MM-dd HH:mm
 	 * */
-	public static String getDate(Integer timestamp){
+	public static String timestampToDate(Integer timestamp){
 		Long wbTime = Long.parseLong(timestamp.toString());
 		Date date = new Date(wbTime * 1000);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");

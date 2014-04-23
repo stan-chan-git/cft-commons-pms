@@ -55,6 +55,7 @@
 			<ul class="sub-menu">
 				<li><a href="${ctx}/view/sendMsgView.do">发布一条新消息</a></li>
 				<li><a href="${ctx}/view/sendPicMsgView.do">发布一条带图片的新消息</a></li>
+				<li><a href="${ctx}/view/getFriendsDynamicView.do">获取关注的人的最新动态</a></li>
 			</ul>
 		</li>
 		

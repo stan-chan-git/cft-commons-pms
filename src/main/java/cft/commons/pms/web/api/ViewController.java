@@ -17,7 +17,13 @@ public class ViewController {
 	
 	
 	@RequestMapping(value="sendPicMsgView.do")
-	public String sendPicMsgView(Model model){
+	public String sendPicMsgView(){
 		return "api/sendPicMessage";
+	}
+	
+	
+	@RequestMapping(value="getFriendsDynamicView.do")
+	public String getFriendsDynamicView(){
+		return "api/getFriendsDynamic";
 	}
 }
