@@ -299,7 +299,7 @@ public class TencentWeiBoController {
     	String end = "]";
         
         if(focusList == null || focusList.isEmpty()){
-             return "failure";
+             return "empty";
         }else{
         	
         	//若长度为1，则不需要加逗号,否则需注意加逗号
