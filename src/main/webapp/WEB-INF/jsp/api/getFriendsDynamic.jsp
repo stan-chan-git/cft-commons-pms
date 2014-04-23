@@ -40,17 +40,31 @@ $(function(){
 		 //腾讯微博--获取好友最新动态函数
 		 getFocusPeopleWeiBo(function(data){
 			                    if(data != "empty"){
-			                    console.log(data);
 			                    	var obj = JSON.parse(data);
 			                      
 			                    	$.each(obj,function(i){
-			                    		wbTable.append("<tr align='center'>" +
+			                    		//判断是否带图片
+			                    	//console.log(obj[i].images);
+			                    		if(obj[i].images == "null"){
+				                    		wbTable.append("<tr align='center'>" +
+				                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+				                    		               "<td>"+ obj[i].content +"</td>" +
+				                    		               "<td>"+ obj[i].time +"</td>" +
+				                    		               "<td>"+ obj[i].name +"</td>" +
+				                    		               "<td>来自腾讯微博</td>" +
+				                    		               "</tr>");
+			                    		}else{
+			                    			wbTable.append("<tr align='center'>" +
 			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-			                    		               "<td>"+ obj[i].content +"</td>" +
+			                    		               //将图片显示在文字下方
+			                    		               "<td>"+ obj[i].content +
+			                    		                    "<br><img src="+ obj[i].images +" />"+
+			                    		               "</td>" +
 			                    		               "<td>"+ obj[i].time +"</td>" +
 			                    		               "<td>"+ obj[i].name +"</td>" +
 			                    		               "<td>来自腾讯微博</td>" +
 			                    		               "</tr>");
+			                    		}
 			                    	});
 			                    	
 			                    }else{
@@ -71,13 +85,26 @@ $(function(){
 					            	var obj = JSON.parse(data);
 					           
 					            	$.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自新浪微博</td>" +
-					            		               "</tr>");
+					            		if(obj[i].images == "null"){
+						            		wbTable.append("<tr align='center'>" +
+						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "<td>"+ obj[i].time +"</td>" +
+						            		               "<td>"+ obj[i].name +"</td>" +
+						            		               "<td>来自新浪微博</td>" +
+						            		               "</tr>");
+					            		}else{
+					            			wbTable.append("<tr align='center'>" +
+			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			                    		               //将图片显示在文字下方
+			                    		               "<td>"+ obj[i].content +
+			                    		                    "<br><img src="+ obj[i].images +" />"+
+			                    		               "</td>" +
+			                    		               "<td>"+ obj[i].time +"</td>" +
+			                    		               "<td>"+ obj[i].name +"</td>" +
+			                    		               "<td>来自新浪微博</td>" +
+			                    		               "</tr>");
+					            		}
 					            	});
 							            	
 						       }else{
