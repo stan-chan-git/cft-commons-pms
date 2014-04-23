@@ -187,7 +187,7 @@ public class InstagramController {
 	    		String title=shareMedia.getString("title");
 	    		String media_id=shareMedia.getString("media_id");
 	    	    System.out.println(shareMedia);
-	    		
+	    		System.out.println("url===="+url);
 	    		
 	    		
 	    		FollowDto followDto=new FollowDto();
@@ -226,6 +226,7 @@ public class InstagramController {
         		String weibo = "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+ 				      ",\"images\":" + "\"" + names.get(0).getUrl() + "\"" +
  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
  	                   "}";
         		
@@ -235,6 +236,7 @@ public class InstagramController {
 	        		String weibo =  "{\"id\":" + "\"" + names.get(i).getMedia_id() + "\"" +
 	  				       ",\"content\":" + "\"" + names.get(i).getTitle() + "\"" +
 	 				       ",\"name\":" + "\"" + names.get(i).getUsername() + "\"" +
+	 				      ",\"images\":" + "\"" + names.get(i).getUrl() + "\"" +
 	 				       ",\"time\":" + "\"" + names.get(i).getDate()+ "\"" +
 	 	                   "},";
 	        		
@@ -244,6 +246,7 @@ public class InstagramController {
             	content = content +  "{\"id\":" + "\"" + names.get(names.size()-1).getMedia_id() + "\"" +
   				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
   				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
+  				       ",\"images\":" + "\"" + names.get(names.size()-1).getUrl() + "\"" +
   				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
   	                   "}";
             
