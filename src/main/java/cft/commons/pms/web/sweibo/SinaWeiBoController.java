@@ -202,6 +202,7 @@ public class SinaWeiBoController {
 					JSONObject tempComments = (JSONObject) comments.get(i);
 					String textRepost = tempComments.getString("text");// 评论的内容
 					String created_at = tempComments.getString("created_at");// 评论创建时间
+					//String thumbnail_pic = tempComments.getString("thumbnail_pic");
 					Long id = tempComments.getLong("id");// 评论的ID
 					JSONObject tempUser = tempComments.getJSONObject("user");// 评论作者的用户信息
 					String screen_name = (String) tempUser.get("screen_name");// 评论作者的用户昵称
@@ -216,6 +217,7 @@ public class SinaWeiBoController {
 					sinaComDTO.setScreen_name(screen_name);
 					sinaComDTO.setText(textRepost);
 					sinaComDTO.setTextStatus(textStatus);
+					//sinaComDTO.setThumbnail_pic(thumbnail_pic);
 
 					sinaComDTOs.add(sinaComDTO);
 				}
@@ -264,10 +266,25 @@ public class SinaWeiBoController {
 					String content = tempStatuses.getString("text");// 内容
 					String time = tempStatuses.getString("created_at");// 创建时间
 					Long id = tempStatuses.getLong("id");// 微博ID
+				
+					
 					JSONObject tempUser = tempStatuses.getJSONObject("user");
 					String name = (String) tempUser.get("screen_name");// 作者名字
 					String userIdStr = tempUser.getString("idstr");// 作者ID
-
+					
+					//取图片数组
+					JSONArray tempPic = tempStatuses.getJSONArray("pic_urls");//图片
+					String thumbnail_pic = null;//略缩图
+					if (tempPic!=null&&!tempPic.isNull(0)) {
+						for (int j = 0; j < tempPic.length(); j++) {						
+							JSONObject pic = (JSONObject) tempPic.get(j);
+							thumbnail_pic = pic.getString("thumbnail_pic");
+							//System.out.println(thumbnail_pic);
+						}						
+					}
+					
+					
+					
 					// 非自己的微博且是今天的微博写入DTO
 					if (!userIdStr.equals(uid) && nowDate.equals(SinaUtil.DateFormat(time))) {
 						SinaDTO sinaDTO = new SinaDTO();
@@ -276,6 +293,7 @@ public class SinaWeiBoController {
 						sinaDTO.setContent(content);
 						sinaDTO.setUserId(userIdStr);
 						sinaDTO.setName(name);
+						sinaDTO.setThumbnail_pic(thumbnail_pic);
 
 						sinaDTOs.add(sinaDTO);
 					}
@@ -293,8 +311,9 @@ public class SinaWeiBoController {
 					for (SinaDTO sinaDTO : sinaDTOs) {
 						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
 								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
-								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\"" + ",\"time\":"
-								+ "\"" + sinaDTO.getTime() + "\"" + "}";
+								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\"" 
+								+ ",\"time\":"+ "\"" + sinaDTO.getTime() + "\"" 
+								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic() + "\"" + "}";
 						content = content + SinaWeiBo;
 					}
 					content = "[" + content.subSequence(0, content.length() - 1) + "}]";
@@ -304,13 +323,14 @@ public class SinaWeiBoController {
 					for (SinaDTO sinaDTO : sinaDTOs) {
 						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
 								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
-								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\"" + ",\"time\":"
-								+ "\"" + sinaDTO.getTime() + "\"" + "},";
+								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\""
+								+ ",\"time\":" + "\"" + sinaDTO.getTime() + "\""
+								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic()+ "\"" + "},";
 						content = content + SinaWeiBo;
 					}
 					content = "[" + content.subSequence(0, content.length() - 2) + "}]";
 				}
-				System.out.println(content);
+				System.out.println("content:"+content);
 				return content;// 返回对应的json
 			}
 			return "empty"; // 没数据
