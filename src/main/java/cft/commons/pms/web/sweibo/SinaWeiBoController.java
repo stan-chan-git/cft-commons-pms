@@ -279,9 +279,10 @@ public class SinaWeiBoController {
 					}
 				}
 				
+				/*将获取的收据转化为json*/
 				String content = new String();
 				if (sinaDTOs.size()==1) {
-					
+					/*当数据只有一条的时候*/
 					for (SinaDTO sinaDTO : sinaDTOs) {
 						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
 								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
@@ -290,27 +291,27 @@ public class SinaWeiBoController {
 					}	   
 					
 				}else {
-					
+					/*当数据不止一条的时候*/
 					for (SinaDTO sinaDTO : sinaDTOs) {
 						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
 								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
 								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "},";
 						content = content + SinaWeiBo;
 					}	   
-					content = content.subSequence(0, content.length()-2) + "}";
+					content = "[" +content.subSequence(0, content.length()-2) + "}]";
 				}
 				
-				System.out.println(content);				
+				System.out.println(content);	
 				//request.getSession().setAttribute("sinareturn", "获取评论列表信息成功");
 				//request.getSession().setAttribute("sinaDTOs", sinaDTOs);
-				return content;// 成功页面
+				return content;// 返回对应的json
 			}
 			request.getSession().setAttribute("sinareturn", "没有最新好友动态");
-			return "sina/sinareturn"; // 返回页面
+			return "empty"; // 没数据
 		}
 
 		//request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
-		return "failure"; // 失败页面
+		return "empty"; // 没数据
 	}
 
 }

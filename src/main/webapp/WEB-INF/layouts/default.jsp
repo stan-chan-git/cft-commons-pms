@@ -76,10 +76,10 @@ $(document).ready(function(){
 <!--//////////////////////// -->
 <!--/// 下面部分为授权按钮点击事件/// -->
 <!--//////////////////////// -->
-function init_but_click(){
+/* function init_but_click(){
 	alert(1);
 	window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
-}
+} */
 
 	
 
@@ -127,7 +127,7 @@ function init_but_click(){
 		             instagram已授权,30分钟后失效
 		  </c:when>
 		  <c:otherwise>
-	  <button class="btn btn-default" id="instagram_btn" onclick="init_but_click();">instagram授权</button>
+	  <button class="btn btn-default" id="instagram_btn">instagram授权</button>
 		  </c:otherwise>
 	  </c:choose>	
 	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

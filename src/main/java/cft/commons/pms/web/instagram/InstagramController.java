@@ -13,12 +13,14 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
 import cft.commons.pms.dto.instagram.ShareDto;
+import cft.commons.pms.web.tencent.Utils;
 
 @Controller
 public class InstagramController {
@@ -100,7 +102,7 @@ public class InstagramController {
 
 	// 获取关注人信息
 	@RequestMapping(value = "followFirend.do")
-	public String FollowFirend(String uid, String instagram_token, Model model,
+	public  @ResponseBody  String FollowFirend(String uid, String instagram_token, Model model,
 			HttpServletRequest request) throws IOException {
 
 		uid = (String) request.getSession().getAttribute("uid");
@@ -143,6 +145,7 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
+				String created_time=Utils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
 				
 	            System.out.println("link========="+link);
 	            
@@ -155,6 +158,7 @@ public class InstagramController {
 	    		String author_name=shareMedia.getString("author_name");
 	    		String type=shareMedia.getString("type");
 	    		String title=shareMedia.getString("title");
+	    		String media_id=shareMedia.getString("media_id");
 	    	    System.out.println(shareMedia);
 	    		
 	    		
@@ -166,16 +170,64 @@ public class InstagramController {
 	    		followDto.setType(type);
 	    		followDto.setUrl(url);
 	    		followDto.setPhoto(profile_picture);
+	    		followDto.setMedia_id(media_id);
+	    		followDto.setDate(created_time);
 	    		names.add(followDto);
 				
 			}
            System.out.println("frienddara=========="+frienddata);
 			
 		}
-		request.setAttribute("names", names);
-		System.out.println("result2=" + data);
-
-		return "instagram/follow";
+		
+		
+		
+		 
+        //将list拼接成字符串需要的变量
+        String resultData = "";
+        String content ="";
+    	String begin = "[";
+    	String end = "]";
+        
+    	if(names==null||names.isEmpty()){
+    		
+    		return "empty";
+    		
+    	}else{
+    		
+    		//若长度为1，则不需要加逗号,否则需注意加逗号
+            if(names.size() == 1){	
+        		String weibo = "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
+ 				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
+ 				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+ 				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+ 	                   "}";
+        		
+        		content = content + weibo;
+            }else if(names.size() > 1){
+            	for(int i = 0 ; i < names.size() - 1 ; i++){
+	        		String weibo =  "{\"id\":" + "\"" + names.get(i).getMedia_id() + "\"" +
+	  				       ",\"content\":" + "\"" + names.get(i).getTitle() + "\"" +
+	 				       ",\"name\":" + "\"" + names.get(i).getUsername() + "\"" +
+	 				       ",\"time\":" + "\"" + names.get(i).getDate()+ "\"" +
+	 	                   "},";
+	        		
+	        		content = content + weibo;
+	        	}
+            	
+            	content = content +  "{\"id\":" + "\"" + names.get(names.size()-1).getMedia_id() + "\"" +
+  				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
+  				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
+  				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
+  	                   "}";
+            
+            }
+            
+            resultData = begin + content + end;
+            
+    	}
+    	
+		
+    	return resultData;
 
 	}
 

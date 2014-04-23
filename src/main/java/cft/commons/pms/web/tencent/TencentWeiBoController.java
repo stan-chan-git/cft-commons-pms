@@ -295,11 +295,11 @@ public class TencentWeiBoController {
         //将list拼接成字符串需要的变量
         String resultData = "";
         String content ="";
-    	String begin = "{\"weibo\":[";
-    	String end = "]}";
+    	String begin = "[";
+    	String end = "]";
         
         if(focusList == null || focusList.isEmpty()){
-             return "failure";
+             return "empty";
         }else{
         	
         	//若长度为1，则不需要加逗号,否则需注意加逗号
@@ -322,10 +322,10 @@ public class TencentWeiBoController {
 	        		content = content + weibo;
 	        	}
 	        	
-	        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size()).getId() + "\"" +
-				                    ",\"content\":" + "\"" + focusList.get(focusList.size()).getText() + "\"" +
-				                    ",\"name\":" + "\"" + focusList.get(focusList.size()).getNick() + "\"" +
-				                    ",\"time\":" + "\"" + focusList.get(focusList.size()).getDate() + "\"" +
+	        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size() - 1).getId() + "\"" +
+				                    ",\"content\":" + "\"" + focusList.get(focusList.size() - 1).getText() + "\"" +
+				                    ",\"name\":" + "\"" + focusList.get(focusList.size() - 1).getNick() + "\"" +
+				                    ",\"time\":" + "\"" + focusList.get(focusList.size() - 1).getDate() + "\"" +
 	                                "}";
             }
         	
