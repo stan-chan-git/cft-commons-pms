@@ -73,9 +73,9 @@ $(function(){
 			}
 			
 			
-			/* if(facebook.is(":checked") == true){
+			if(facebook.is(":checked") == true){
 				//Facebook 发布新消息API调用函数
-				writeNewPost(content,
+				writeNewPostPic(content,
 				             //回调函数，提示是否发布成功
 				             function(msg){
 	                            if(typeof(msg) != "undefined"){
@@ -83,7 +83,7 @@ $(function(){
 	                            }
 		                     }
 				            );
-			} */
+			} 
 			
 	});
 	
