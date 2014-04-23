@@ -87,14 +87,19 @@ public class InstagramController {
 	}
 
 	@RequestMapping(value = "create.do")
-	public String Create() throws IOException {
+	public String Create(String uid, String instagram_token,HttpServletRequest request) throws IOException {
 
 		// 创建一个订阅
-
+  
+		uid = (String) request.getSession().getAttribute("instagramId");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		
 		String subscriptionUrl = "https://api.instagram.com/v1/subscriptions?client_id=" + APP_KEY
 				+ "&client_secret=" + CLIENT_SECET + "&object=user" + "&aspect=media"
 				+ "&verify_token=myVerifyToken" + "&callback_url=" + REDIRECT_URL;
 
+		
+		      
 		String result2 = HttpClientUtils.httpGet(subscriptionUrl, 3000, 9000);
 		return result2;
 
