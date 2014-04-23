@@ -40,8 +40,9 @@ $(function(){
 		 //腾讯微博--获取好友最新动态函数
 		 getFocusPeopleWeiBo(function(data){
 			                    if(data != "empty"){
+			                    console.log(data);
 			                    	var obj = JSON.parse(data);
-			                    
+			                      
 			                    	$.each(obj,function(i){
 			                    		wbTable.append("<tr align='center'>" +
 			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
