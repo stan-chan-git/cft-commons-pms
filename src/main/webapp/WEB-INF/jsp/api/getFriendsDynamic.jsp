@@ -127,9 +127,7 @@ $(function(){
 				            	 $.each(obj,function(i){
 				            		wbTable.append("<tr align='center'>" +
 				            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-				            		               "<td>"+ obj[i].content +
-	                    		                    "<br><img width='25%' height='25%'   src="+ obj[i].images +" />"+
-	                    		                    "</td>" +
+				            		               "<td>"+ obj[i].content +"</td>" +
 				            		               "<td>"+ obj[i].time +"</td>" +
 				            		               "<td>"+ obj[i].name +"</td>" +
 				            		               "<td>来自instagram</td>" +
