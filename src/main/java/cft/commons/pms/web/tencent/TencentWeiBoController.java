@@ -287,7 +287,19 @@ public class TencentWeiBoController {
 		        		JSONObject source = (JSONObject)obj.get("source");
 		        		wb.setOrigtext(source.getString("origtext"));
 		        	}
-        			
+		        	
+		        	//判断微博内容中是否带图片
+		        	if(!obj.get("image").toString().equals("null")){
+		        		JSONArray images = (JSONArray)obj.get("image");
+		        		String[] imgs = new String[images.length()];
+		                
+		        		for(int j = 0 ; j < images.length() ; j++){
+		        			 imgs[j] = images.get(j).toString();
+		        		     wb.setImageUrls(imgs);
+		        		}
+		        	}
+		        	
+		            
 		        	wb.setId(obj.getString("id"));
 		        	wb.setNick(obj.getString("nick"));
 		        	wb.setType(obj.getInt("type"));
@@ -305,41 +317,96 @@ public class TencentWeiBoController {
         String content ="";
     	String begin = "[";
     	String end = "]";
+    	String weibo = "";
         
         if(focusList == null || focusList.isEmpty()){
              return "empty";
         }else{
-        	
         	//若长度为1，则不需要加逗号,否则需注意加逗号
-            if(focusList.size() == 1){	
-        		String weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
-        				       ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
-        				       ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
-        				       ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"" +
-        	                   "}";
-        		
-        		content = content + weibo;
+            if(focusList.size() == 1){
+            	//判断微博是否带图片
+            	if(focusList.get(0).getImageUrls() != null){
+	        		weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
+	        				       ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
+	        				       ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
+	        				       ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"";
+	        		
+	        		/**** 加图片url拼接入字符串weibo中  ****/
+	        		//根据图片数量的不同选择不同方式拼接
+	        		//if(focusList.get(0).getImageUrls().length == 1){
+	        			
+	        		//单张图片	
+	        		weibo = weibo +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[0] + "/160"  + "\"" + "}";
+	        			
+	        		//}else if(focusList.get(0).getImageUrls().length > 1){
+		        		//多张图片
+	        			//for(int x = 0 ; x < focusList.get(0).getImageUrls().length -1 ; x++){
+		        			//weibo = weibo +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[x] + "/160"  + "\"";
+		        		//}
+		        		
+		        		//weibo = weibo + ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[focusList.get(0).getImageUrls().length -1] 
+		        				      //图片尺寸,必须加,否则无法显示图片  
+		        				      //+ "/160"  + "\""
+		        				     // + "}";
+	        		//}
+	        		
+	        		
+            	}else{
+            		weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
+     				        ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
+     				        ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
+     				        ",\"images\":" + "\"null\"" +
+     				        ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"" +
+     	                    "}";
+            	}
+            	
+            	content = content + weibo;
+            	
+            //长度不为1
             }else if(focusList.size() > 1){
             	for(int i = 0 ; i < focusList.size() - 1 ; i++){
-	        		String weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
+	        		weibo = "";
+	        		//判断是否微博是否含有图片
+	        		if(focusList.get(i).getImageUrls() != null){
+            	           weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
 	        				       ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
 	        				       ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
+	        				       ",\"images\":" + "\"" + focusList.get(i).getImageUrls()[0] + "/160" + "\"" +
 	        				       ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
 	        	                   "},";
+	        		}else{
+	        			   weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
+	        				       ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
+	        				       ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
+	        				       ",\"images\":" + "\"null\"" +
+	        				       ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
+	        	                   "},";
+	        		}
 	        		
 	        		content = content + weibo;
 	        	}
 	        	
-	        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size() - 1).getId() + "\"" +
-				                    ",\"content\":" + "\"" + focusList.get(focusList.size() - 1).getText() + "\"" +
-				                    ",\"name\":" + "\"" + focusList.get(focusList.size() - 1).getNick() + "\"" +
-				                    ",\"time\":" + "\"" + focusList.get(focusList.size() - 1).getDate() + "\"" +
-	                                "}";
+            	//判断最后一条微博是否带有图片
+            	if(focusList.get(focusList.size() - 1).getImageUrls() != null){
+		        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size() - 1).getId() + "\"" +
+					                    ",\"content\":" + "\"" + focusList.get(focusList.size() - 1).getText() + "\"" +
+					                    ",\"name\":" + "\"" + focusList.get(focusList.size() - 1).getNick() + "\"" +
+					                    ",\"images\":" + "\"" + focusList.get(focusList.size() - 1).getImageUrls()[0] + "/160" + "\"" +
+					                    ",\"time\":" + "\"" + focusList.get(focusList.size() - 1).getDate() + "\"" +
+		                                "}";
+            	}else{
+            		content = content + "{\"id\":" + "\"" + focusList.get(focusList.size() - 1).getId() + "\"" +
+					                    ",\"content\":" + "\"" + focusList.get(focusList.size() - 1).getText() + "\"" +
+					                    ",\"name\":" + "\"" + focusList.get(focusList.size() - 1).getNick() + "\"" +
+					                    ",\"images\":" + "\"null\"" +
+					                    ",\"time\":" + "\"" + focusList.get(focusList.size() - 1).getDate() + "\"" +
+			                            "}";
+            	}
             }
         	
         	resultData = begin + content + end;
         }
-      
+System.out.println(resultData);      
         return resultData;
 	}
 	
