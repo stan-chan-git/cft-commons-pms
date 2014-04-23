@@ -7,13 +7,14 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 $(function(){
-	getFocusPeopleWeiBo(function(data){
-		                    if(data != "failure"){
-		                    console.log(data);
+	 //腾讯微博--获取好友最新动态函数
+	 getFocusPeopleWeiBo(function(data){
+		                    if(data != "empty"){
+		                    //console.log(data);
 		                    	var wbTable = $("#wbTable")
-		                    	var first = $("#first");
+		                    	//var first = $("#first");
 		                    	var obj = JSON.parse(data);
-		                    console.log(obj[0]);	
+		                    //console.log(obj[0]);	
 		                    	 $.each(obj,function(i){
 		                    		wbTable.append("<tr align='center'>" +
 		                    		               "<td>"+ obj[i].id +"</td>" +
@@ -27,7 +28,29 @@ $(function(){
 		                    }else{
 		                    	
 		                    }
-	                    });
+	                    }); 
+	//新浪微博--获取好友最新动态函数                
+	sinaCommentsfriends(function(data){
+							if(data != "empty"){
+					            //console.log(data);
+					            	var wbTable = $("#wbTable")
+					            	//var first = $("#first");
+					            	var obj = JSON.parse(data);
+					            //console.log(obj[0]);	
+					            	 $.each(obj,function(i){
+					            		wbTable.append("<tr align='center'>" +
+					            		               "<td>"+ obj[i].id +"</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>"+ obj[i].time +"</td>" +
+					            		               "<td>"+ obj[i].name +"</td>" +
+					            		               "<td>来自新浪微博</td>" +
+					            		               "</tr>");
+					            	})
+					            	
+					            }else{
+					            	
+					            }
+	                   });
 })
 </script>
 </head>
