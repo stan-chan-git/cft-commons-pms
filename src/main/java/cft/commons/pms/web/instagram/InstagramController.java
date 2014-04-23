@@ -203,19 +203,19 @@ public class InstagramController {
         		content = content + weibo;
             }else if(names.size() > 1){
             	for(int i = 0 ; i < names.size() - 1 ; i++){
-	        		String weibo =  "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
-	  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
-	 				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
-	 				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+	        		String weibo =  "{\"id\":" + "\"" + names.get(i).getMedia_id() + "\"" +
+	  				       ",\"content\":" + "\"" + names.get(i).getTitle() + "\"" +
+	 				       ",\"name\":" + "\"" + names.get(i).getUsername() + "\"" +
+	 				       ",\"time\":" + "\"" + names.get(i).getDate()+ "\"" +
 	 	                   "},";
 	        		
 	        		content = content + weibo;
 	        	}
             	
-            	content = content +  "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
-  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
-  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
-  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+            	content = content +  "{\"id\":" + "\"" + names.get(names.size()-1).getMedia_id() + "\"" +
+  				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
+  				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
+  				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
   	                   "},";
             
             }
