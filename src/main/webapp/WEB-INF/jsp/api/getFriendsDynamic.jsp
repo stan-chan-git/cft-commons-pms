@@ -7,88 +7,120 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 $(function(){
-	 //腾讯微博--获取好友最新动态函数
-	 getFocusPeopleWeiBo(function(data){
-		                    if(data != "empty"){
-		                    //console.log(data);
-		                    	var wbTable = $("#wbTable")
-		                    	//var first = $("#first");
-		                    	var obj = JSON.parse(data);
-		                    //console.log(obj[0]);	
-		                    	 $.each(obj,function(i){
-		                    		wbTable.append("<tr align='center'>" +
-		                    		               "<td>"+ obj[i].id +"</td>" +
-		                    		               "<td>"+ obj[i].content +"</td>" +
-		                    		               "<td>"+ obj[i].time +"</td>" +
-		                    		               "<td>"+ obj[i].name +"</td>" +
-		                    		               "<td>来自腾讯微博</td>" +
-		                    		               "</tr>");
-		                    	})
-		                    	
-		                    }else{
-		                    	
-		                    }
-	                    }); 
-	//新浪微博--获取好友最新动态函数                
-	sinaCommentsfriends(function(data){
-							if(data != "empty"){
-					            //console.log(data);
-					            	var wbTable = $("#wbTable")
-					            	//var first = $("#first");
-					            	var obj = JSON.parse(data);
-					            //console.log(obj[0]);	
-					            	 $.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自新浪微博</td>" +
-					            		               "</tr>");
-					            	})
-					            	
-					            }else{
-					            	
-					            }
-	                   });
-	//instagram--获取好友最新动态函数                
-	instagramfriends(function(data){
-							if(data != "empty"){
-					            //console.log(data);
-					            	var wbTable = $("#wbTable")
-					            	//var first = $("#first");
-					            	var obj = JSON.parse(data);
-					            //console.log(obj[0]);	
-					            	 $.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自instagram</td>" +
-					            		               "</tr>");
-					            	})
-					            	
-					            }else{
-					            	
-					            }
-	                   });
+	 var tencent_token = "<%=session.getAttribute("tencent_token") %>";
+	 var sina_token = "<%=session.getAttribute("sina_token") %>";
+	 var facebook_token = "<%=session.getAttribute("facebook_token") %>";
+	 var instagram_token = "<%=session.getAttribute("instagram_token") %>";
+	
+	 var wbTable = $("#wbTable");//插入数据的表格
+	 var msg = $("#msg");//提示消息
+	 
+	 if((tencent_token != "null" && tencent_token != "") || (sina_token != "null" && sina_token != "")){
+		wbTable.append("<tr align='center' class='success'>" +
+								"<td width='10%' style='display:none'>微博ID</td>" +
+							    "<td width='25%''>微博内容</td>" +
+								"<td width='20%'>发表时间</td>" +
+								"<td width='10%'>发表人</td>" +
+								"<td width='15%'>来源</td>" +
+					   "</tr>");
+	 }else{
+		 msg.empty();
+		 msg.append("腾讯微博还未进行授权,不能获取好友动态!<br><br>");
+		 msg.append("新浪微博还未进行授权,不能获取好友动态!<br><br>");
+		 msg.append("FaceBook还未进行授权,不能获取好友动态!<br><br>");
+		 msg.append("Instagram还未进行授权,不能获取好友动态!");
+		 msg.show();
+		 
+		 return false;
+	 }
+	 
+	 //发出请求前先判断腾讯微博是否授权
+	 if(tencent_token != "null" && tencent_token != ""){
+		 //腾讯微博--获取好友最新动态函数
+		 getFocusPeopleWeiBo(function(data){
+			                    if(data != "empty"){
+			                    	var obj = JSON.parse(data);
+			                    
+			                    	$.each(obj,function(i){
+			                    		wbTable.append("<tr align='center'>" +
+			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			                    		               "<td>"+ obj[i].content +"</td>" +
+			                    		               "<td>"+ obj[i].time +"</td>" +
+			                    		               "<td>"+ obj[i].name +"</td>" +
+			                    		               "<td>来自腾讯微博</td>" +
+			                    		               "</tr>");
+			                    	});
+			                    	
+			                    }else{
+				               		msg.append("腾讯微博目前没有好友动态!<br>");
+				               		msg.show();
+			                    }
+		                    });
+	 }else{
+		 msg.append("腾讯微博还未进行授权,不能获取好友动态!<br>");
+		 msg.show();
+	 }
+	 
+	//发出请求前先判断新浪微博是否授权
+	if(sina_token != "null" && sina_token != ""){
+		//新浪微博--获取好友最新动态函数                
+		sinaCommentsfriends(function(data){
+								if(data != "empty"){
+						            	var obj = JSON.parse(data);
+						           
+						            	$.each(obj,function(i){
+						            		wbTable.append("<tr align='center'>" +
+						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "<td>"+ obj[i].time +"</td>" +
+						            		               "<td>"+ obj[i].name +"</td>" +
+						            		               "<td>来自新浪微博</td>" +
+						            		               "</tr>");
+						            	});
+						            	
+						            }else{
+						            	msg.append("新浪微博目前没有好友动态!<br>");
+						        		msg.show();
+						            }
+		                   });
+	}else{
+		msg.append("新浪微博还未进行授权,不能获取好友动态!<br>");
+		msg.show();
+	}
+
+	//发出请求前先判断Instagram是否授权
+	if(instagram_ token != "null" && instagram_ token != ""){
+		//instagram--获取好友最新动态函数                
+		instagramfriends(function(data){
+								if(data != "empty"){
+						            	var wbTable = $("#wbTable")
+						            	var obj = JSON.parse(data);
+						            	 $.each(obj,function(i){
+						            		wbTable.append("<tr align='center'>" +
+						            		               "<td>"+ obj[i].id +"</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "<td>"+ obj[i].time +"</td>" +
+						            		               "<td>"+ obj[i].name +"</td>" +
+						            		               "<td>来自instagram</td>" +
+						            		               "</tr>");
+						            	})
+						            	
+						            }else{
+						            	
+						            }
+		                   });
+	}
 })
 </script>
 </head>
 <body>
-<div style="border: 2px solid #3399FF; border-radius: 25px; moz-border-radius: 25px; width: 800px; height: 1120px; padding-top: 30px;">			
-			
+<div style="width: 800px; height: 1120px; padding-top: 30px;">			
+            
+            <span id="msg" class="alert alert-info" style="display:none;float:left;margin-left:250px"></span>
+            			
 			<div class="form-group">
-				<div class="col-sm-11" >
-					<table id="wbTable" class="table table-bordered table-hover" style="margin-left:40px">
-						<tr align="center" class="success">
-							<td>微博ID</td>
-							<td>微博内容</td>
-							<td>发表时间</td>
-							<td>发表人</td>
-							<td>来源</td>
-						</tr>
+				<div id="dd" class="col-sm-11" >
+					<table id='wbTable' class='table table-bordered table-hover' style='margin-left:40px'>
 					</table>
 				</div>
 			</div>
