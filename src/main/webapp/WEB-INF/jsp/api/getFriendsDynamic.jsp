@@ -85,13 +85,26 @@ $(function(){
 					            	var obj = JSON.parse(data);
 					           
 					            	$.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自新浪微博</td>" +
-					            		               "</tr>");
+					            		if(obj[i].images == "null"){
+						            		wbTable.append("<tr align='center'>" +
+						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "<td>"+ obj[i].time +"</td>" +
+						            		               "<td>"+ obj[i].name +"</td>" +
+						            		               "<td>来自新浪微博</td>" +
+						            		               "</tr>");
+					            		}else{
+					            			wbTable.append("<tr align='center'>" +
+			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			                    		               //将图片显示在文字下方
+			                    		               "<td>"+ obj[i].content +
+			                    		                    "<br><img src="+ obj[i].images +" />"+
+			                    		               "</td>" +
+			                    		               "<td>"+ obj[i].time +"</td>" +
+			                    		               "<td>"+ obj[i].name +"</td>" +
+			                    		               "<td>来自新浪微博</td>" +
+			                    		               "</tr>");
+					            		}
 					            	});
 							            	
 						       }else{
