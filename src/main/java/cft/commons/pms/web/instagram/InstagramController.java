@@ -98,20 +98,20 @@ public class InstagramController {
 
 	}
 
-	// 获取好友信息
+	// 获取关注人信息
 	@RequestMapping(value = "followFirend.do")
 	public String FollowFirend(String uid, String instagram_token, Model model,
 			HttpServletRequest request) throws IOException {
 
 		uid = (String) request.getSession().getAttribute("uid");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
-		String followByUrl = "https://api.instagram.com/v1/users/" + uid
-				+ "/followed-by?access_token=" + instagram_token;
+		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
 		String result2 = HttpClientUtils.httpGet(followByUrl, 9000, 9000);
 
 		JSONObject json2 = new JSONObject(result2);
 		JSONArray data = json2.getJSONArray("data");
 		List<FollowDto> names = new ArrayList<FollowDto>();
+		
 		
 		for (int i = 0; i < data.length(); i++) {
 			JSONObject jo = (JSONObject) data.get(i);
@@ -121,11 +121,11 @@ public class InstagramController {
 			String profile_picture = jo.getString("profile_picture");
 			// names.add(userName);
 			// names.add(profile_picture);
-			FollowDto follow = new FollowDto();
+			//FollowDto follow = new FollowDto();
 			
-			follow.setUsername(userName);
-			follow.setPhoto(profile_picture);
-			names.add(follow);
+			//follow.setUsername(userName);
+			//follow.setPhoto(profile_picture);
+			//names.add(follow);
 			
 			//获取用户信息
 			String userUrl="https://api.instagram.com/v1/users/"+userId+"/media/recent/?access_token="+instagram_token;
@@ -135,10 +135,44 @@ public class InstagramController {
 			System.out.println(userId);
 			System.out.println(joString);
 			System.out.println(userName);
+			System.out.println("userResult========="+userResult);
 			System.out.println("names=========" + names.size());
-
+			JSONObject json3 = new JSONObject(userResult);
+			JSONArray frienddata = json3.getJSONArray("data");
+			for (int f = 0; f < frienddata.length(); f++) {
+				JSONObject fridendjo = (JSONObject) frienddata.get(f);
+				
+	            String link=fridendjo.getString("link");
+				
+	            System.out.println("link========="+link);
+	            
+	            String shareUrl="http://api.instagram.com/oembed?url="+link;
+	    		
+	    		String shareResult=HttpClientUtils.httpGet(shareUrl, 9000, 9000);
+	    		
+	    		JSONObject shareMedia = new JSONObject(shareResult);
+	    		String url = shareMedia.getString("url");
+	    		String author_name=shareMedia.getString("author_name");
+	    		String type=shareMedia.getString("type");
+	    		String title=shareMedia.getString("title");
+	    	    System.out.println(shareMedia);
+	    		
+	    		
+	    		
+	    		FollowDto followDto=new FollowDto();
+	    		
+	    		followDto.setTitle(title);
+	    		followDto.setUsername(userName);
+	    		followDto.setType(type);
+	    		followDto.setUrl(url);
+	    		followDto.setPhoto(profile_picture);
+	    		names.add(followDto);
+				
+			}
+           System.out.println("frienddara=========="+frienddata);
+			
 		}
-		model.addAttribute("names", names);
+		request.setAttribute("names", names);
 		System.out.println("result2=" + data);
 
 		return "instagram/follow";

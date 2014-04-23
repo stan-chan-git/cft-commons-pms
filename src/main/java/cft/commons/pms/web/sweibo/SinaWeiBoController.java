@@ -300,7 +300,7 @@ public class SinaWeiBoController {
 					content = content.subSequence(0, content.length()-2) + "}";
 				}
 				
-				System.out.println(content);				
+				System.out.println(content);	
 				//request.getSession().setAttribute("sinareturn", "获取评论列表信息成功");
 				//request.getSession().setAttribute("sinaDTOs", sinaDTOs);
 				return content;// 成功页面

@@ -39,3 +39,14 @@ function sinaStatusesUpload(status,callback){
 			// 返回数据类型
 			"json");
 }
+
+//获取好友最新动态
+function sinaCommentsfriends(callback){
+	$.post("/pms/sina/sinaStatuseFriends.do",
+			// 回调函数
+			function(data){
+		 		callback(data); 
+			},
+			// 返回数据类型
+			"json");
+}
