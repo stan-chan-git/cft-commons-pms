@@ -20,6 +20,7 @@ import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
 import cft.commons.pms.dto.instagram.ShareDto;
+import cft.commons.pms.web.tencent.Utils;
 
 @Controller
 public class InstagramController {
@@ -144,7 +145,8 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
-				String created_time=fridendjo.getString("created_time");
+				String created_time=Utils.timestampToDate((Integer.parseInt(fridendjo.getString("created_time"))));
+				
 	            System.out.println("link========="+link);
 	            
 	            String shareUrl="http://api.instagram.com/oembed?url="+link;
