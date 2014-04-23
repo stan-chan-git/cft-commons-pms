@@ -9,8 +9,20 @@
 $(function(){
 	getFocusPeopleWeiBo(function(data){
 		                    if(data != "failure"){
+		                    console.log(data);
+		                    	var wbTable = $("#wbTable")
+		                    	var first = $("#first");
 		                    	var obj = JSON.parse(data);
-		                    	
+		                    console.log(obj[0]);	
+		                    	 $.each(obj,function(i){
+		                    		wbTable.append("<tr align='center'>" +
+		                    		               "<td>"+ obj[i].id +"</td>" +
+		                    		               "<td>"+ obj[i].content +"</td>" +
+		                    		               "<td>"+ obj[i].time +"</td>" +
+		                    		               "<td>"+ obj[i].name +"</td>" +
+		                    		               "<td>来自腾讯微博</td>" +
+		                    		               "</tr>");
+		                    	})
 		                    	
 		                    }else{
 		                    	
@@ -20,6 +32,22 @@ $(function(){
 </script>
 </head>
 <body>
+<div style="border: 2px solid #3399FF; border-radius: 25px; moz-border-radius: 25px; width: 800px; height: 1120px; padding-top: 30px;">			
+			
+			<div class="form-group">
+				<div class="col-sm-11" >
+					<table id="wbTable" class="table table-bordered table-hover" style="margin-left:40px">
+						<tr align="center" class="success">
+							<td>微博ID</td>
+							<td>微博内容</td>
+							<td>发表时间</td>
+							<td>发表人</td>
+							<td>来源</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 
+</div>
 </body>
 </html>
