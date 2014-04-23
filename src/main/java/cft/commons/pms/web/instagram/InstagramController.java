@@ -145,7 +145,7 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
-				String created_time=Utils.timestampToDate((Integer.parseInt(fridendjo.getString("created_time"))));
+				String created_time=Utils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
 				
 	            System.out.println("link========="+link);
 	            
@@ -200,7 +200,7 @@ public class InstagramController {
  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
- 	                   "},";
+ 	                   "}";
         		
         		content = content + weibo;
             }else if(names.size() > 1){
@@ -218,7 +218,7 @@ public class InstagramController {
   				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
   				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
   				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
-  	                   "},";
+  	                   "}";
             
             }
             
