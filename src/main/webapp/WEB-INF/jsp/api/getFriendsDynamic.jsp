@@ -13,9 +13,10 @@ $(function(){
 	 var instagram_token = "<%=session.getAttribute("instagram_token") %>";
 	
 	 var wbTable = $("#wbTable");//插入数据的表格
-	 var msg = $("#msg");//提示消息
+	 var auth_msg = $("#auth_msg");//是否授权提示消息
+	 var data_msg = $("#data_msg");//是否有最新动态提示消息
 	 
-	 if((tencent_token != "null" && tencent_token != "") || (sina_token != "null" && sina_token != "")){
+	 if((tencent_token != "null" && tencent_token != "") || (sina_token != "null" && sina_token != "") || (instagram_token != "null" && instagram_token != "") || (facebook_token != "null" && facebook_token != "")){
 		wbTable.append("<tr align='center' class='success'>" +
 								"<td width='10%' style='display:none'>微博ID</td>" +
 							    "<td width='25%''>微博内容</td>" +
@@ -24,12 +25,12 @@ $(function(){
 								"<td width='15%'>来源</td>" +
 					   "</tr>");
 	 }else{
-		 msg.empty();
-		 msg.append("腾讯微博还未进行授权,不能获取好友动态!<br><br>");
-		 msg.append("新浪微博还未进行授权,不能获取好友动态!<br><br>");
-		 msg.append("FaceBook还未进行授权,不能获取好友动态!<br><br>");
-		 msg.append("Instagram还未进行授权,不能获取好友动态!");
-		 msg.show();
+		 auth_msg.empty();
+		 auth_msg.append("腾讯微博还未进行授权,不能获取好友动态!<br><br>");
+		 auth_msg.append("新浪微博还未进行授权,不能获取好友动态!<br><br>");
+		 auth_msg.append("FaceBook还未进行授权,不能获取好友动态!<br><br>");
+		 auth_msg.append("Instagram还未进行授权,不能获取好友动态!");
+		 auth_msg.show();
 		 
 		 return false;
 	 }
@@ -52,13 +53,13 @@ $(function(){
 			                    	});
 			                    	
 			                    }else{
-				               		msg.append("腾讯微博目前没有好友动态!<br>");
-				               		msg.show();
+			                    	data_msg.append("您的腾讯微博的好友目前没有动态!<br>");
+			                    	data_msg.show();
 			                    }
 		                    });
 	 }else{
-		 msg.append("腾讯微博还未进行授权,不能获取好友动态!<br>");
-		 msg.show();
+		 auth_msg.append("腾讯微博还未进行授权,不能获取好友动态!<br>");
+		 auth_msg.show();
 	 }
 	 
 	//发出请求前先判断新浪微博是否授权
@@ -79,52 +80,58 @@ $(function(){
 						            	});
 						            	
 						            }else{
-						            	msg.append("新浪微博目前没有好友动态!<br>");
-						        		msg.show();
+						            	data_msg.append("您的新浪微博的好友目前没有动态!<br>");
+						            	data_msg.show();
 						            }
 		                   });
 	}else{
-		msg.append("新浪微博还未进行授权,不能获取好友动态!<br>");
-		msg.show();
+		auth_msg.append("新浪微博还未进行授权,不能获取好友动态!<br>");
+		auth_msg.show();
 	}
 
 	//发出请求前先判断Instagram是否授权
-	if(instagram_ token != "null" && instagram_ token != ""){
+	if(instagram_token != "null" && instagram_token != ""){
 		//instagram--获取好友最新动态函数                
 		instagramfriends(function(data){
-								if(data != "empty"){
-						            	var wbTable = $("#wbTable")
-						            	var obj = JSON.parse(data);
-						            	 $.each(obj,function(i){
-						            		wbTable.append("<tr align='center'>" +
-						            		               "<td>"+ obj[i].id +"</td>" +
-						            		               "<td>"+ obj[i].content +"</td>" +
-						            		               "<td>"+ obj[i].time +"</td>" +
-						            		               "<td>"+ obj[i].name +"</td>" +
-						            		               "<td>来自instagram</td>" +
-						            		               "</tr>");
-						            	})
-						            	
-						            }else{
-						            	
-						            }
+							if(data != "empty"){
+					            	var obj = JSON.parse(data);
+					            console.log(obj);
+					            	 $.each(obj,function(i){
+					            		wbTable.append("<tr align='center'>" +
+					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>"+ obj[i].time +"</td>" +
+					            		               "<td>"+ obj[i].name +"</td>" +
+					            		               "<td>来自instagram</td>" +
+					            		               "</tr>");
+					            	})
+					            	
+					         }else{
+					            data_msg.append("您的Instagram的好友目前没有动态<br>");	
+					            data_msg.show();
+					         }
 		                   });
+	}else{
+		auth_msg.append("Insatgram还未进行授权,不能获取好友动态!<br>");
+		auth_msg.show();
 	}
 })
 </script>
 </head>
 <body>
-<div style="width: 800px; height: 1120px; padding-top: 30px;">			
+<div style="width: 800px;padding-top: 30px;">			
             
-            <span id="msg" class="alert alert-info" style="display:none;float:left;margin-left:250px"></span>
-            			
+            <span id="auth_msg" class="alert alert-danger" style="display:none;float:left;margin-left:250px"></span>
+            <br>
+            <span id="data_msg" class="alert alert-info" style="display:none;float:left;margin-left:280px"></span>		
+			
 			<div class="form-group">
 				<div id="dd" class="col-sm-11" >
 					<table id='wbTable' class='table table-bordered table-hover' style='margin-left:40px'>
 					</table>
 				</div>
 			</div>
-
+			
 </div>
 </body>
 </html>
