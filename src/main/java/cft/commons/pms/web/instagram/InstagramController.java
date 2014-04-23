@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.instagram.CommentDto;
@@ -100,7 +101,7 @@ public class InstagramController {
 
 	// 获取关注人信息
 	@RequestMapping(value = "followFirend.do")
-	public String FollowFirend(String uid, String instagram_token, Model model,
+	public  @ResponseBody  String FollowFirend(String uid, String instagram_token, Model model,
 			HttpServletRequest request) throws IOException {
 
 		uid = (String) request.getSession().getAttribute("uid");
@@ -172,10 +173,59 @@ public class InstagramController {
            System.out.println("frienddara=========="+frienddata);
 			
 		}
-		request.setAttribute("names", names);
-		System.out.println("result2=" + data);
-
-		return "instagram/follow";
+		
+		
+		
+		 
+        //将list拼接成字符串需要的变量
+        String resultData = "";
+        String content ="";
+    	String begin = "[";
+    	String end = "]";
+        
+    	if(names==null||names.isEmpty()){
+    		
+    		return "empty";
+    		
+    	}else{
+    		
+    		//若长度为1，则不需要加逗号,否则需注意加逗号
+            if(names.size() == 1){	
+        		String weibo = "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
+        				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
+        				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
+        				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
+        				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
+        	                   "}";
+        		
+        		content = content + weibo;
+            }else if(names.size() > 1){
+            	for(int i = 0 ; i < names.size() - 1 ; i++){
+	        		String weibo = "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
+     				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
+     				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
+     				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
+     				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
+     	                   "}";
+	        		
+	        		content = content + weibo;
+	        	}
+            	
+            	content = content + "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
+  				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
+  				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
+  				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
+  				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
+  	                   "}";
+            
+            }
+            
+            resultData = begin + content + end;
+            
+    	}
+    	
+		
+    	return resultData;
 
 	}
 
