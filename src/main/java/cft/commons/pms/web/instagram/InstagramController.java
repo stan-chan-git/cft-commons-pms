@@ -85,7 +85,15 @@ public class InstagramController {
 		return "easyui/layout";
 
 	}
-
+ 
+	@RequestMapping(value="goCreate.do")
+	public String toCreate(){
+		
+		
+		return "instagram/instagramApi";
+		
+	}
+	//创建订阅
 	@RequestMapping(value = "create.do")
 	public String Create(String uid, String instagram_token,HttpServletRequest request) throws IOException {
 
@@ -94,14 +102,27 @@ public class InstagramController {
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		
-		String subscriptionUrl = "https://api.instagram.com/v1/subscriptions?client_id=" + APP_KEY
+	/*	String subscriptionUrl = "https://api.instagram.com/v1/subscriptions?client_id=" + APP_KEY
 				+ "&client_secret=" + CLIENT_SECET + "&object=user" + "&aspect=media"
 				+ "&verify_token=myVerifyToken" + "&callback_url=" + REDIRECT_URL;
-
+        
 		
 		      
-		String result2 = HttpClientUtils.httpGet(subscriptionUrl, 3000, 9000);
-		return result2;
+		String result2 = HttpClientUtils.httpGet(subscriptionUrl, 3000, 9000);*/
+		
+		
+		String createUrl="https://api.instagram.com/v1/subscriptions/";
+		
+		Map<String,String> nvpMap = new HashMap<String,String>();
+		
+		nvpMap.put("client_id", APP_KEY);
+		nvpMap.put("client_secret", CLIENT_SECET);
+		nvpMap.put("object", "user");
+		nvpMap.put("aspect", "media");
+		nvpMap.put("verify_token", "myVerifyToken");
+		nvpMap.put("callback_url", REDIRECT_URL);
+		
+		return "";
 
 	}
 

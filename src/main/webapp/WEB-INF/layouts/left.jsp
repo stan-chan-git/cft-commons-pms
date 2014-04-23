@@ -28,7 +28,7 @@
 		<li id="one" class="files"><a href="#one">Instagram API</a>
 			
 		<ul class="sub-menu">
-				<li><a href="**"><em>01</em>发布照片</a></li>
+				<li><a href="goCreate.do"><em>01</em>发布照片</a></li>
 				<li><a href="comment.do"><em>01</em>获取各个不同的社交平台上最新的回复</a></li>
 				<li><a href="goComment.do"><em>01</em>创建评论</a></li>
 				<li><a href="followFirend.do"><em>01</em>获取关注人的信息动态</a></li>

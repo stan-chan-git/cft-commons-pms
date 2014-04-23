@@ -274,18 +274,26 @@ public class TencentWeiBoController {
         		//获取当前日期发表的微博,排除其他微博
         		if(wbDate.equals(nowDate)){
         			WeiBoDTO wb = new WeiBoDTO();
-		        	wb.setId((String)obj.get("id"));
-		        	wb.setNick((String)obj.get("nick"));
-		        	wb.setType((Integer)obj.get("type"));
-		        	wb.setTimestamp((Integer)obj.get("timestamp"));	
-		        	wb.setText((String)obj.get("text"));
-		        	wb.setDate(Utils.getWeiBoTime((Integer)obj.get("timestamp")));//将获取的timestamp转换时间格式
-		        	
-		        	//判断此微博是不是转发的
-		        	if((Integer)obj.get("type") == 2){
-		        		JSONObject source = (JSONObject)obj.get("source");
-		        		wb.setOrigtext((String)source.get("origtext"));
+        			
+        			//判断微博内容中是否带http链接
+        			if(obj.getString("text").indexOf("<a href") != -1){
+		        		wb.setText(obj.getString("origtext"));
+		        	}else{
+		        		wb.setText(obj.getString("text"));
 		        	}
+        			
+        			//判断此微博是不是转发的
+		        	if(obj.getInt("type") == 2){
+		        		JSONObject source = (JSONObject)obj.get("source");
+		        		wb.setOrigtext(source.getString("origtext"));
+		        	}
+        			
+		        	wb.setId(obj.getString("id"));
+		        	wb.setNick(obj.getString("nick"));
+		        	wb.setType(obj.getInt("type"));
+		        	wb.setTimestamp(obj.getInt("timestamp"));	
+		        	wb.setDate(Utils.getWeiBoTime(obj.getInt("timestamp")));//将获取的timestamp转换时间格式
+		       	
 		        	
 		        	focusList.add(wb);	
         		}
@@ -331,7 +339,7 @@ public class TencentWeiBoController {
         	
         	resultData = begin + content + end;
         }
-        
+      
         return resultData;
 	}
 	
