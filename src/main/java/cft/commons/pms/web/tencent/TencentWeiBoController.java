@@ -290,11 +290,12 @@ public class TencentWeiBoController {
 		        	
 		        	//判断微博内容中是否带图片
 		        	if(!obj.get("image").toString().equals("null")){
-		        		JSONArray images = (JSONArray)obj.get("image");
-		        		String[] imgs = new String[images.length()];
+		        		//获取图片url数组
+		        		JSONArray imageArray = (JSONArray)obj.get("image");
+		        		String[] imgs = new String[imageArray.length()];
 		                
-		        		for(int j = 0 ; j < images.length() ; j++){
-		        			 imgs[j] = images.get(j).toString();
+		        		for(int j = 0 ; j < imageArray.length() ; j++){
+		        			 imgs[j] = imageArray.get(j).toString();
 		        		     wb.setImageUrls(imgs);
 		        		}
 		        	}
@@ -312,12 +313,21 @@ public class TencentWeiBoController {
         	}
         }
         
-        //将list拼接成字符串需要的变量
+        /*
+         * 将list拼接成JSON格式的resultData字符串，返回给前台JQuery解析
+         */
         String resultData = "";
         String content ="";
     	String begin = "[";
     	String end = "]";
-    	String weibo = "";
+    	
+    	/*
+    	 * 若微博带图，则使用下面的变量将获取到的图片url数组写成json格式，再和resultData字符串拼接起来
+    	 */
+//    	String images = "";
+//    	String imgBegin = "[";
+//    	String imgEnd = "]";
+    	
         
         if(focusList == null || focusList.isEmpty()){
              return "empty";
@@ -326,66 +336,46 @@ public class TencentWeiBoController {
             if(focusList.size() == 1){
             	//判断微博是否带图片
             	if(focusList.get(0).getImageUrls() != null){
-	        		weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
-	        				       ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
-	        				       ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
-	        				       ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"";
+	        		content = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
+	        				  ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
+	        				  ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
+	        				  ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"";
 	        		
-	        		/**** 加图片url拼接入字符串weibo中  ****/
-	        		//根据图片数量的不同选择不同方式拼接
-	        		//if(focusList.get(0).getImageUrls().length == 1){
-	        			
+	        		/**** 加图片url拼接入字符串weibo中  ****/	
 	        		//单张图片	
-	        		weibo = weibo +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[0] + "/160"  + "\"" + "}";
-	        			
-	        		//}else if(focusList.get(0).getImageUrls().length > 1){
-		        		//多张图片
-	        			//for(int x = 0 ; x < focusList.get(0).getImageUrls().length -1 ; x++){
-		        			//weibo = weibo +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[x] + "/160"  + "\"";
-		        		//}
-		        		
-		        		//weibo = weibo + ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[focusList.get(0).getImageUrls().length -1] 
-		        				      //图片尺寸,必须加,否则无法显示图片  
-		        				      //+ "/160"  + "\""
-		        				     // + "}";
-	        		//}
-	        		
-	        		
+	        		content = content +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[0] + "/160"  + "\"" + "}";
             	}else{
-            		weibo = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
-     				        ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
-     				        ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
-     				        ",\"images\":" + "\"null\"" +
-     				        ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"" +
-     	                    "}";
+            		content = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
+     				          ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
+     				          ",\"name\":" + "\"" + focusList.get(0).getNick() + "\"" +
+     				          ",\"images\":" + "\"null\"" +
+     				          ",\"time\":" + "\"" + focusList.get(0).getDate() + "\"" +
+     	                      "}";
             	}
-            	
-            	content = content + weibo;
-            	
             //长度不为1
             }else if(focusList.size() > 1){
             	for(int i = 0 ; i < focusList.size() - 1 ; i++){
-	        		weibo = "";
+            		//循环时用来拼接字符串
+            		String weibo = "";
 	        		//判断是否微博是否含有图片
 	        		if(focusList.get(i).getImageUrls() != null){
-            	           weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
-	        				       ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
-	        				       ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
-	        				       ",\"images\":" + "\"" + focusList.get(i).getImageUrls()[0] + "/160" + "\"" +
-	        				       ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
-	        	                   "},";
+	        			     weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
+	        				         ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
+	        				         ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
+	        				         ",\"images\":" + "\"" + focusList.get(i).getImageUrls()[0] + "/160" + "\"" +
+	        				         ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
+	        	                     "},";
 	        		}else{
-	        			   weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
-	        				       ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
-	        				       ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
-	        				       ",\"images\":" + "\"null\"" +
-	        				       ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
-	        	                   "},";
+	        			     weibo = "{\"id\":" + "\"" + focusList.get(i).getId() + "\"" +
+	        				       	 ",\"content\":" + "\"" + focusList.get(i).getText() + "\"" +
+	        				         ",\"name\":" + "\"" + focusList.get(i).getNick() + "\"" +
+	        				         ",\"images\":" + "\"null\"" +
+	        				         ",\"time\":" + "\"" + focusList.get(i).getDate() + "\"" +
+	        	                     "},";
 	        		}
 	        		
 	        		content = content + weibo;
 	        	}
-	        	
             	//判断最后一条微博是否带有图片
             	if(focusList.get(focusList.size() - 1).getImageUrls() != null){
 		        	content = content + "{\"id\":" + "\"" + focusList.get(focusList.size() - 1).getId() + "\"" +
@@ -406,7 +396,7 @@ public class TencentWeiBoController {
         	
         	resultData = begin + content + end;
         }
-System.out.println(resultData);      
+//System.out.println(resultData);      
         return resultData;
 	}
 	
