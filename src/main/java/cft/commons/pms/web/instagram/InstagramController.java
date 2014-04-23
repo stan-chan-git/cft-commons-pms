@@ -144,7 +144,7 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
-				
+				String created_time=fridendjo.getString("created_time");
 	            System.out.println("link========="+link);
 	            
 	            String shareUrl="http://api.instagram.com/oembed?url="+link;
@@ -156,6 +156,7 @@ public class InstagramController {
 	    		String author_name=shareMedia.getString("author_name");
 	    		String type=shareMedia.getString("type");
 	    		String title=shareMedia.getString("title");
+	    		String media_id=shareMedia.getString("media_id");
 	    	    System.out.println(shareMedia);
 	    		
 	    		
@@ -167,6 +168,8 @@ public class InstagramController {
 	    		followDto.setType(type);
 	    		followDto.setUrl(url);
 	    		followDto.setPhoto(profile_picture);
+	    		followDto.setMedia_id(media_id);
+	    		followDto.setDate(created_time);
 	    		names.add(followDto);
 				
 			}
@@ -191,32 +194,29 @@ public class InstagramController {
     		
     		//若长度为1，则不需要加逗号,否则需注意加逗号
             if(names.size() == 1){	
-        		String weibo = "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
-        				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
-        				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
-        				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
-        				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
-        	                   "}";
+        		String weibo = "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
+ 				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
+ 				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+ 				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+ 	                   "},";
         		
         		content = content + weibo;
             }else if(names.size() > 1){
             	for(int i = 0 ; i < names.size() - 1 ; i++){
-	        		String weibo = "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
-     				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
-     				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
-     				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
-     				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
-     	                   "}";
+	        		String weibo =  "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
+	  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
+	 				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+	 				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+	 	                   "},";
 	        		
 	        		content = content + weibo;
 	        	}
             	
-            	content = content + "{\"title\":" + "\"" + names.get(0).getTitle() + "\"" +
-  				       ",\"username\":" + "\"" + names.get(0).getUsername() + "\"" +
-  				       ",\"photo\":" + "\"" + names.get(0).getPhoto() + "\"" +
-  				       ",\"type\":" + "\"" + names.get(0).getType() + "\"" +
-  				       ",\"url\":" + "\"" + names.get(0).getUrl() + "\"" +
-  	                   "}";
+            	content = content +  "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
+  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
+  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
+  	                   "},";
             
             }
             
