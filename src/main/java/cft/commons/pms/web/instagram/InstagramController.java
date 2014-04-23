@@ -198,7 +198,7 @@ public class InstagramController {
  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
- 	                   "},";
+ 	                   "}";
         		
         		content = content + weibo;
             }else if(names.size() > 1){
@@ -216,7 +216,7 @@ public class InstagramController {
   				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
   				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
   				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
-  	                   "},";
+  	                   "}";
             
             }
             
