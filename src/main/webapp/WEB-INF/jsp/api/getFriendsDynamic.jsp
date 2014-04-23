@@ -51,6 +51,28 @@ $(function(){
 					            	
 					            }
 	                   });
+	//instagram--获取好友最新动态函数                
+	instagramfriends(function(data){
+							if(data != "empty"){
+					            //console.log(data);
+					            	var wbTable = $("#wbTable")
+					            	//var first = $("#first");
+					            	var obj = JSON.parse(data);
+					            //console.log(obj[0]);	
+					            	 $.each(obj,function(i){
+					            		wbTable.append("<tr align='center'>" +
+					            		               "<td>"+ obj[i].id +"</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>"+ obj[i].time +"</td>" +
+					            		               "<td>"+ obj[i].name +"</td>" +
+					            		               "<td>来自instagram</td>" +
+					            		               "</tr>");
+					            	})
+					            	
+					            }else{
+					            	
+					            }
+	                   });
 })
 </script>
 </head>

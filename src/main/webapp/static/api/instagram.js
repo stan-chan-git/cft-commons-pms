@@ -1,5 +1,5 @@
 //获取好友最新动态
-function sinaCommentsfriends(callback){
+function instagramfriends(callback){
 	$.post("/pms/instagram/followFirend.do",
 			// 回调函数
 			function(data){
