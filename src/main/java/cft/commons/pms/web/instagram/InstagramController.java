@@ -59,7 +59,7 @@ public class InstagramController {
 		if (!instagram_token.equals("")) {
 			// 调用API需要的部分公有参数
 			request.getSession().setAttribute("instagram_token", instagram_token);
-			request.getSession().setAttribute("uid", uid);
+			request.getSession().setAttribute("instagramId", uid);
 
 			// 在页面使用，提示授权成功
 			request.setAttribute("instagram_info", "success");
@@ -68,7 +68,7 @@ public class InstagramController {
 		}
 
 		model.addAttribute("instagram_token", instagram_token);
-		model.addAttribute("uid", uid);
+		model.addAttribute("instagramId", uid);
 		model.addAttribute("success", "instagram授权成功");
 		// 获取关注用户的信息
 		/*
@@ -105,18 +105,19 @@ public class InstagramController {
 	public  @ResponseBody  String FollowFirend(String uid, String instagram_token, Model model,
 			HttpServletRequest request) throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
 		String result2 = HttpClientUtils.httpGet(followByUrl, 9000, 9000);
 
-		JSONObject json2 = new JSONObject(result2);
-		JSONArray data = json2.getJSONArray("data");
+		JSONObject Followjson2 = new JSONObject(result2);
+		System.out.println("json2========"+Followjson2);
+		JSONArray followdata = Followjson2.getJSONArray("data");
 		List<FollowDto> names = new ArrayList<FollowDto>();
 		
 		
-		for (int i = 0; i < data.length(); i++) {
-			JSONObject jo = (JSONObject) data.get(i);
+		for (int i = 0; i < followdata.length(); i++) {
+			JSONObject jo = (JSONObject) followdata.get(i);
 			String joString = jo.toString(i);
             String userId=jo.getString("id");
 			String userName = jo.getString("username");
@@ -236,7 +237,7 @@ public class InstagramController {
 	public String Comment(String uid, String instagram_token, HttpServletRequest request)
 			throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;
@@ -302,7 +303,7 @@ public class InstagramController {
 	public String likeMedia(String uid, String instagram_token, HttpServletRequest request)
 			throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/self/feed?access_token="
@@ -362,7 +363,7 @@ public class InstagramController {
 	@RequestMapping(value="createComment.do")
 	public String createComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
 		
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		//获取到评论内容
 		String text=request.getParameter("comment");
@@ -405,7 +406,7 @@ public class InstagramController {
 	@RequestMapping(value="popular.do")
 	public String popularMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
 		  
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		
 		String popuLarUrl="https://api.instagram.com/v1/media/popular?access_token="+instagram_token;
@@ -423,7 +424,7 @@ public class InstagramController {
 	public String shareMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
 		
 		
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;
