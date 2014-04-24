@@ -158,19 +158,19 @@ $(function(){
 	
 	//发出请求前先判断Facebook是否授权
 	if(facebook_token != "null" && facebook_token != ""){
-		alert("i come in getFriendsDyn.js");
+		//alert("i come in getFriendsDyn.js");
 		//facebook--获取好友最新动态函数                
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
 					            	var obj = JSON.parse(data);
-					            console.log(obj);
+					            //console.log(obj);
 					            	 $.each(obj,function(i){
 					            		wbTable.append("<tr align='center'>" +
 					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>来自facebook</td>" +
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自facebook</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
 					            		               "</tr>");
 					            	})
 					            	
