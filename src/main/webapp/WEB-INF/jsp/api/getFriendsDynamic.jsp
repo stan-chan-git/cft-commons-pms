@@ -130,7 +130,7 @@ $(function(){
 				            		              
 				            		               "<td>"+ obj[i].content +
 	                    		                    "<br><img  width='40%' height='40%'  src="+ obj[i].images +" />"+
-	                    		               "</td>" +
+	                    		                   "</td>" +
 				            		               "<td>"+ obj[i].time +"</td>" +
 				            		               "<td>"+ obj[i].name +"</td>" +
 				            		               "<td>来自instagram</td>" +
