@@ -343,7 +343,7 @@ public class TencentWeiBoController {
 	        		
 	        		/**** 加图片url拼接入字符串weibo中  ****/	
 	        		//单张图片	
-	        		content = content +  ",\"images\"" + "\"" + focusList.get(0).getImageUrls()[0] + "/160"  + "\"" + "}";
+	        		content = content +  ",\"images\":" + "\"" + focusList.get(0).getImageUrls()[0] + "/160"  + "\"" + "}";
             	}else{
             		content = "{\"id\":" + "\"" + focusList.get(0).getId() + "\"" +
      				          ",\"content\":" + "\"" + focusList.get(0).getText() + "\"" +
@@ -396,7 +396,7 @@ public class TencentWeiBoController {
         	
         	resultData = begin + content + end;
         }
-//System.out.println(resultData);      
+System.out.println(resultData);      
         return resultData;
 	}
 	
