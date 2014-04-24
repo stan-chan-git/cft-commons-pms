@@ -116,6 +116,7 @@ function postFBmsgpic(msg,facebookToken,callback){
  * 获取好友动态
  */
 function facebookFriendsDyn(callback){
+	//alert("i come in facebook.js");
 	$.post("/pms/facebook/facebookFriendsDyn.do",
 		
 		   function(data){
