@@ -302,33 +302,20 @@ public class SinaWeiBoController {
 				/* 将获取的收据转化为json */
 				String content = new String();
 
-				if (sinaDTOs == null || sinaDTOs.isEmpty()) {
-					
+				if (sinaDTOs == null || sinaDTOs.isEmpty()) {				
 					return "empty"; // 没数据
-				} else if (sinaDTOs.size() == 1) {
-
-					/* 当数据只有一条的时候 */
-					for (SinaDTO sinaDTO : sinaDTOs) {
-						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
-								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
-								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\"" 
-								+ ",\"time\":"+ "\"" + sinaDTO.getTime() + "\"" 
-								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic() + "\"" + "}";
-						content = content + SinaWeiBo;
-					}
-					content = "[" + content.subSequence(0, content.length() - 1) + "}]";
-					
 				} else {
-					/* 当数据不止一条的时候 */
-					for (SinaDTO sinaDTO : sinaDTOs) {
-						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
-								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
-								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\""
-								+ ",\"time\":" + "\"" + sinaDTO.getTime() + "\""
-								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic()+ "\"" + "},";
-						content = content + SinaWeiBo;
+					JSONArray jsonArray = new JSONArray();
+					for (int i = 0; i < sinaDTOs.size(); i++) {
+						JSONObject tempJsonObject = new JSONObject();
+						tempJsonObject.put("id", sinaDTOs.get(i).getId());
+						tempJsonObject.put("content", sinaDTOs.get(i).getContent());
+						tempJsonObject.put("name", sinaDTOs.get(i).getName());
+						tempJsonObject.put("time", sinaDTOs.get(i).getTime());
+						tempJsonObject.put("images", sinaDTOs.get(i).getTime());
+						jsonArray.put(tempJsonObject);
 					}
-					content = "[" + content.subSequence(0, content.length() - 2) + "}]";
+					content = jsonArray.toString();
 				}
 				System.out.println("content:"+content);
 				return content;// 返回对应的json
