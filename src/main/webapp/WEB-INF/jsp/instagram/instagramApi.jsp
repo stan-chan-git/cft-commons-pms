@@ -8,14 +8,26 @@
 </head>
 <body>
 
-<a name="">上传图片:</a>
-<form action="create.do" method="post" enctype="multipart/form-data">
-access_token:<input type="hidden" name="access_token" value="${access_token}" readonly="readonly" /><br>
-照片:<input type="file" name="pic" /><br>
-说明:<input type="text" value="" />
-<!-- Common Param  -->
-<input type="submit" value="发送" />
-<hr>
+<form action="create.do" role="form" method="post">
+<div class="form-group">
+	<span class="col-sm-3 label label-success">微博内容:</span>
+	<div class="col-sm-8">
+		<textarea id="content"  class="form-control" name="content" rows="5" cols="70">测试带图片的微博.......</textarea>
+	</div>
+</div>
+<br><br>
+<div class="form-group" style="padding-top:100px">
+    <span class="col-sm-3 label label-success">图&nbsp;&nbsp;&nbsp;&nbsp;片:</span>
+    <div class="col-sm-8">
+    	<img style="width:200px;height:133px;" src="/pms/static/images/test.jpg" />
+    </div>
+</div>
+<br>
+
+
+<div class="form-group">
+	<input id="send" class="btn btn-default" style="margin-left:115px;margin-top:20px" type="button" value="发送" />
+</div>
 </form>
    
 

@@ -15,5 +15,6 @@ public class SinaDTO {
 	private String content;
 	private String name;
 	private String time;
+	private String thumbnail_pic;//缩略图片地址
 	
 }

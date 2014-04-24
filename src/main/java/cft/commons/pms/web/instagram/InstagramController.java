@@ -59,7 +59,7 @@ public class InstagramController {
 		if (!instagram_token.equals("")) {
 			// 调用API需要的部分公有参数
 			request.getSession().setAttribute("instagram_token", instagram_token);
-			request.getSession().setAttribute("uid", uid);
+			request.getSession().setAttribute("instagramId", uid);
 
 			// 在页面使用，提示授权成功
 			request.setAttribute("instagram_info", "success");
@@ -68,7 +68,7 @@ public class InstagramController {
 		}
 
 		model.addAttribute("instagram_token", instagram_token);
-		model.addAttribute("uid", uid);
+		model.addAttribute("instagramId", uid);
 		model.addAttribute("success", "instagram授权成功");
 		// 获取关注用户的信息
 		/*
@@ -85,18 +85,44 @@ public class InstagramController {
 		return "easyui/layout";
 
 	}
-
+ 
+	@RequestMapping(value="goCreate.do")
+	public String toCreate(){
+		
+		
+		return "instagram/instagramApi";
+		
+	}
+	//创建订阅
 	@RequestMapping(value = "create.do")
-	public String Create() throws IOException {
+	public String Create(String uid, String instagram_token,HttpServletRequest request) throws IOException {
 
 		// 创建一个订阅
-
-		String subscriptionUrl = "https://api.instagram.com/v1/subscriptions?client_id=" + APP_KEY
+  
+		uid = (String) request.getSession().getAttribute("instagramId");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		
+	/*	String subscriptionUrl = "https://api.instagram.com/v1/subscriptions?client_id=" + APP_KEY
 				+ "&client_secret=" + CLIENT_SECET + "&object=user" + "&aspect=media"
 				+ "&verify_token=myVerifyToken" + "&callback_url=" + REDIRECT_URL;
-
-		String result2 = HttpClientUtils.httpGet(subscriptionUrl, 3000, 9000);
-		return result2;
+        
+		
+		      
+		String result2 = HttpClientUtils.httpGet(subscriptionUrl, 3000, 9000);*/
+		
+		
+		String createUrl="https://api.instagram.com/v1/subscriptions/";
+		
+		Map<String,String> nvpMap = new HashMap<String,String>();
+		
+		nvpMap.put("client_id", APP_KEY);
+		nvpMap.put("client_secret", CLIENT_SECET);
+		nvpMap.put("object", "user");
+		nvpMap.put("aspect", "media");
+		nvpMap.put("verify_token", "myVerifyToken");
+		nvpMap.put("callback_url", REDIRECT_URL);
+		
+		return "";
 
 	}
 
@@ -105,18 +131,19 @@ public class InstagramController {
 	public  @ResponseBody  String FollowFirend(String uid, String instagram_token, Model model,
 			HttpServletRequest request) throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
 		String result2 = HttpClientUtils.httpGet(followByUrl, 9000, 9000);
 
-		JSONObject json2 = new JSONObject(result2);
-		JSONArray data = json2.getJSONArray("data");
+		JSONObject Followjson2 = new JSONObject(result2);
+		System.out.println("json2========"+Followjson2);
+		JSONArray followdata = Followjson2.getJSONArray("data");
 		List<FollowDto> names = new ArrayList<FollowDto>();
 		
 		
-		for (int i = 0; i < data.length(); i++) {
-			JSONObject jo = (JSONObject) data.get(i);
+		for (int i = 0; i < followdata.length(); i++) {
+			JSONObject jo = (JSONObject) followdata.get(i);
 			String joString = jo.toString(i);
             String userId=jo.getString("id");
 			String userName = jo.getString("username");
@@ -160,7 +187,7 @@ public class InstagramController {
 	    		String title=shareMedia.getString("title");
 	    		String media_id=shareMedia.getString("media_id");
 	    	    System.out.println(shareMedia);
-	    		
+	    		System.out.println("url===="+url);
 	    		
 	    		
 	    		FollowDto followDto=new FollowDto();
@@ -199,6 +226,7 @@ public class InstagramController {
         		String weibo = "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
  				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
  				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
+ 				      ",\"images\":" + "\"" + names.get(0).getUrl() + "\"" +
  				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
  	                   "}";
         		
@@ -208,6 +236,7 @@ public class InstagramController {
 	        		String weibo =  "{\"id\":" + "\"" + names.get(i).getMedia_id() + "\"" +
 	  				       ",\"content\":" + "\"" + names.get(i).getTitle() + "\"" +
 	 				       ",\"name\":" + "\"" + names.get(i).getUsername() + "\"" +
+	 				      ",\"images\":" + "\"" + names.get(i).getUrl() + "\"" +
 	 				       ",\"time\":" + "\"" + names.get(i).getDate()+ "\"" +
 	 	                   "},";
 	        		
@@ -217,6 +246,7 @@ public class InstagramController {
             	content = content +  "{\"id\":" + "\"" + names.get(names.size()-1).getMedia_id() + "\"" +
   				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
   				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
+  				       ",\"images\":" + "\"" + names.get(names.size()-1).getUrl() + "\"" +
   				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
   	                   "}";
             
@@ -236,7 +266,7 @@ public class InstagramController {
 	public String Comment(String uid, String instagram_token, HttpServletRequest request)
 			throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;
@@ -302,7 +332,7 @@ public class InstagramController {
 	public String likeMedia(String uid, String instagram_token, HttpServletRequest request)
 			throws IOException {
 
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/self/feed?access_token="
@@ -362,7 +392,7 @@ public class InstagramController {
 	@RequestMapping(value="createComment.do")
 	public String createComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
 		
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		//获取到评论内容
 		String text=request.getParameter("comment");
@@ -405,7 +435,7 @@ public class InstagramController {
 	@RequestMapping(value="popular.do")
 	public String popularMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
 		  
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		
 		String popuLarUrl="https://api.instagram.com/v1/media/popular?access_token="+instagram_token;
@@ -423,7 +453,7 @@ public class InstagramController {
 	public String shareMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
 		
 		
-		uid = (String) request.getSession().getAttribute("uid");
+		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		// 获取媒体的的信息和id
 		String mdeiaId = "https://api.instagram.com/v1/users/"+uid+"/media/recent/?access_token="+instagram_token;

@@ -202,6 +202,7 @@ public class SinaWeiBoController {
 					JSONObject tempComments = (JSONObject) comments.get(i);
 					String textRepost = tempComments.getString("text");// 评论的内容
 					String created_at = tempComments.getString("created_at");// 评论创建时间
+					//String thumbnail_pic = tempComments.getString("thumbnail_pic");
 					Long id = tempComments.getLong("id");// 评论的ID
 					JSONObject tempUser = tempComments.getJSONObject("user");// 评论作者的用户信息
 					String screen_name = (String) tempUser.get("screen_name");// 评论作者的用户昵称
@@ -216,6 +217,7 @@ public class SinaWeiBoController {
 					sinaComDTO.setScreen_name(screen_name);
 					sinaComDTO.setText(textRepost);
 					sinaComDTO.setTextStatus(textStatus);
+					//sinaComDTO.setThumbnail_pic(thumbnail_pic);
 
 					sinaComDTOs.add(sinaComDTO);
 				}
@@ -235,16 +237,14 @@ public class SinaWeiBoController {
 	/* 获取关注人的微博controller */
 	@RequestMapping(value = "sinaStatuseFriends.do")
 	public @ResponseBody
-	String sina_Comments_friends(HttpServletRequest request) throws IOException,
-			ParseException {
+	String sina_Comments_friends(HttpServletRequest request) throws IOException, ParseException {
 
 		String access_token = (String) request.getSession().getAttribute("sina_token");
 		String uid = (String) request.getSession().getAttribute("uid");
 		// 有授权或者获取到token
 		if (access_token != null && !access_token.equals("")) {
 
-			String Url = SinaConstants.StatusesFriendsTimelineUrl 
-					+ "?access_token=" + access_token;
+			String Url = SinaConstants.StatusesFriendsTimelineUrl + "?access_token=" + access_token;
 
 			String friendString = HttpClientUtils.httpGet(Url, 5000, 5000);
 			System.out.println(friendString);
@@ -257,60 +257,85 @@ public class SinaWeiBoController {
 			if (statuses != null && statuses.length() > 0) {// 如有新的好友动态则显示
 
 				List<SinaDTO> sinaDTOs = new ArrayList<SinaDTO>();
+
+				Date date = new Date();
+				String nowDate = SinaUtil.DateFormat(date.toString());
+
 				for (int i = 0; i < statuses.length(); i++) {// 提取对应信息
 					JSONObject tempStatuses = (JSONObject) statuses.get(i);
-					String content = tempStatuses.getString("text");//内容
-					String time = tempStatuses.getString("created_at");//创建时间
-					Long id = tempStatuses.getLong("id");//微博ID
+					String content = tempStatuses.getString("text");// 内容
+					String time = tempStatuses.getString("created_at");// 创建时间
+					Long id = tempStatuses.getLong("id");// 微博ID
+				
+					
 					JSONObject tempUser = tempStatuses.getJSONObject("user");
-					String name = (String) tempUser.get("screen_name");//作者名字
-					String userIdStr = tempUser.getString("idstr");//作者ID
-
-					// 非自己的微博写入DTO
-					if (!userIdStr.equals(uid)) {
+					String name = (String) tempUser.get("screen_name");// 作者名字
+					String userIdStr = tempUser.getString("idstr");// 作者ID
+					
+					//取图片数组
+					JSONArray tempPic = tempStatuses.getJSONArray("pic_urls");//图片
+					String thumbnail_pic = null;//略缩图
+					if (tempPic!=null&&!tempPic.isNull(0)) {
+						for (int j = 0; j < tempPic.length(); j++) {						
+							JSONObject pic = (JSONObject) tempPic.get(j);
+							thumbnail_pic = pic.getString("thumbnail_pic");
+							//System.out.println(thumbnail_pic);
+						}						
+					}
+					
+					
+					
+					// 非自己的微博且是今天的微博写入DTO
+					if (!userIdStr.equals(uid) && nowDate.equals(SinaUtil.DateFormat(time))) {
 						SinaDTO sinaDTO = new SinaDTO();
 						sinaDTO.setId(id);
 						sinaDTO.setTime(SinaUtil.SinaDateFormat(time));
 						sinaDTO.setContent(content);
 						sinaDTO.setUserId(userIdStr);
 						sinaDTO.setName(name);
+						sinaDTO.setThumbnail_pic(thumbnail_pic);
 
 						sinaDTOs.add(sinaDTO);
 					}
 				}
-				
-				/*将获取的收据转化为json*/
+
+				/* 将获取的收据转化为json */
 				String content = new String();
-				if (sinaDTOs.size()==1) {
-					/*当数据只有一条的时候*/
-					for (SinaDTO sinaDTO : sinaDTOs) {
-						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
-								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
-								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "}";
-						content = content + SinaWeiBo;
-					}	   
+
+				if (sinaDTOs == null || sinaDTOs.isEmpty()) {
 					
-				}else {
-					/*当数据不止一条的时候*/
+					return "empty"; // 没数据
+				} else if (sinaDTOs.size() == 1) {
+
+					/* 当数据只有一条的时候 */
 					for (SinaDTO sinaDTO : sinaDTOs) {
-						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\"" + ",\"content\":"
-								+ "\"" + sinaDTO.getContent() + "\"" + ",\"name\":" + "\"" + sinaDTO.getName()
-								+ "\"" + ",\"time\":" + "\"" + sinaDTO.getTime() + "\"" + "},";
+						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
+								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
+								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\"" 
+								+ ",\"time\":"+ "\"" + sinaDTO.getTime() + "\"" 
+								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic() + "\"" + "}";
 						content = content + SinaWeiBo;
-					}	   
-					content = "[" +content.subSequence(0, content.length()-2) + "}]";
+					}
+					content = "[" + content.subSequence(0, content.length() - 1) + "}]";
+					
+				} else {
+					/* 当数据不止一条的时候 */
+					for (SinaDTO sinaDTO : sinaDTOs) {
+						String SinaWeiBo = "{\"id\":" + "\"" + sinaDTO.getId() + "\""
+								+ ",\"content\":" + "\"" + sinaDTO.getContent() + "\""
+								+ ",\"name\":" + "\"" + sinaDTO.getName() + "\""
+								+ ",\"time\":" + "\"" + sinaDTO.getTime() + "\""
+								+ ",\"images\":"+ "\"" + sinaDTO.getThumbnail_pic()+ "\"" + "},";
+						content = content + SinaWeiBo;
+					}
+					content = "[" + content.subSequence(0, content.length() - 2) + "}]";
 				}
-				
-				System.out.println(content);	
-				//request.getSession().setAttribute("sinareturn", "获取评论列表信息成功");
-				//request.getSession().setAttribute("sinaDTOs", sinaDTOs);
+				System.out.println("content:"+content);
 				return content;// 返回对应的json
 			}
-			request.getSession().setAttribute("sinareturn", "没有最新好友动态");
 			return "empty"; // 没数据
 		}
-
-		//request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
+		// request.getSession().setAttribute("sinareturn", "获取关注的人动态信息失败");
 		return "empty"; // 没数据
 	}
 

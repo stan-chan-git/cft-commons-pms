@@ -41,15 +41,30 @@ $(function(){
 		 getFocusPeopleWeiBo(function(data){
 			                    if(data != "empty"){
 			                    	var obj = JSON.parse(data);
-			                    
+			                      
 			                    	$.each(obj,function(i){
-			                    		wbTable.append("<tr align='center'>" +
+			                    		//判断是否带图片
+			                    	//console.log(obj[i].images);
+			                    		if(obj[i].images == "null"){
+				                    		wbTable.append("<tr align='center'>" +
+				                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+				                    		               "<td>"+ obj[i].content +"</td>" +
+				                    		               "<td>"+ obj[i].time +"</td>" +
+				                    		               "<td>"+ obj[i].name +"</td>" +
+				                    		               "<td>来自腾讯微博</td>" +
+				                    		               "</tr>");
+			                    		}else{
+			                    			wbTable.append("<tr align='center'>" +
 			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-			                    		               "<td>"+ obj[i].content +"</td>" +
+			                    		               //将图片显示在文字下方
+			                    		               "<td>"+ obj[i].content +
+			                    		                    "<br><img src="+ obj[i].images +" />"+
+			                    		               "</td>" +
 			                    		               "<td>"+ obj[i].time +"</td>" +
 			                    		               "<td>"+ obj[i].name +"</td>" +
 			                    		               "<td>来自腾讯微博</td>" +
 			                    		               "</tr>");
+			                    		}
 			                    	});
 			                    	
 			                    }else{
@@ -66,10 +81,11 @@ $(function(){
 	if(sina_token != "null" && sina_token != ""){
 		//新浪微博--获取好友最新动态函数                
 		sinaCommentsfriends(function(data){
-								if(data != "empty"){
-						            	var obj = JSON.parse(data);
-						           
-						            	$.each(obj,function(i){
+							   if(data != "empty"){
+					            	var obj = JSON.parse(data);
+					           
+					            	$.each(obj,function(i){
+					            		if(obj[i].images == "null"){
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 						            		               "<td>"+ obj[i].content +"</td>" +
@@ -77,12 +93,24 @@ $(function(){
 						            		               "<td>"+ obj[i].name +"</td>" +
 						            		               "<td>来自新浪微博</td>" +
 						            		               "</tr>");
-						            	});
-						            	
-						            }else{
-						            	data_msg.append("您的新浪微博的好友目前没有动态!<br>");
-						            	data_msg.show();
-						            }
+					            		}else{
+					            			wbTable.append("<tr align='center'>" +
+			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			                    		               //将图片显示在文字下方
+			                    		               "<td>"+ obj[i].content +
+			                    		                    "<br><img src="+ obj[i].images +" />"+
+			                    		               "</td>" +
+			                    		               "<td>"+ obj[i].time +"</td>" +
+			                    		               "<td>"+ obj[i].name +"</td>" +
+			                    		               "<td>来自新浪微博</td>" +
+			                    		               "</tr>");
+					            		}
+					            	});
+							            	
+						       }else{
+					            	data_msg.append("您的新浪微博的好友目前没有动态!<br>");
+					            	data_msg.show();
+						       }
 		                   });
 	}else{
 		auth_msg.append("新浪微博还未进行授权,不能获取好友动态!<br>");
@@ -94,17 +122,20 @@ $(function(){
 		//instagram--获取好友最新动态函数                
 		instagramfriends(function(data){
 							if(data != "empty"){
-					            	var obj = JSON.parse(data);
-					            console.log(obj);
-					            	 $.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>来自instagram</td>" +
-					            		               "</tr>");
-					            	})
+				            	var obj = JSON.parse(data);
+				            
+				            	 $.each(obj,function(i){
+				            		wbTable.append("<tr align='center'>" +
+				            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+				            		              
+				            		               "<td>"+ obj[i].content +
+	                    		                    "<br><img  width='40%' height='40%'  src="+ obj[i].images +" />"+
+	                    		                   "</td>" +
+				            		               "<td>"+ obj[i].time +"</td>" +
+				            		               "<td>"+ obj[i].name +"</td>" +
+				            		               "<td>来自instagram</td>" +
+				            		               "</tr>");
+				            	})
 					            	
 					         }else{
 					            data_msg.append("您的Instagram的好友目前没有动态<br>");	
