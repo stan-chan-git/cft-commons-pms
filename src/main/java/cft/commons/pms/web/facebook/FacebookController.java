@@ -86,7 +86,7 @@ public class FacebookController {
 		JSONArray friendData = friendJson.getJSONArray("data");
         
 		//1.循环取出授权用户的朋友的id
-        for (int i = 0; i < friendData.length(); i++) {
+        for (int i = 0; i < 5; i++) {
 			JSONObject friendjo = (JSONObject) friendData.get(i);
 //			System.out.println("friendjo::::::::::::::" + friendjo);
             String userId = friendjo.getString("id");
@@ -180,6 +180,7 @@ public class FacebookController {
             }
         	
         	resultData = begin + content + end;
+        	System.out.println("resultData::::::::::::::" + resultData);
         }
         
         return resultData;
