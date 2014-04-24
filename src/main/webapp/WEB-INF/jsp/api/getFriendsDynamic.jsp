@@ -115,6 +115,34 @@ $(function(){
 		auth_msg.append("Insatgram还未进行授权,不能获取好友动态!<br>");
 		auth_msg.show();
 	}
+	
+	//发出请求前先判断Facebook是否授权
+	if(facebook_token != "null" && facebook_token != ""){
+		alert("i come in getFriendsDyn.js");
+		//facebook--获取好友最新动态函数                
+		facebookFriendsDyn(function(data){
+							if(data != "empty"){
+					            	var obj = JSON.parse(data);
+					            console.log(obj);
+					            	 $.each(obj,function(i){
+					            		wbTable.append("<tr align='center'>" +
+					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>"+ obj[i].time +"</td>" +
+					            		               "<td>"+ obj[i].name +"</td>" +
+					            		               "<td>来自facebook</td>" +
+					            		               "</tr>");
+					            	})
+					            	
+					         }else{
+					            data_msg.append("您的Facebook的好友目前没有动态<br>");	
+					            data_msg.show();
+					         }
+		                   });
+	}else{
+		auth_msg.append("Facebook还未进行授权,不能获取好友动态!<br>");
+		auth_msg.show();
+	}
 })
 </script>
 </head>
