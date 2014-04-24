@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
@@ -28,7 +29,7 @@ public class InstagramController {
 
 	private static final String APP_KEY = "195a0d5137fc46c58ef5f4db4281972e";
 	private static final String CLIENT_SECET = "b3e18ec7fd524df6be0067a91504847f";
-	private static final String REDIRECT_URL = "http://localhost:8088/pms/instagram/instagramApi.do";
+	private static final String REDIRECT_URL = "http://localhost:8080/pms/instagram/instagramApi.do";
 
 	@RequestMapping(value = "instagramApi.do")
 	public String instagram(String code, Model model, HttpServletRequest request)
@@ -459,8 +460,8 @@ public class InstagramController {
 		
 	}
 	//创建评论
-	@RequestMapping(value="createComment.do")
-	public String createComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
+	@RequestMapping(value="createComment.do" ,method=RequestMethod.POST)
+	public   String createComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
 		
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
@@ -468,17 +469,23 @@ public class InstagramController {
 		String mediaId=request.getParameter("mediaId");
 		String text=request.getParameter("comment");
 		
-		String createCommentUrl = "https://api.instagram.com/v1/media/{"+mediaId+"}/comments";
-	    
-		Map<String, String> nvpMap = new HashMap<String, String>();
+		//String createCommentUrl = "https://api.instagram.com/v1/media/"+mediaId+"/comments?access_token="+instagram_token+"&text="+text;
+		String createCommentUrl = "https://api.instagram.com/v1/media/"+mediaId+"/comments";
+		//String commentResult=HttpClientUtils.httpGet(createCommentUrl, 10000, 10000);
+		
+		System.out.println();
+		System.out.println("mediaId"+mediaId);
+		System.out.println("text===="+text);
+		
+    	Map<String, String> nvpMap = new HashMap<String, String>();
 		nvpMap.put("access_token", instagram_token);
 		nvpMap.put("text", text);
-		
-		String result = HttpClientUtils.httpPost(nvpMap, createCommentUrl, 10000, 10000);
+		//String result=HttpClientUtils.httpGet(createCommentUrl, 9000, 9000);
+		String result = HttpClientUtils.httpPost(nvpMap ,createCommentUrl, 9000, 9000);
 		
 		System.out.println("result============="+result);
 		
-		return "instagram/comment";
+		return "instagram/instagramApi";
 	
 	}
 	
