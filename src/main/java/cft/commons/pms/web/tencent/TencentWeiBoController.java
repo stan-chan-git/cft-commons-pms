@@ -23,7 +23,7 @@ public class TencentWeiBoController {
 
 	private static final String APP_KEY = "801495189";
 	private static final String CLIENT_SECET = "ff66b84d1e37af0b630639de332ef996";
-	private static final String REDIRECT_URL = "http://localhost:8088/pms/tencent/tweibo.do";
+	private static final String REDIRECT_URL = "http://localhost:8080/pms/tencent/tweibo.do";
 	//调用API需要的公共部分
 	private static final String COMMON_URL = "https://open.t.qq.com/api";
 	//公有参数
