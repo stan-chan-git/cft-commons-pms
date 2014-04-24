@@ -54,7 +54,7 @@ function postFBmsg(msg,facebookToken,callback){
 } 
 
 /**
- * 发布一条文字带图片信息
+ * 发布一条文字带图片信息（不能实现）
  */
 function writeNewPostPic(msg,callback){
 	//初始化
@@ -116,7 +116,6 @@ function postFBmsgpic(msg,facebookToken,callback){
  * 获取好友动态
  */
 function facebookFriendsDyn(callback){
-	alert("i come in facebook.js");
 	$.post("/pms/facebook/facebookFriendsDyn.do",
 		
 		   function(data){

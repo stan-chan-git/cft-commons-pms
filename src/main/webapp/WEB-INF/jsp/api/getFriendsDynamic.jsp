@@ -158,7 +158,6 @@ $(function(){
 	
 	//发出请求前先判断Facebook是否授权
 	if(facebook_token != "null" && facebook_token != ""){
-		alert("i come in getFriendsDyn.js");
 		//facebook--获取好友最新动态函数                
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){

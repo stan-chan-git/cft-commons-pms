@@ -128,7 +128,7 @@ public class FacebookController {
         			fbDto.setUserName(userName);
         			fbDto.setUpdate_time(updateTime);
         			fbDto.setMessage((String) feedjo.get("message"));
-        			System.out.println("DTO::::::::::::::::::" + fbDto);
+//        			System.out.println("DTO::::::::::::::::::" + fbDto);
         			friendList.add(fbDto);
 //    	            System.out.println("--------------------一条post-----------------------------------------");
     			}
