@@ -20,6 +20,7 @@ import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
 import cft.commons.pms.dto.instagram.ShareDto;
+import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
 import cft.commons.pms.web.tencent.Utils;
 
 @Controller
@@ -115,14 +116,29 @@ public class InstagramController {
 		
 		Map<String,String> nvpMap = new HashMap<String,String>();
 		
+		Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
+		
+		
 		nvpMap.put("client_id", APP_KEY);
 		nvpMap.put("client_secret", CLIENT_SECET);
 		nvpMap.put("object", "user");
-		nvpMap.put("aspect", "media");
-		nvpMap.put("verify_token", "myVerifyToken");
+		//nvpMap.put("aspect", "media");
+		nvpMap.put("verify_token", instagram_token);
 		nvpMap.put("callback_url", REDIRECT_URL);
 		
-		return "";
+		//读入图片,转成字节
+				byte[] b = SinaUtil.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
+				itemsMap.put("aspect", b);
+		
+				//发出请求
+				String info = SinaUtil.postMethodRequestWithFile(createUrl, nvpMap, SinaUtil.header, itemsMap);
+		System.out.println("info"+info);	
+				
+		if(info.equals("")){
+			return "failure";
+		}
+		
+		return "success";
 
 	}
 
@@ -211,49 +227,28 @@ public class InstagramController {
 		 
         //将list拼接成字符串需要的变量
         String resultData = "";
-        String content ="";
-    	String begin = "[";
-    	String end = "]";
+     
         
     	if(names==null||names.isEmpty()){
-    		
-    		return "empty";
+    	    
+    	   return "empty";
     		
     	}else{
-    		
-    		//若长度为1，则不需要加逗号,否则需注意加逗号
-            if(names.size() == 1){	
-        		String weibo = "{\"id\":" + "\"" + names.get(0).getMedia_id() + "\"" +
- 				       ",\"content\":" + "\"" + names.get(0).getTitle() + "\"" +
- 				       ",\"name\":" + "\"" + names.get(0).getUsername() + "\"" +
- 				      ",\"images\":" + "\"" + names.get(0).getUrl() + "\"" +
- 				       ",\"time\":" + "\"" + names.get(0).getDate()+ "\"" +
- 	                   "}";
-        		
-        		content = content + weibo;
-            }else if(names.size() > 1){
-            	for(int i = 0 ; i < names.size() - 1 ; i++){
-	        		String weibo =  "{\"id\":" + "\"" + names.get(i).getMedia_id() + "\"" +
-	  				       ",\"content\":" + "\"" + names.get(i).getTitle() + "\"" +
-	 				       ",\"name\":" + "\"" + names.get(i).getUsername() + "\"" +
-	 				      ",\"images\":" + "\"" + names.get(i).getUrl() + "\"" +
-	 				       ",\"time\":" + "\"" + names.get(i).getDate()+ "\"" +
-	 	                   "},";
-	        		
-	        		content = content + weibo;
-	        	}
-            	
-            	content = content +  "{\"id\":" + "\"" + names.get(names.size()-1).getMedia_id() + "\"" +
-  				       ",\"content\":" + "\"" + names.get(names.size()-1).getTitle() + "\"" +
-  				       ",\"name\":" + "\"" + names.get(names.size()-1).getUsername() + "\"" +
-  				       ",\"images\":" + "\"" + names.get(names.size()-1).getUrl() + "\"" +
-  				       ",\"time\":" + "\"" + names.get(names.size()-1).getDate()+ "\"" +
-  	                   "}";
-            
-            }
-            
-            resultData = begin + content + end;
-            
+    	 	
+    	  JSONArray joArray=new JSONArray();
+    	  for (int i = 0; i < names.size(); i++) {
+			
+    		 JSONObject jsonObject=new JSONObject();
+    		 jsonObject.put("id", names.get(i).getMedia_id());
+    		 jsonObject.put("content", names.get(i).getTitle());
+    		 jsonObject.put("images", names.get(i).getUrl());
+    		 jsonObject.put("time", names.get(i).getDate());
+    		 jsonObject.put("name", names.get(i).getUsername());
+    		 joArray.put(jsonObject);
+		}
+    	
+    	  resultData=joArray.toString();
+    	  
     	}
     	
 		
@@ -383,49 +378,106 @@ public class InstagramController {
 	
 	//评论
 	@RequestMapping(value="goComment.do")
-	public String toComment(){
+	public String toComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
+		
+		uid = (String) request.getSession().getAttribute("instagramId");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
+		String result2 = HttpClientUtils.httpGet(followByUrl, 9000, 9000);
+
+		JSONObject Followjson2 = new JSONObject(result2);
+		System.out.println("json2========"+Followjson2);
+		JSONArray followdata = Followjson2.getJSONArray("data");
+		List<FollowDto> names = new ArrayList<FollowDto>();
 		
 		
-		return "instagram/createComment";
+		for (int i = 0; i < followdata.length(); i++) {
+			JSONObject jo = (JSONObject) followdata.get(i);
+			String joString = jo.toString(i);
+            String userId=jo.getString("id");
+			String userName = jo.getString("username");
+			String profile_picture = jo.getString("profile_picture");
+			// names.add(userName);
+			// names.add(profile_picture);
+			//FollowDto follow = new FollowDto();
+			
+			//follow.setUsername(userName);
+			//follow.setPhoto(profile_picture);
+			//names.add(follow);
+			
+			//获取用户信息
+			String userUrl="https://api.instagram.com/v1/users/"+userId+"/media/recent/?access_token="+instagram_token;
+			String userResult = HttpClientUtils.httpGet(userUrl, 9000, 9000);
+			 
+			System.out.println("userResult"+userResult);
+			System.out.println(userId);
+			System.out.println(joString);
+			System.out.println(userName);
+			System.out.println("userResult========="+userResult);
+			System.out.println("names=========" + names.size());
+			JSONObject json3 = new JSONObject(userResult);
+			JSONArray frienddata = json3.getJSONArray("data");
+			for (int f = 0; f < frienddata.length(); f++) {
+				JSONObject fridendjo = (JSONObject) frienddata.get(f);
+				
+	            String link=fridendjo.getString("link");
+				String created_time=Utils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
+				
+	            System.out.println("link========="+link);
+	            
+	            String shareUrl="http://api.instagram.com/oembed?url="+link;
+	    		
+	    		String shareResult=HttpClientUtils.httpGet(shareUrl, 9000, 9000);
+	    		
+	    		JSONObject shareMedia = new JSONObject(shareResult);
+	    		String url = shareMedia.getString("url");
+	    		String author_name=shareMedia.getString("author_name");
+	    		String type=shareMedia.getString("type");
+	    		String title=shareMedia.getString("title");
+	    		String media_id=shareMedia.getString("media_id");
+	    	    System.out.println(shareMedia);
+	    		System.out.println("url===="+url);
+	    		
+	    		
+	    		FollowDto followDto=new FollowDto();
+	    		
+	    		followDto.setTitle(title);
+	    		followDto.setUsername(userName);
+	    		followDto.setType(type);
+	    		followDto.setUrl(url);
+	    		followDto.setPhoto(profile_picture);
+	    		followDto.setMedia_id(media_id);
+	    		followDto.setDate(created_time);
+	    		names.add(followDto);
+				
+			}
+           System.out.println("frienddara=========="+frienddata);
+		}
+		 request.setAttribute("names", names);
+		
+		return "instagram/Postcomment";
 		
 	}
+	//创建评论
 	@RequestMapping(value="createComment.do")
 	public String createComment(String uid, String instagram_token, HttpServletRequest request)throws IOException{
 		
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
-		//获取到评论内容
+		
+		String mediaId=request.getParameter("mediaId");
 		String text=request.getParameter("comment");
-		System.out.println(text);
-		// 获取媒体的的信息和id
-		String mdeiaId = "https://api.instagram.com/v1/users/self/feed?access_token="
-				+ instagram_token;
-
-		String result2 = HttpClientUtils.httpGet(mdeiaId, 9000, 9000);
-
-		JSONObject jsonComment = new JSONObject(result2);
-
-		JSONArray data = jsonComment.getJSONArray("data");
 		
-         
+		String createCommentUrl = "https://api.instagram.com/v1/media/{"+mediaId+"}/comments";
+	    
+		Map<String, String> nvpMap = new HashMap<String, String>();
+		nvpMap.put("access_token", instagram_token);
+		nvpMap.put("text", text);
 		
+		String result = HttpClientUtils.httpPost(nvpMap, createCommentUrl, 10000, 10000);
 		
+		System.out.println("result============="+result);
 		
-		System.out.println("data" + data);
-
-		for (int i = 0; i < data.length(); i++) {
-			JSONObject jo = (JSONObject) data.get(i);
-			String joString = jo.toString();
-			String MediaId = jo.getString("id");
-		
-			String commentUrl="https://api.instagram.com/v1/media/"+MediaId+"/comments?access_token="+instagram_token
-					+"&text="+text;
-			
-			
-			String result = HttpClientUtils.httpGet(commentUrl, 9000, 9000);
-			System.out.println("comment1="+result);
-		
-	}
 		return "instagram/comment";
 	
 	}
