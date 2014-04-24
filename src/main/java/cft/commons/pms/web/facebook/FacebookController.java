@@ -128,7 +128,7 @@ public class FacebookController {
         			fbDto.setUserName(userName);
         			fbDto.setUpdate_time(updateTime);
         			fbDto.setMessage((String) feedjo.get("message"));
-        			System.out.println("DTO::::::::::::::::::" + fbDto);
+//        			System.out.println("DTO::::::::::::::::::" + fbDto);
         			friendList.add(fbDto);
 //    	            System.out.println("--------------------一条post-----------------------------------------");
     			}
@@ -142,45 +142,24 @@ public class FacebookController {
 //    		System.out.println("==================以上是一个user的post==================================");
     		
         }//1.for
-      //将list拼接成字符串需要的变量
+      //json拼成所需要的字符串
         String resultData = "";
-        String content ="";
-    	String begin = "[";
-    	String end = "]";
         
         if(friendList == null || friendList.isEmpty()){
              return "empty";
         }else{
+        	JSONArray jsonArray = new JSONArray();
+        	for(int i = 0 ; i < friendList.size(); i++){
+        		JSONObject contentObj = new JSONObject();
+        		contentObj.put("id",friendList.get(i).getPostID());
+        		contentObj.put("content",friendList.get(i).getMessage());
+        		contentObj.put("name",friendList.get(i).getUserName());
+        		contentObj.put("time",friendList.get(i).getUpdate_time());
+        		jsonArray.put(contentObj);
+        	}
         	
-        	//若长度为1，则不需要加逗号,否则需注意加逗号
-            if(friendList.size() == 1){	
-        		String weibo = "{\"id\":" + "\"" + friendList.get(0).getPostID() + "\"" +
-        				       ",\"content\":" + "\"" + friendList.get(0).getMessage() + "\"" +
-        				       ",\"name\":" + "\"" + friendList.get(0).getUserName() + "\"" +
-        				       ",\"time\":" + "\"" + friendList.get(0).getUpdate_time() + "\"" +
-        	                   "}";
-        		
-        		content = content + weibo;
-            }else if(friendList.size() > 1){
-            	for(int i = 0 ; i < friendList.size() - 1 ; i++){
-	        		String weibo = "{\"id\":" + "\"" + friendList.get(i).getPostID() + "\"" +
-	        				       ",\"content\":" + "\"" + friendList.get(i).getMessage() + "\"" +
-	        				       ",\"name\":" + "\"" + friendList.get(i).getUserName() + "\"" +
-	        				       ",\"time\":" + "\"" + friendList.get(i).getUpdate_time() + "\"" +
-	        	                   "},";
-	        		
-	        		content = content + weibo;
-	        	}
-	        	
-	        	content = content + "{\"id\":" + "\"" + friendList.get(friendList.size() - 1).getPostID() + "\"" +
-				                    ",\"content\":" + "\"" + friendList.get(friendList.size() - 1).getMessage() + "\"" +
-				                    ",\"name\":" + "\"" + friendList.get(friendList.size() - 1).getUserName() + "\"" +
-				                    ",\"time\":" + "\"" + friendList.get(friendList.size() - 1).getUpdate_time() + "\"" +
-	                                "}";
-            }
-        	
-        	resultData = begin + content + end;
-        	System.out.println("resultData::::::::::::::" + resultData);
+        	resultData = jsonArray.toString();
+//        	System.out.println("resultData::::::::::::::" + resultData);
         }
         
         return resultData;

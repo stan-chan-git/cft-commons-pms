@@ -54,7 +54,7 @@ function postFBmsg(msg,facebookToken,callback){
 } 
 
 /**
- * 发布一条文字带图片信息
+ * 发布一条文字带图片信息（不能实现）
  */
 function writeNewPostPic(msg,callback){
 	//初始化

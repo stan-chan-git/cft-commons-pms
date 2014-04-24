@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form action="create.do" role="form" method="post">
+<form action="followFirend.do" role="form" method="post">
 <div class="form-group">
 	<span class="col-sm-3 label label-success">微博内容:</span>
 	<div class="col-sm-8">
