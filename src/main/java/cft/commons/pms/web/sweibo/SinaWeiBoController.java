@@ -274,7 +274,7 @@ public class SinaWeiBoController {
 					
 					//取图片数组
 					JSONArray tempPic = tempStatuses.getJSONArray("pic_urls");//图片
-					String thumbnail_pic = null;//略缩图
+					String thumbnail_pic = "null";//略缩图
 					if (tempPic!=null&&!tempPic.isNull(0)) {
 						for (int j = 0; j < tempPic.length(); j++) {						
 							JSONObject pic = (JSONObject) tempPic.get(j);
@@ -282,8 +282,6 @@ public class SinaWeiBoController {
 							//System.out.println(thumbnail_pic);
 						}						
 					}
-					
-					
 					
 					// 非自己的微博且是今天的微博写入DTO
 					if (!userIdStr.equals(uid) && nowDate.equals(SinaUtil.DateFormat(time))) {
@@ -312,7 +310,7 @@ public class SinaWeiBoController {
 						tempJsonObject.put("content", sinaDTOs.get(i).getContent());
 						tempJsonObject.put("name", sinaDTOs.get(i).getName());
 						tempJsonObject.put("time", sinaDTOs.get(i).getTime());
-						tempJsonObject.put("images", sinaDTOs.get(i).getTime());
+						tempJsonObject.put("images", sinaDTOs.get(i).getThumbnail_pic());
 						jsonArray.put(tempJsonObject);
 					}
 					content = jsonArray.toString();
