@@ -5,6 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+.w1{
+    width:200px;
+   }
+   
+.w2{
+    width:120px;
+   }
+</style>
+
 <script type="text/javascript">
 $(function(){
 	 var tencent_token = "<%=session.getAttribute("tencent_token") %>";
@@ -18,11 +28,11 @@ $(function(){
 	 
 	 if((tencent_token != "null" && tencent_token != "") || (sina_token != "null" && sina_token != "") || (instagram_token != "null" && instagram_token != "") || (facebook_token != "null" && facebook_token != "")){
 		wbTable.append("<tr align='center' class='success'>" +
-								"<td width='10%' style='display:none'>微博ID</td>" +
-							    "<td width='25%''>微博内容</td>" +
-								"<td width='20%'>发表时间</td>" +
-								"<td width='10%'>发表人</td>" +
-								"<td width='15%'>来源</td>" +
+								"<td style='display:none'>微博ID</td>" +
+							    "<td class='w2'>来源</td>" +
+								"<td class='w1'>发表时间</td>" +
+								"<td class='w2'>发表人</td>" +
+								"<td>微博内容</td>" +
 					   "</tr>");
 	 }else{
 		 auth_msg.empty();
@@ -48,21 +58,21 @@ $(function(){
 			                    		if(obj[i].images == "null"){
 				                    		wbTable.append("<tr align='center'>" +
 				                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-				                    		               "<td>"+ obj[i].content +"</td>" +
+				                    		               "<td>来自腾讯微博</td>" +
 				                    		               "<td>"+ obj[i].time +"</td>" +
 				                    		               "<td>"+ obj[i].name +"</td>" +
-				                    		               "<td>来自腾讯微博</td>" +
+				                    		               "<td>"+ obj[i].content +"</td>" +
 				                    		               "</tr>");
 			                    		}else{
 			                    			wbTable.append("<tr align='center'>" +
 			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 			                    		               //将图片显示在文字下方
-			                    		               "<td>"+ obj[i].content +
-			                    		                    "<br><img src="+ obj[i].images +" />"+
-			                    		               "</td>" +
+			                    		               "<td>来自腾讯微博</td>" +
 			                    		               "<td>"+ obj[i].time +"</td>" +
 			                    		               "<td>"+ obj[i].name +"</td>" +
-			                    		               "<td>来自腾讯微博</td>" +
+			                    		               "<td>"+ obj[i].content +
+		                    		                    "<br><img src="+ obj[i].images +" />"+
+		                    		                   "</td>" +
 			                    		               "</tr>");
 			                    		}
 			                    	});
@@ -88,21 +98,21 @@ $(function(){
 					            		if(obj[i].images == "null"){
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "<td>来自新浪微博</td>" +
 						            		               "<td>"+ obj[i].time +"</td>" +
 						            		               "<td>"+ obj[i].name +"</td>" +
-						            		               "<td>来自新浪微博</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
 						            		               "</tr>");
 					            		}else{
 					            			wbTable.append("<tr align='center'>" +
 			                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			                    		               "<td>来自新浪微博</td>" +
+			                    		               "<td>"+ obj[i].time +"</td>" +
+			                    		               "<td>"+ obj[i].name +"</td>" +
 			                    		               //将图片显示在文字下方
 			                    		               "<td>"+ obj[i].content +
 			                    		                    "<br><img src="+ obj[i].images +" />"+
 			                    		               "</td>" +
-			                    		               "<td>"+ obj[i].time +"</td>" +
-			                    		               "<td>"+ obj[i].name +"</td>" +
-			                    		               "<td>来自新浪微博</td>" +
 			                    		               "</tr>");
 					            		}
 					            	});
@@ -127,13 +137,12 @@ $(function(){
 				            	 $.each(obj,function(i){
 				            		wbTable.append("<tr align='center'>" +
 				            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-				            		              
+				            		               "<td>来自instagram</td>" +
+				            		               "<td>"+ obj[i].time +"</td>" +
+				            		               "<td>"+ obj[i].name +"</td>" +
 				            		               "<td>"+ obj[i].content +
 	                    		                    "<br><img  width='40%' height='40%'  src="+ obj[i].images +" />"+
 	                    		                   "</td>" +
-				            		               "<td>"+ obj[i].time +"</td>" +
-				            		               "<td>"+ obj[i].name +"</td>" +
-				            		               "<td>来自instagram</td>" +
 				            		               "</tr>");
 				            	})
 					            	
@@ -150,7 +159,7 @@ $(function(){
 </script>
 </head>
 <body>
-<div style="width: 800px;padding-top: 30px;">			
+<div style="width:800px;padding-top: 30px;">			
             
             <span id="auth_msg" class="alert alert-danger" style="display:none;float:left;margin-left:250px"></span>
             <br>
@@ -158,7 +167,7 @@ $(function(){
 			
 			<div class="form-group">
 				<div id="dd" class="col-sm-11" >
-					<table id='wbTable' class='table table-bordered table-hover' style='margin-left:40px'>
+					<table id="wbTable" class="table" style="argin-left:40px">
 					</table>
 				</div>
 			</div>
