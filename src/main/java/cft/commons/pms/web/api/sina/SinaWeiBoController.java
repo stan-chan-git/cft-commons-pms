@@ -1,4 +1,4 @@
-package cft.commons.pms.web.sweibo;
+package cft.commons.pms.web.api.sina;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,7 +26,7 @@ import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.sina.SinaComDto;
 import cft.commons.pms.dto.sina.SinaDTO;
 import cft.commons.pms.util.SinaConstants;
-import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
+import cft.commons.pms.web.api.util.ApiUtils;
 
 /**
  * 
@@ -126,10 +126,10 @@ public class SinaWeiBoController {
 			params.put("access_token", access_token);
 			params.put("status", status);
 			Map<String, byte[]> itemsMap = new HashMap<String, byte[]>();
-			byte[] content = SinaUtil.readFileImage(picString);
+			byte[] content = ApiUtils.readFileImage(picString);
 			// byte[] content = file.getBytes();
 			itemsMap.put("pic", content);
-			String returnString = SinaUtil.postMethodRequestWithFile(Url, params, SinaUtil.header,
+			String returnString = ApiUtils.postMethodRequestWithFile(Url, params, ApiUtils.header,
 					itemsMap);
 
 			if (!returnString.equals("")) {
@@ -213,7 +213,7 @@ public class SinaWeiBoController {
 					// 将需要的参数写入DTO，然后前台显示
 					SinaComDto sinaComDTO = new SinaComDto();
 					sinaComDTO.setId(id);
-					sinaComDTO.setCreated_at(SinaUtil.SinaDateFormat(created_at));
+					sinaComDTO.setCreated_at(ApiUtils.SinaDateFormat(created_at));
 					sinaComDTO.setScreen_name(screen_name);
 					sinaComDTO.setText(textRepost);
 					sinaComDTO.setTextStatus(textStatus);
@@ -259,7 +259,7 @@ public class SinaWeiBoController {
 				List<SinaDTO> sinaDTOs = new ArrayList<SinaDTO>();
 
 				Date date = new Date();
-				String nowDate = SinaUtil.DateFormat(date.toString());
+				String nowDate = ApiUtils.DateFormat(date.toString());
 
 				for (int i = 0; i < statuses.length(); i++) {// 提取对应信息
 					JSONObject tempStatuses = (JSONObject) statuses.get(i);
@@ -284,10 +284,10 @@ public class SinaWeiBoController {
 					}
 					
 					// 非自己的微博且是今天的微博写入DTO
-					if (!userIdStr.equals(uid) && nowDate.equals(SinaUtil.DateFormat(time))) {
+					if (!userIdStr.equals(uid) && nowDate.equals(ApiUtils.DateFormat(time))) {
 						SinaDTO sinaDTO = new SinaDTO();
 						sinaDTO.setId(id);
-						sinaDTO.setTime(SinaUtil.SinaDateFormat(time));
+						sinaDTO.setTime(ApiUtils.SinaDateFormat(time));
 						sinaDTO.setContent(content);
 						sinaDTO.setUserId(userIdStr);
 						sinaDTO.setName(name);

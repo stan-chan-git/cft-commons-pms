@@ -1,4 +1,4 @@
-package cft.commons.pms.web.facebook;
+package cft.commons.pms.web.api.facebook;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class FacebookController {
 
 	private static final String APP_KEY = "137410796429161";
 	private static final String CLIENT_SECET = "1f943be78994b12b88680dfe331acec7";
-	private static final String REDIRECT_URL = "http://localhost:8088/pms/facebook/facebook.do";
+	private static final String REDIRECT_URL = "http://localhost:8080/pms/facebook/facebook.do";
     
 /////////////////////////////////////////////////////////////
 /////////////////////以下为*.do请求处理方法////////////////////////

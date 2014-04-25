@@ -31,23 +31,23 @@ $(function(){
 
 	/**  腾讯微博授权按钮点击事件     **/
 	$("#tencent_btn").click(function(){
-		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
+		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8080/pms/tencent/tweibo.do";
 	});
 	
 	/**  新浪微博授权按钮点击事件     **/
 	$("#sina_btn").click(function(){
-		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8088/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
+		window.location.href="https://api.weibo.com/oauth2/authorize?client_id=4281626272&redirect_uri=http://localhost:8080/pms/sina/sinaweibo.do&response_type=code&state=&scope=";
 	});
 	
 	/**  instagram授权按钮点击事件     **/
 	$("#instagram_btn").click(function(){
-		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8088/pms/instagram/instagramApi.do&response_type=code";
+		window.location.href="https://api.instagram.com/oauth/authorize/?client_id=195a0d5137fc46c58ef5f4db4281972e&redirect_uri=http://localhost:8080/pms/instagram/instagramApi.do&response_type=code";
 	});
 	
 	/**  facebook授权按钮点击事件     **/
 	$("#facebook_btn").click(function(){
 		//alert("come in");
-		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8088/pms/facebook/facebook.do";
+		window.location.href="https://www.facebook.com/dialog/oauth?client_id=137410796429161&redirect_uri=http://localhost:8080/pms/facebook/facebook.do";
 	});	
 });
 $(document).ready(function(){

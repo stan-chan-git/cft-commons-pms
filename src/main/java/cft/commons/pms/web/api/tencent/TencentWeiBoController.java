@@ -1,4 +1,4 @@
-package cft.commons.pms.web.tencent;
+package cft.commons.pms.web.api.tencent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.tencent.ReviewDTO;
 import cft.commons.pms.dto.tencent.WeiBoDTO;
-import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
+import cft.commons.pms.web.api.util.ApiUtils;
 
 @Controller
 public class TencentWeiBoController {
@@ -79,7 +79,7 @@ public class TencentWeiBoController {
 		//私有参数
 		nvpMap.put("format", "json");
 		nvpMap.put("content", content);
-		nvpMap.put("clientip", Utils.getClientIP());
+		nvpMap.put("clientip", ApiUtils.getClientIP());
 		//公有参数
 		nvpMap.put("access_token",(String)request.getSession().getAttribute("tencent_token"));
 		nvpMap.put("oauth_consumer_key",APP_KEY);
@@ -119,7 +119,7 @@ public class TencentWeiBoController {
 		//API需要的参数
 		nvpMap.put("format", "json");
 		nvpMap.put("content", content);
-		nvpMap.put("clientip", Utils.getClientIP());
+		nvpMap.put("clientip", ApiUtils.getClientIP());
 		nvpMap.put("access_token", (String)request.getSession().getAttribute("tencent_token"));
 		nvpMap.put("openid", (String)request.getSession().getAttribute("openid"));
 		nvpMap.put("openkey", (String)request.getSession().getAttribute("openkey"));
@@ -128,11 +128,11 @@ public class TencentWeiBoController {
 		nvpMap.put("scope", "all");
 		
 		//读入图片,转成字节
-		byte[] b = SinaUtil.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
+		byte[] b = ApiUtils.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
 		itemsMap.put("pic", b);
 		
 		//发出请求
-		String info = SinaUtil.postMethodRequestWithFile(url, nvpMap, SinaUtil.header, itemsMap);
+		String info = ApiUtils.postMethodRequestWithFile(url, nvpMap, ApiUtils.header, itemsMap);
 		
 		if(info.equals("")){
 			return "failure";
@@ -157,7 +157,7 @@ public class TencentWeiBoController {
 				     + "&access_token=" + request.getSession().getAttribute("tencent_token")
 		             + "&openid=" + request.getSession().getAttribute("openid")
 		             + "&openkey=" + request.getSession().getAttribute("openkey")
-		             + "&clientip=" + Utils.getClientIP()
+		             + "&clientip=" + ApiUtils.getClientIP()
 				     + "&" + COMMON_PARAM;
 
 		String result = HttpClientUtils.httpGet(url, 5000, 5000);
@@ -207,7 +207,7 @@ public class TencentWeiBoController {
 		//私有参数
 		nvpMap.put("format", "json");
 		nvpMap.put("content", content);
-		nvpMap.put("clientip", Utils.getClientIP());
+		nvpMap.put("clientip", ApiUtils.getClientIP());
 		nvpMap.put("reid", reid);
 		//公有参数
 		nvpMap.put("access_token", (String)request.getSession().getAttribute("tencent_token"));
@@ -248,7 +248,7 @@ public class TencentWeiBoController {
 				     + "&access_token=" + request.getSession().getAttribute("tencent_token")
 				     + "&openid=" + request.getSession().getAttribute("openid")
 				     + "&openkey=" + request.getSession().getAttribute("openkey")
-				     + "&clientip=" + Utils.getClientIP()
+				     + "&clientip=" + ApiUtils.getClientIP()
 				     + "&" + COMMON_PARAM;
 		
 		String result = HttpClientUtils.httpGet(url, 5000, 5000);
@@ -267,9 +267,9 @@ public class TencentWeiBoController {
         	//用uid排除自己的微博
         	if(!request.getSession().getAttribute("openid").equals(uid)){
         		//获取当前日期
-        		String nowDate = Utils.getNowDate();
+        		String nowDate = ApiUtils.getNowDate();
         		//获取微博发表时间
-        		String wbDate = Utils.timestampToDate((Integer)obj.get("timestamp"));
+        		String wbDate = ApiUtils.timestampToDate((Integer)obj.get("timestamp"));
         		
         		//获取当前日期发表的微博,排除其他微博
         		if(wbDate.equals(nowDate)){
@@ -305,7 +305,7 @@ public class TencentWeiBoController {
 		        	wb.setNick(obj.getString("nick"));
 		        	wb.setType(obj.getInt("type"));
 		        	wb.setTimestamp(obj.getInt("timestamp"));	
-		        	wb.setDate(Utils.getWeiBoTime(obj.getInt("timestamp")));//将获取的timestamp转换时间格式
+		        	wb.setDate(ApiUtils.getWeiBoTime(obj.getInt("timestamp")));//将获取的timestamp转换时间格式
 		       	
 		        	
 		        	focusList.add(wb);	
@@ -370,7 +370,7 @@ System.out.println(resultData);
 				     + "&access_token=" + request.getSession().getAttribute("tencent_token")
 				     + "&openid=" + request.getSession().getAttribute("openid")
 				     + "&openkey" + request.getSession().getAttribute("openkey")
-				     + "&clientip" + Utils.getClientIP()
+				     + "&clientip" + ApiUtils.getClientIP()
 				     + "&" + COMMON_PARAM;
 		
 		String result = HttpClientUtils.httpGet(url, 5000, 5000);

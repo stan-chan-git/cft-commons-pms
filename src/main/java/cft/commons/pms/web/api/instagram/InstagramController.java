@@ -1,4 +1,4 @@
-package cft.commons.pms.web.instagram;
+package cft.commons.pms.web.api.instagram;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +20,14 @@ import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
 import cft.commons.pms.dto.instagram.ShareDto;
-import cft.commons.pms.web.sweibo.sinaUtil.SinaUtil;
-import cft.commons.pms.web.tencent.Utils;
+import cft.commons.pms.web.api.util.ApiUtils;
 
 @Controller
 public class InstagramController {
 
 	private static final String APP_KEY = "195a0d5137fc46c58ef5f4db4281972e";
 	private static final String CLIENT_SECET = "b3e18ec7fd524df6be0067a91504847f";
-	private static final String REDIRECT_URL = "http://localhost:8088/pms/instagram/instagramApi.do";
+	private static final String REDIRECT_URL = "http://localhost:8080/pms/instagram/instagramApi.do";
 
 	@RequestMapping(value = "instagramApi.do")
 	public String instagram(String code, Model model, HttpServletRequest request)
@@ -127,11 +126,11 @@ public class InstagramController {
 		nvpMap.put("callback_url", REDIRECT_URL);
 		
 		//读入图片,转成字节
-				byte[] b = SinaUtil.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
+				byte[] b = ApiUtils.readFileImage(request.getSession().getServletContext().getRealPath("/") + "/static/images/test.jpg");
 				itemsMap.put("aspect", b);
 		
 				//发出请求
-				String info = SinaUtil.postMethodRequestWithFile(createUrl, nvpMap, SinaUtil.header, itemsMap);
+				String info = ApiUtils.postMethodRequestWithFile(createUrl, nvpMap, ApiUtils.header, itemsMap);
 		System.out.println("info"+info);	
 				
 		if(info.equals("")){
@@ -188,7 +187,7 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
-				String created_time=Utils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
+				String created_time=ApiUtils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
 				
 	            System.out.println("link========="+link);
 	            
@@ -421,7 +420,7 @@ public class InstagramController {
 				JSONObject fridendjo = (JSONObject) frienddata.get(f);
 				
 	            String link=fridendjo.getString("link");
-				String created_time=Utils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
+				String created_time=ApiUtils.getWeiBoTime((Integer.parseInt(fridendjo.getString("created_time"))));
 				
 	            System.out.println("link========="+link);
 	            
