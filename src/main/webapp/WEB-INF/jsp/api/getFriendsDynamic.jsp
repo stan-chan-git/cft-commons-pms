@@ -71,7 +71,7 @@ $(function(){
 			                    		               "<td>"+ obj[i].time +"</td>" +
 			                    		               "<td>"+ obj[i].name +"</td>" +
 			                    		               "<td>"+ obj[i].content +
-		                    		                    "<br><img src="+ obj[i].images +" />"+
+		                    		                    "<br><img src="+ obj[i].images + "/160" +" />"+
 		                    		                   "</td>" +
 			                    		               "</tr>");
 			                    		}
