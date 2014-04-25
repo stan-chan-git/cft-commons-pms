@@ -31,7 +31,7 @@ $(function(){
 
 	/**  腾讯微博授权按钮点击事件     **/
 	$("#tencent_btn").click(function(){
-		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8080/pms/tencent/tweibo.do";
+		window.location.href="https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801495189&response_type=code&redirect_uri=http://localhost:8088/pms/tencent/tweibo.do";
 	});
 	
 	/**  新浪微博授权按钮点击事件     **/
