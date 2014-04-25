@@ -1,4 +1,4 @@
-package cft.commons.pms.util;
+package cft.commons.pms.web.api.util.constants;
 /**
  * @author luffy
  *

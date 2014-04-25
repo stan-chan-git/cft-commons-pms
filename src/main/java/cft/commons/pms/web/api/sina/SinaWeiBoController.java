@@ -25,8 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.sina.SinaComDto;
 import cft.commons.pms.dto.sina.SinaDTO;
-import cft.commons.pms.util.SinaConstants;
 import cft.commons.pms.web.api.util.ApiUtils;
+import cft.commons.pms.web.api.util.constants.SinaConstants;
 
 /**
  * 
