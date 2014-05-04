@@ -163,9 +163,9 @@ $(function(){
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
 					            	var obj = JSON.parse(data);
-					            //console.log(obj);
 					            	 $.each(obj,function(i){
-					            		if(obj.imageUrl == "null"){
+					            console.log(obj[i].imageUrl);
+					            		if(obj[i].imageUrl == "null"){
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 						            		               "<td>来自facebook</td>" +
