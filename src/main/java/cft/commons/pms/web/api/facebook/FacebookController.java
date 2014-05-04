@@ -53,6 +53,7 @@ public class FacebookController {
 			//调用API需要的部分公有参数
 			request.getSession().setAttribute("facebook_token", facebook_token);
 		}
+//		System.out.println("facebook_token:" + facebook_token);
 		return "easyui/layout";
 	}
 	
@@ -65,28 +66,75 @@ public class FacebookController {
 	}
 	
 	/**
-	 * 获取好友动态
+	 * 获取好友以及当前用户的动态
 	 */
 	@RequestMapping(value="facebookFriendsDyn.do")
 	public @ResponseBody
 	String facebookFriendsDyn(HttpServletRequest request) throws Exception{
 		
+		//日期格式化
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			//获取当前日期
+		String nowDate = sdf.format(new Date());
 		List<FacebookDTO> friendList = new ArrayList<FacebookDTO>();
 		String facebook_token = (String) request.getSession().getAttribute("facebook_token");
+		
+		//把自己的动态设置进去
+		String myInfoURL = "https://graph.facebook.com/me/feed?"
+			     + "&access_token=" + facebook_token;
+		String myInfo = HttpClientUtils.httpGet(myInfoURL, 10000, 10000);
+		
+		/*将返回的字符串转换成JSON,获取需要的数据*/
+		JSONObject myInfoJson = new JSONObject(myInfo);
+		JSONArray myInfoData = myInfoJson.getJSONArray("data");
+		
+		
+		for (int i = 0; i < 11; i++) {//先取前10条微博
+			
+			FacebookDTO myDTO = new FacebookDTO();
+			//初始设置
+			myDTO.setImageUrl("null");
+			myDTO.setMessage("分享");
+			
+			JSONObject myInfojo = (JSONObject) myInfoData.get(i);//当前用户的全部信息
+			
+			JSONObject fromJson = (JSONObject) myInfojo.get("from");//当前用户的id和name
+			
+			//获取微博发表时间
+			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
+			String myUpdateTime = (String) myInfojo.get("updated_time");
+			String[] mydateTime = myUpdateTime.split("T");
+			String myUpdateDate = mydateTime[0];
+			myUpdateTime = myUpdateDate + "  " + mydateTime[1];
+			
+			//获取当天微博信息，及必须要有文字信息或者图片
+			if (myUpdateDate.equals(nowDate) && (myInfojo.has("message") || myInfojo.has("picture"))) {
+				myDTO.setUserId((String) fromJson.get("id"));
+				myDTO.setUserName((String) fromJson.get("name"));
+				myDTO.setPostID((String) myInfojo.get("id"));
+				myDTO.setUpdate_time(myUpdateTime);
+				if (myInfojo.has("message")) {
+					myDTO.setMessage((String) myInfojo.get("message"));
+				}
+				if (myInfojo.has("picture")) {
+					myDTO.setImageUrl((String) myInfojo.get("picture"));
+				}
+				friendList.add(myDTO);//添加显示自己的动态
+			}
+		}
 		
 		//取到授权用户的朋友列表，返回json数据只包含朋友的id和name
 		String URLfriends = "https://graph.facebook.com/me/friends?"
 				     + "&access_token=" + facebook_token;
 		
 		String friends = HttpClientUtils.httpGet(URLfriends, 10000, 10000);
-//		System.out.println(friends);
 		
 		/*将返回的字符串转换成JSON,获取需要的数据*/
 		JSONObject friendJson = new JSONObject(friends);
 		JSONArray friendData = friendJson.getJSONArray("data");
         
-		//1.循环取出授权用户的朋友的id，先取10个好友ID，friendData.length()
-        for (int i = 0; i < 11; i++) {
+		//1.循环取出授权用户的朋友的id，先取5个好友ID，friendData.length()
+        for (int i = 0; i < 6; i++) {
 			JSONObject friendjo = (JSONObject) friendData.get(i);
             String userId = friendjo.getString("id");
             String userName = friendjo.getString("name");
@@ -106,9 +154,6 @@ public class FacebookController {
             for (int j = 0; j < feedData.length(); j++) {
     			JSONObject feedjo = (JSONObject) feedData.get(j);
     			
-    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    			//获取当前日期
-        		String nowDate = sdf.format(new Date());
         		//获取微博发表时间
         			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
         		String updateTime = (String) feedjo.get("updated_time");
@@ -120,7 +165,10 @@ public class FacebookController {
         		if(updateDate.equals(nowDate) && (feedjo.has("message") || feedjo.has("picture"))){
         			
         			FacebookDTO fbDto = new FacebookDTO();
-        			fbDto.setImageUrl("null");//先设置为空
+        			//初始设置
+        			fbDto.setImageUrl("null");
+        			fbDto.setMessage("分享");
+        			
         			fbDto.setPostID((String) feedjo.get("id"));
         			fbDto.setUserName(userName);
         			fbDto.setUpdate_time(updateTime);
@@ -141,7 +189,6 @@ public class FacebookController {
 //	        		wb.setOrigtext((String)source.get("origtext"));
 //	        	}
             }//2.for
-//    		System.out.println("==================以上是一个user的post==================================");
     		
         }//1.for
       //拼成所需要的json
@@ -162,7 +209,6 @@ public class FacebookController {
         	}
         	
         	resultData = jsonArray.toString();
-        	System.out.println("resultData::::::::::::::" + resultData);
         }
         
         return resultData;
