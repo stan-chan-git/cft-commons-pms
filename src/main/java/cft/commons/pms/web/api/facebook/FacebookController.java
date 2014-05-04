@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.facebook.FacebookDTO;
 
+/**
+ * facebook 请求处理
+ * @author tify
+ */
 @Controller
 public class FacebookController {
 
@@ -23,11 +27,8 @@ public class FacebookController {
 	private static final String CLIENT_SECET = "1f943be78994b12b88680dfe331acec7";
 	private static final String REDIRECT_URL = "http://localhost:8080/pms/facebook/facebook.do";
     
-/////////////////////////////////////////////////////////////
-/////////////////////以下为*.do请求处理方法////////////////////////
-/////////////////////////////////////////////////////////////
 	/**
-	 * facebook授权
+	 * facebook授权处理
 	 */
 	@RequestMapping(value = "facebook.do")
 	public String facebook(String code, String openid, String openkey,HttpServletRequest request) throws Exception {
@@ -37,14 +38,13 @@ public class FacebookController {
 				     + "&code=" + code;
 			
 		//发出请求，成功则返回带access_token的url字符串
-		String result = HttpClientUtils.httpGet(url, 9000, 9000);
+		String result = HttpClientUtils.httpGet(url, 10000, 10000);
 		String[] params = result.split("&");
 		String facebook_token = "";
 		//遍历切割后的字符串,获取access_token
 		for (String param : params) {
 			if (param.contains("access_token")) {
 				facebook_token = param.split("=")[1];
-				System.out.println("facebook_token:::::::::::::::" + facebook_token);
 				break;
 			}
 		}
@@ -57,7 +57,7 @@ public class FacebookController {
 	}
 	
 	/**
-	 * 用js发布消息（试验，不是整合部分）
+	 * 用js发布消息（只用于跳转，不为整合部分）
 	 */
 	@RequestMapping(value = "writeNewPost.do")
 	public String writeNewPost(HttpServletRequest request){
@@ -85,14 +85,11 @@ public class FacebookController {
 		JSONObject friendJson = new JSONObject(friends);
 		JSONArray friendData = friendJson.getJSONArray("data");
         
-		//1.循环取出授权用户的朋友的id
-        for (int i = 0; i < 5; i++) {
+		//1.循环取出授权用户的朋友的id，先取10个好友ID，friendData.length()
+        for (int i = 0; i < 11; i++) {
 			JSONObject friendjo = (JSONObject) friendData.get(i);
-//			System.out.println("friendjo::::::::::::::" + friendjo);
             String userId = friendjo.getString("id");
             String userName = friendjo.getString("name");
-            
-//            System.out.println("userName:::::::::::" + userName);
             
             String URLuser = "https://graph.facebook.com/"
             + userId
@@ -108,29 +105,34 @@ public class FacebookController {
     		//2.取得每个朋友信息，获取发表的内容、时间等信息
             for (int j = 0; j < feedData.length(); j++) {
     			JSONObject feedjo = (JSONObject) feedData.get(j);
-//    			System.out.println("feedjo::::::::::::::" + feedjo);
-//    			System.out.println("hasKey:::::::::" + feedjo.has("message"));
     			
     			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     			//获取当前日期
         		String nowDate = sdf.format(new Date());
         		//获取微博发表时间
-//        		System.out.println(feedjo.get("updated_time"));
+        			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
         		String updateTime = (String) feedjo.get("updated_time");
         		String[] dateTime = updateTime.split("T");
-//        		System.out.println("dateTime::::::::::::" + dateTime[0]);
         		String updateDate = dateTime[0];
+        		updateTime = dateTime[0] + "  " + dateTime[1];
         		
-        		//现在主要需取得message的内容，判断是否有这个内容，并把所需要的内容存入dto
-        		if(feedjo.has("message") && updateDate.equals(nowDate)){
+        		//主要获取当日好友微博，判断是否有这个内容，并把所需要的内容存入dto
+        		if(updateDate.equals(nowDate) && (feedjo.has("message") || feedjo.has("picture"))){
+        			
         			FacebookDTO fbDto = new FacebookDTO();
+        			fbDto.setImageUrl("null");//先设置为空
         			fbDto.setPostID((String) feedjo.get("id"));
         			fbDto.setUserName(userName);
         			fbDto.setUpdate_time(updateTime);
-        			fbDto.setMessage((String) feedjo.get("message"));
-//        			System.out.println("DTO::::::::::::::::::" + fbDto);
+        			//判断获取的json是否有message字段
+        			if(feedjo.has("message")){
+        				fbDto.setMessage((String) feedjo.get("message"));
+        			}
+        			//判断获取的json是否有picture字段
+        			if(feedjo.has("picture")){
+        				fbDto.setImageUrl((String) feedjo.get("picture"));
+        			}
         			friendList.add(fbDto);
-//    	            System.out.println("--------------------一条post-----------------------------------------");
     			}
         		
 //	        	//判断此微博是不是转发的
@@ -142,7 +144,7 @@ public class FacebookController {
 //    		System.out.println("==================以上是一个user的post==================================");
     		
         }//1.for
-      //json拼成所需要的字符串
+      //拼成所需要的json
         String resultData = "";
         
         if(friendList == null || friendList.isEmpty()){
@@ -155,11 +157,12 @@ public class FacebookController {
         		contentObj.put("content",friendList.get(i).getMessage());
         		contentObj.put("name",friendList.get(i).getUserName());
         		contentObj.put("time",friendList.get(i).getUpdate_time());
+        		contentObj.put("images",friendList.get(i).getImageUrl());
         		jsonArray.put(contentObj);
         	}
         	
         	resultData = jsonArray.toString();
-//        	System.out.println("resultData::::::::::::::" + resultData);
+        	System.out.println("resultData::::::::::::::" + resultData);
         }
         
         return resultData;

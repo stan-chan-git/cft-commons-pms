@@ -1,7 +1,5 @@
 package cft.commons.pms.dto.facebook;
 
-import java.util.Date;
-
 import lombok.Data;
 
 /**
@@ -18,6 +16,7 @@ public class FacebookDTO {
 	private String message;//微博信息内容
 	private String source;// 微博来源
 	private String userName;// 用户名
+	private String imageUrl;//图片url
 	private String type;
 	private String update_time;// 微博创建时间
 	
