@@ -163,11 +163,19 @@ $(function(){
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
 					            	var obj = JSON.parse(data);
+<<<<<<< HEAD
 					           		//console.log(obj);
+=======
+>>>>>>> refs/remotes/origin/master
 					            	 $.each(obj,function(i){
+<<<<<<< HEAD
 					            		console.log(obj[i]);
 					            		 if(obj[i].images == "null"){
 					            		
+=======
+					            console.log(obj[i].imageUrl);
+					            		if(obj[i].imageUrl == "null"){
+>>>>>>> refs/remotes/origin/master
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 						            		               "<td>来自facebook</td>" +
