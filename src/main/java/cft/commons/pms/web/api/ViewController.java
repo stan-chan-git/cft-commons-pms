@@ -26,4 +26,9 @@ public class ViewController {
 	public String getFriendsDynamicView(){
 		return "api/getFriendsDynamic";
 	}
+	
+	@RequestMapping(value="getShare.do")
+	public String getShare(){
+		return "api/getShare";
+	}
 }

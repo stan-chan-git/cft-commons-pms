@@ -150,8 +150,8 @@ $(function(){
 <div class="form-group">
 	<span class="col-sm-3 label label-success">微博内容:</span>
 	<div class="col-sm-8">
-	<textarea id="content"  class="form-control" name="content" rows="5" cols="70">这是测试微博.......</textarea>
-</div>
+		<textarea id="content"  class="form-control" name="content" rows="5" cols="70">这是测试微博.......</textarea>
+    </div>
 </div>
 
 <br>
