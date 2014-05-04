@@ -284,7 +284,7 @@ public class SinaWeiBoController {
 					}
 					
 					// 非自己的微博且是今天的微博写入DTO
-					if (!userIdStr.equals(uid) && nowDate.equals(ApiUtils.DateFormat(time))) {
+					if (nowDate.equals(ApiUtils.DateFormat(time))) {
 						SinaDTO sinaDTO = new SinaDTO();
 						sinaDTO.setId(id);
 						sinaDTO.setTime(ApiUtils.SinaDateFormat(time));
