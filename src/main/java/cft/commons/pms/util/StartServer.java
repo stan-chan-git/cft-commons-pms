@@ -6,7 +6,7 @@ import cft.commons.core.constant.Constants;
 
 public class StartServer {
 	
-	public static final int PORT = 8088;
+	public static final int PORT = 8080;
 	public static final String CONTEXT = "/pms";
 	public static final String[] TLD_JAR_NAMES = new String[] { "sitemesh", "spring-webmvc", "shiro-web" };
 
