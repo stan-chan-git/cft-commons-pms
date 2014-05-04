@@ -47,10 +47,16 @@ public class TencentViewController {
 	
 	@RequestMapping(value="toForwardWeiBo.do")
 	public String toForward(String reid,String orgitext,Model model){
-		
 		model.addAttribute("reid", reid);
 		model.addAttribute("orgitext", orgitext);
 		
 		return "tencent/forwardWeiBo";
+	}
+	
+	
+	@RequestMapping(value="sendTopicWeiBoView.do")
+	public String sendTopicWeiBoView(Model model,String keywords){		
+		model.addAttribute("keywords", "#"+ keywords +"#");
+		return "tencent/sendTopicWeiBo";
 	}
 }
