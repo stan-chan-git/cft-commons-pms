@@ -10,6 +10,7 @@
 		        <li><a href="${ctx}/tencent/getView.do?state=comments">获取单条微博的评论列表</a>
 		        <li><a href="${ctx}/tencent/getView.do?state=forward">转发一条微博</a>
 		        <li><a href="${ctx}/tencent/getFocusPeopleWeiBo.do">获取关注的人的最新微博</a>
+		        <li><a href="${ctx}/tencent/getHotTopicList.do">查看话题热榜</a>
 		    </ul>
 
 		</li>
@@ -56,7 +57,8 @@
 			<ul class="sub-menu">
 				<li><a href="${ctx}/view/sendMsgView.do">发布一条新消息</a></li>
 				<li><a href="${ctx}/view/sendPicMsgView.do">发布一条带图片的新消息</a></li>
-				<li><a href="${ctx}/view/getFriendsDynamicView.do">获取关注的人的最新动态</a></li>
+				<li><a href="${ctx}/view/getFriendsDynamicView.do">获取自己及关注的人的最新动态</a></li>
+				<li><a href="${ctx}/view/getShare.do">分享</a></li>
 			</ul>
 		</li>
 		

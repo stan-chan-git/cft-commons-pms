@@ -165,13 +165,25 @@ $(function(){
 					            	var obj = JSON.parse(data);
 					            //console.log(obj);
 					            	 $.each(obj,function(i){
-					            		wbTable.append("<tr align='center'>" +
+					            		if(obj.imageUrl == "null"){
+						            		wbTable.append("<tr align='center'>" +
+						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+						            		               "<td>来自facebook</td>" +
+						            		               "<td>"+ obj[i].time +"</td>" +
+						            		               "<td>"+ obj[i].name +"</td>" +
+						            		               "<td>"+ obj[i].content +"</td>" +
+						            		               "</tr>");
+					            		}else{
+					            			wbTable.append("<tr align='center'>" +
 					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 					            		               "<td>来自facebook</td>" +
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
+					            		               "<td>"+ obj[i].content +
+		                    		                   "<br><img src="+ obj[i].images +" />"+
+		                    		                   "</td>" +
 					            		               "</tr>");
+					            		}
 					            	})
 					            	
 					         }else{

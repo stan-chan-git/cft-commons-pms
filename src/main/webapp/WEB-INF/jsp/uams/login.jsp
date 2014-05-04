@@ -53,7 +53,7 @@ body {
 </head>
 <body>
 	<div class="container">
-      <form class="form-signin" role="form"  action="${ctx}/uams/login" method="post">
+      <form class="form-signin" role="form"  action="${ctx}" method="post">
         <h2 class="form-signin-heading">PMS sign in</h2>
         <input type="text" name="username" class="form-control" placeholder="Account" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
