@@ -15,10 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.jna.StringArray;
+
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.instagram.CommentDto;
 import cft.commons.pms.dto.instagram.FollowDto;
 import cft.commons.pms.dto.instagram.LikeMediaDto;
+import cft.commons.pms.dto.instagram.PopularDto;
 import cft.commons.pms.dto.instagram.ShareDto;
 import cft.commons.pms.web.api.util.ApiUtils;
 
@@ -149,8 +152,12 @@ public class InstagramController {
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
+		//String followByUrl = "https://api.instagram.com/v1/users/self/requested-by?access_token="+instagram_token;
+		
+		String followByUrl2 ="https://api.instagram.com/v1/users/self/feed?access_token="+instagram_token;
+		
 		String result2 = HttpClientUtils.httpGet(followByUrl, 9000, 9000);
-
+        
 		JSONObject Followjson2 = new JSONObject(result2);
 		System.out.println("json2========"+Followjson2);
 		JSONArray followdata = Followjson2.getJSONArray("data");
@@ -482,18 +489,85 @@ public class InstagramController {
 	}
 	
 	
-	//获取流行的media
+	//获取流行的media 返回流行的照片
 	@RequestMapping(value="popular.do")
-	public String popularMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
+	public  String popularMedia(String uid, String instagram_token, HttpServletRequest request) throws IOException{
 		  
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		
+		List<PopularDto> popularList=new ArrayList<PopularDto>();
 		
 		String popuLarUrl="https://api.instagram.com/v1/media/popular?access_token="+instagram_token;
 		
 		String popularResult=HttpClientUtils.httpGet(popuLarUrl, 9000, 9000);
 		 
 		System.out.println("popularResult="+popularResult);
+		
+		JSONObject jsonObject=new JSONObject(popularResult);
+		//String dataJosn= jsonObject.getString("data");
+		 
+		JSONArray dataArray=jsonObject.getJSONArray("data");
+		
+		System.out.println("data========"+dataArray);
+		
+		//JSONArray imageArray=jsonObject.getJSONArray("images");
+		
+		for (int i = 0; i < dataArray.length(); i++) {
+			
+			JSONObject dataJsonObject=(JSONObject)dataArray.get(i);
+			
+			String imagesUrl=dataJsonObject.getString("link");
+			
+			//JSONObject images=new JSONObject(dataJsonObject);
+			
+			
+			
+			String popularUrl="http://api.instagram.com/oembed?url="+imagesUrl;
+    		
+    		String Result=HttpClientUtils.httpGet(popularUrl, 9000, 9000);
+			
+			//JSONArray imagesUrl=dataJsonObject.getJSONArray("images");
+			
+    		JSONObject popularJsonObject=new JSONObject(Result);
+    		String name=popularJsonObject.getString("author_name");
+    		String url=popularJsonObject.getString("url");
+    		
+    		PopularDto popularDto=new PopularDto();
+    		popularDto.setAuthor_name(name);
+    		popularDto.setUrl(url);
+    		
+    		popularList.add(popularDto);
+			System.out.println("Result============="+Result);
+		}
+		
+		//System.out.println("ismages======"+imageArray);
+		
+	/*	String result="";
+		
+		if (popularList==null||popularList.isEmpty()) {
+			
+			return "empty";
+			
+		}else{
+			
+			JSONArray popular=new JSONArray();
+			
+			for (int a = 0; a < popularList.size(); a++) {
+				
+				 JSONObject PopularjsonObject=new JSONObject();
+				 PopularjsonObject.put("name", popularList.get(a).getAuthor_name());
+				 PopularjsonObject.put("url", popularList.get(a).getUrl());
+				 
+				 popular.put(PopularjsonObject);
+				
+			}
+			
+			result=popular.toString();
+			
+		}*/
+		
+		request.setAttribute("popularList", popularList);
 		
 		return "instagram/popular";
 		
@@ -553,4 +627,88 @@ public class InstagramController {
 		return "instagram/share";
 	}
 	
+	// 获取关注人信息
+	@RequestMapping(value = "followFirend2.do")
+	public  @ResponseBody  String FollowFirend2(String uid, String instagram_token, Model model,
+			HttpServletRequest request) throws IOException {
+
+		uid = (String) request.getSession().getAttribute("instagramId");
+		instagram_token = (String) request.getSession().getAttribute("instagram_token");
+		//String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
+		//String followByUrl = "https://api.instagram.com/v1/users/self/requested-by?access_token="+instagram_token;
+		
+		String followByUrl2 ="https://api.instagram.com/v1/users/self/feed?access_token="+instagram_token;
+		
+		String result2 = HttpClientUtils.httpGet(followByUrl2, 9000, 9000);
+		List<FollowDto> allfollow = new ArrayList<FollowDto>();
+		JSONObject Followjson2 = new JSONObject(result2);
+		System.out.println("json2========"+Followjson2);
+		JSONArray followdata = Followjson2.getJSONArray("data");
+		for (int i = 0; i < followdata.length(); i++) {
+			
+			JSONObject jo = (JSONObject) followdata.get(i);
+			String link=jo.getString("link");
+			String created_time=ApiUtils.getWeiBoTime((Integer.parseInt(jo.getString("created_time"))));
+			System.out.println("link====="+link);
+			
+			 String shareUrl="http://api.instagram.com/oembed?url="+link;
+	    		
+	    		String shareResult=HttpClientUtils.httpGet(shareUrl, 9000, 9000);
+	    		
+	    		JSONObject shareMedia = new JSONObject(shareResult);
+	    		String url = shareMedia.getString("url");
+	    		String author_name=shareMedia.getString("author_name");
+	    		String type=shareMedia.getString("type");
+	    		String title=shareMedia.getString("title");
+	    		String media_id=shareMedia.getString("media_id");
+	    	    System.out.println(shareMedia);
+	    		System.out.println("url===="+url);
+	    		System.out.println("author_name===="+author_name);
+	    		System.out.println("title===="+title);
+	    		System.out.println("media_id===="+media_id);
+                FollowDto followDto=new FollowDto();
+	    		
+	    		followDto.setTitle(title);
+	    		followDto.setUsername(author_name);
+	    		followDto.setType(type);
+	    		followDto.setUrl(url);
+	    		
+	    		followDto.setMedia_id(media_id);
+	    		followDto.setDate(created_time);
+	    		allfollow.add(followDto);
+			
+		}
+		
+		
+		 //将list拼接成字符串需要的变量
+        String resultData = "";
+     
+        
+    	if(allfollow==null||allfollow.isEmpty()){
+    	    
+    	   return "empty";
+    		
+    	}else{
+    	 	
+    	  JSONArray joArray=new JSONArray();
+    	  for (int i = 0; i < allfollow.size(); i++) {
+			
+    		 JSONObject jsonObject=new JSONObject();
+    		 jsonObject.put("id", allfollow.get(i).getMedia_id());
+    		 jsonObject.put("content", allfollow.get(i).getTitle());
+    		 jsonObject.put("images", allfollow.get(i).getUrl());
+    		 jsonObject.put("time", allfollow.get(i).getDate());
+    		 jsonObject.put("name", allfollow.get(i).getUsername());
+    		 joArray.put(jsonObject);
+		}
+    	
+    	  resultData=joArray.toString();
+    	  
+    	}
+    	
+		
+    	return resultData;
+
+	
 }
+	}
