@@ -91,8 +91,10 @@
 <body>
 	<div
 		style="width: 400px; height: 200px; border: 2px solid #7CFC00; background-color: #E0FFFF">
+		<br>
 		<textarea  class="form-control" id="msg" rows="5" cols="60">这是测试微博.......</textarea>
-		<button onclick="writeNewPost();">Public</button>
+		<br>
+		<button onclick="writeNewPost();" style="float: right;">发布</button>
 	</div>
 	<div id="fb-root"></div>
 </body>
