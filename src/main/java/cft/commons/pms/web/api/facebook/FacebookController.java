@@ -89,7 +89,7 @@ public class FacebookController {
 		JSONArray myInfoData = myInfoJson.getJSONArray("data");
 		
 		
-		for (int i = 0; i < 11; i++) {//先取前10条微博
+		for (int i = 0; i < 11; i++) {//先取当前用户的前10条微博
 			
 			FacebookDTO myDTO = new FacebookDTO();
 			//初始设置
@@ -110,7 +110,7 @@ public class FacebookController {
 			//获取当天微博信息，及必须要有文字信息或者图片
 			if (myUpdateDate.equals(nowDate) && (myInfojo.has("message") || myInfojo.has("picture"))) {
 				myDTO.setUserId((String) fromJson.get("id"));
-				myDTO.setUserName((String) fromJson.get("name"));
+				myDTO.setUserName("我");
 				myDTO.setPostID((String) myInfojo.get("id"));
 				myDTO.setUpdate_time(myUpdateTime);
 				if (myInfojo.has("message")) {
@@ -210,7 +210,7 @@ public class FacebookController {
         	
         	resultData = jsonArray.toString();
         }
-        
+        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
 }

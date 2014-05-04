@@ -163,9 +163,11 @@ $(function(){
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
 					            	var obj = JSON.parse(data);
-					            //console.log(obj);
+					           		//console.log(obj);
 					            	 $.each(obj,function(i){
-					            		if(obj.imageUrl == "null"){
+					            		console.log(obj[i]);
+					            		 if(obj[i].images == "null"){
+					            		
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 						            		               "<td>来自facebook</td>" +
@@ -180,7 +182,7 @@ $(function(){
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
 					            		               "<td>"+ obj[i].content +
-		                    		                   "<br><img src="+ obj[i].imageUrl +" />"+
+		                    		                   "<br><img src="+ obj[i].images +" />"+
 		                    		                   "</td>" +
 					            		               "</tr>");
 					            		}
