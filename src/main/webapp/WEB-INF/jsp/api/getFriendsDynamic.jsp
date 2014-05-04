@@ -130,7 +130,7 @@ $(function(){
 	//发出请求前先判断Instagram是否授权
 	if(instagram_token != "null" && instagram_token != ""){
 		//instagram--获取好友最新动态函数                
-		instagramfriends(function(data){
+		instagramfriends2(function(data){
 							if(data != "empty"){
 				            	var obj = JSON.parse(data);
 				            
@@ -180,7 +180,7 @@ $(function(){
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
 					            		               "<td>"+ obj[i].content +
-		                    		                   "<br><img src="+ obj[i].images +" />"+
+		                    		                   "<br><img src="+ obj[i].imageUrl +" />"+
 		                    		                   "</td>" +
 					            		               "</tr>");
 					            		}

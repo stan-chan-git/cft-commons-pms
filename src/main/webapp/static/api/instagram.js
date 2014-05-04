@@ -9,7 +9,7 @@ function instagramfriends(callback){
 			"json");
 }
 //获取全部最新动态
-function instagramfriends(callback){
+function instagramfriends2(callback){
 	$.post("/pms/instagram/followFirend2.do",
 			// 回调函数
 			function(data){

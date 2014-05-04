@@ -36,6 +36,7 @@
 				<li><a href="share.do"><em>01</em>分享</a></li>
 				<li><a href="likeMedia.do"><em>01</em>分享一个like，并且获取这个like的在各个平台上的信息</a></li>
 			    <li><a href="popular.do"><em>01</em>获取最受欢迎的照片</a></li>
+			    <li><a href="followFirend2.do"><em>01</em>获取全部照片</a></li>
 			</ul>	
 			
 		</li>
