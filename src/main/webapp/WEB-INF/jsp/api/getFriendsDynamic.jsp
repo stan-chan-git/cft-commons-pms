@@ -164,8 +164,7 @@ $(function(){
 							if(data != "empty"){
 					            	var obj = JSON.parse(data);
 					            	 $.each(obj,function(i){
-					            console.log(obj[i].imageUrl);
-					            		if(obj[i].imageUrl == "null"){
+					            		if(obj[i].images == "null"){
 						            		wbTable.append("<tr align='center'>" +
 						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 						            		               "<td>来自facebook</td>" +
@@ -180,7 +179,7 @@ $(function(){
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
 					            		               "<td>"+ obj[i].content +
-		                    		                   "<br><img src="+ obj[i].imageUrl +" />"+
+		                    		                   "<br><img src="+ obj[i].images +" />"+
 		                    		                   "</td>" +
 					            		               "</tr>");
 					            		}
