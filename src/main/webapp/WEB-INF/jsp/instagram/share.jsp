@@ -15,7 +15,7 @@ var _t = encodeURI(document.title);
 var _url = encodeURI(window.location);  
 var _appkey = encodeURI("801495189"); 
 
-var imgs=document.getElementsByTagName("img")[4].src;
+var imgs=document.getElementsByTagName("img")[6].src;
 
 var _pic =encodeURI(imgs);
 var _site = 'www.baidu.com';
@@ -33,13 +33,13 @@ window.open( _u,'转播到腾讯微博', 'width=700, height=680, top=0, left=0, 
 
 function sinaWeibo(){  
 	var b=document.getElementById("img1").src;
-	var img=document.getElementsByTagName("img").src;
+	var img=document.getElementsByTagName("img")[6].src;
 	alert(img);
 	var _t = encodeURI(document.title);
 	var _url = encodeURI(window.location);  
 	var _appkey = encodeURI("4281626272"); 
 	var _pic =encodeURI(img);
-	var _site = 'www.baidu.com';
+	var _site = '';
 	var _u = 'http://service.weibo.com/staticjs/weiboshare.html?title='+_t+'&url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic;  
 	window.open( _u,'转播到新浪微博', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );  
 	}  
