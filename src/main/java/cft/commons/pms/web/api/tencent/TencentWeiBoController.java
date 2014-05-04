@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.tencent.ReviewDTO;
+import cft.commons.pms.dto.tencent.TopicDTO;
 import cft.commons.pms.dto.tencent.WeiBoDTO;
 import cft.commons.pms.web.api.util.ApiUtils;
 
@@ -33,9 +34,9 @@ public class TencentWeiBoController {
 	
 	
     
-/////////////////////////////////////////////////////////////
-/////////////////////以下为*.do请求处理方法////////////////////////
-/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	/////////////////////以下为*.do请求处理方法////////////////////////
+	/////////////////////////////////////////////////////////////
 	/* 回调地址  */
 	@RequestMapping(value = "tweibo.do")
 	public String tweibo(String code, String openid, String openkey,HttpServletRequest request) throws Exception {
@@ -233,7 +234,7 @@ public class TencentWeiBoController {
 	}
 	
 	
-	/*  获取关注的人的最新微博    */
+	/*  获取自己及关注的人的最新微博    */
 	@RequestMapping(value="getFocusPeopleWeiBo.do")
 	public @ResponseBody
 	String getFocusPeopleWeiBo(HttpServletRequest request) throws Exception{
@@ -262,10 +263,10 @@ public class TencentWeiBoController {
         for(int i = 0 ; i < info.length() ; i++){
         	JSONObject obj = info.getJSONObject(i);
         	//用户唯一id，用来排除自己的微博
-        	String uid = (String)obj.get("openid");
+        	//String uid = (String)obj.get("openid");
         
         	//用uid排除自己的微博
-        	if(!request.getSession().getAttribute("openid").equals(uid)){
+        	//if(!request.getSession().getAttribute("openid").equals(uid)){
         		//获取当前日期
         		String nowDate = ApiUtils.getNowDate();
         		//获取微博发表时间
@@ -310,7 +311,7 @@ public class TencentWeiBoController {
 		        	
 		        	focusList.add(wb);	
         		}
-        	}
+        	//}
         }
         
         /*
@@ -385,5 +386,63 @@ System.out.println(resultData);
 		
         
 		return "count=" +count + ",mcount="+mcount;
+	}
+	
+	
+	/*
+	 * 获取话题热榜
+	 * */
+	@RequestMapping(value="getHotTopicList.do")
+	public String getHotTopicList(HttpServletRequest request) throws Exception{
+		
+	    //if(pos == null || pos.equals("")){
+	    	//pos = "0";
+	   // }
+	    
+		String url = COMMON_URL + "/trends/ht?"
+				     + "format=json"
+				     + "&reqnum=20"
+				     + "&pos=0" 
+				     + "&access_token=" + request.getSession().getAttribute("tencent_token")
+				     + "&openid=" + request.getSession().getAttribute("openid")
+		             + "&openkey=" + request.getSession().getAttribute("openkey")
+		             + "&clientip=" + ApiUtils.getClientIP()
+				     + "&" + COMMON_PARAM;
+	    
+		
+		String result = HttpClientUtils.httpGet(url, 9000, 9000);
+		
+		//解析字符串,获取数据
+		JSONObject json = new JSONObject(result);
+		JSONObject data = json.getJSONObject("data");
+		JSONArray info = data.getJSONArray("info");
+		
+		int hasnext = data.getInt("hasnext");
+		int pos = data.getInt("pos");
+		
+		List<TopicDTO> tdList = new ArrayList<TopicDTO>();
+		
+		for(int i = 0 ; i < info.length() ; i++){
+			JSONObject obj = info.getJSONObject(i);
+			TopicDTO td = new TopicDTO();
+			
+			td.setId(obj.getString("id"));
+			td.setKeywords(obj.getString("keywords"));
+			td.setName(obj.getString("name"));
+			td.setFavnum(obj.getInt("favnum"));
+			td.setTweetnum(obj.getInt("tweetnum"));
+			
+			tdList.add(td);
+		}
+		
+		if(tdList != null && !tdList.isEmpty()){
+			request.setAttribute("tdList", tdList);
+			request.setAttribute("hasnext", hasnext);
+			request.setAttribute("pos", pos);
+		}else{
+			request.setAttribute("msg", "获取话题热榜失败!");
+		}
+		
+		return "tencent/hotTopicList";
 	}
 }
