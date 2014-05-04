@@ -162,28 +162,27 @@ $(function(){
 		//facebook--获取好友最新动态函数                
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
-					            	var obj = JSON.parse(data);
-					            	 $.each(obj,function(i){
-					            		if(obj[i].images == "null"){
-						            		wbTable.append("<tr align='center'>" +
-						            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-						            		               "<td>来自facebook</td>" +
-						            		               "<td>"+ obj[i].time +"</td>" +
-						            		               "<td>"+ obj[i].name +"</td>" +
-						            		               "<td>"+ obj[i].content +"</td>" +
-						            		               "</tr>");
-					            		}else{
-					            			wbTable.append("<tr align='center'>" +
+					            var obj = JSON.parse(data);
+				            		if(obj[i].images == "null"){
+					            		wbTable.append("<tr align='center'>" +
 					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 					            		               "<td>来自facebook</td>" +
 					            		               "<td>"+ obj[i].time +"</td>" +
 					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>"+ obj[i].content +
-		                    		                   "<br><img src="+ obj[i].images +" />"+
-		                    		                   "</td>" +
+					            		               "<td>"+ obj[i].content +"</td>" +
 					            		               "</tr>");
-					            		}
-					            	})
+				            		}else{
+				            			wbTable.append("<tr align='center'>" +
+				            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+				            		               "<td>来自facebook</td>" +
+				            		               "<td>"+ obj[i].time +"</td>" +
+				            		               "<td>"+ obj[i].name +"</td>" +
+				            		               "<td>"+ obj[i].content +
+	                    		                   "<br><img src="+ obj[i].images +" />"+
+	                    		                   "</td>" +
+				            		               "</tr>");
+				            		}
+				            	})
 					            	
 					         }else{
 					            data_msg.append("您的Facebook的好友目前没有动态<br>");	
