@@ -88,7 +88,7 @@ $(function(){
     <a href="#" id="sina_share_text"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/sina.jpg"></a>
     <a href="#" id="facebook_share_text"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/facebook.jpg"></a>
 </div>
-
+<div style="border-bottom:1px solid #000;width:800px;margin-top:10px"></div>
 <!-- 分享图片 -->
 <!-- 单张图片 -->
 <div style="width:800px;margin-top:50px">
@@ -100,6 +100,7 @@ $(function(){
     <a href="#" id="sina_share_onepic"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/sina.jpg"></a>
     <a href="#" id="facebook_share_onepic"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/facebook.jpg"></a>
 </div>
+<div style="border-bottom:1px solid #000;width:800px;margin-top:10px"></div>
 <!-- 多张图片 -->
 <div style="width:800px;margin-top:50px">
     <label class="label label-info">多张图片:</label>
@@ -112,5 +113,6 @@ $(function(){
     <a href="#" id="sina_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/sina.jpg"></a>
     <a href="#" id="facebook_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/facebook.jpg"></a>
 </div>
+<div style="border-bottom:1px solid #000;width:800px;margin-top:10px"></div>
 </body>
 </html>
