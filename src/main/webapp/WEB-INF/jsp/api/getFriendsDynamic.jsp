@@ -17,6 +17,7 @@
 
 <script type="text/javascript">
 $(function(){
+	alert("i come in");
 	 var tencent_token = "<%=session.getAttribute("tencent_token") %>";
 	 var sina_token = "<%=session.getAttribute("sina_token") %>";
 	 var facebook_token = "<%=session.getAttribute("facebook_token") %>";
