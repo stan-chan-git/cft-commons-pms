@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -105,7 +106,14 @@ public class FacebookController {
 			String myUpdateTime = (String) myInfojo.get("updated_time");
 			String[] mydateTime = myUpdateTime.split("T");
 			String myUpdateDate = mydateTime[0];
-			myUpdateTime = myUpdateDate + "  " + mydateTime[1];
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
+					"ENGLISH", "CHINA"));
+			Date tempdate = format.parse(myUpdateTime);
+			// format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
+			format.applyPattern("yyyy年MM月dd日 HH时mm分");
+			myUpdateTime = format.format(tempdate);
+//			System.out.println("时间转换::::::" + format.format(tempdate));
 			
 			//获取当天微博信息，及必须要有文字信息或者图片
 			if (myUpdateDate.equals(nowDate) && (myInfojo.has("message") || myInfojo.has("picture"))) {
@@ -133,8 +141,8 @@ public class FacebookController {
 		JSONObject friendJson = new JSONObject(friends);
 		JSONArray friendData = friendJson.getJSONArray("data");
         
-		//1.循环取出授权用户的朋友的id，先取5个好友ID，friendData.length()
-        for (int i = 0; i < 6; i++) {
+		//1.循环取出授权用户的朋友的id，先取5个好友，若要取全部则friendData.length()
+        for (int i = 0; i < 11; i++) {
 			JSONObject friendjo = (JSONObject) friendData.get(i);
             String userId = friendjo.getString("id");
             String userName = friendjo.getString("name");
@@ -150,7 +158,7 @@ public class FacebookController {
     		JSONObject feedJson = new JSONObject(userFeed);
     		JSONArray feedData = feedJson.getJSONArray("data");
     		
-    		//2.取得每个朋友信息，获取发表的内容、时间等信息
+    		//2.取得每个朋友信息，获取发表的内容、时间等信息，获取前5条数据
             for (int j = 0; j < feedData.length(); j++) {
     			JSONObject feedjo = (JSONObject) feedData.get(j);
     			
@@ -159,7 +167,13 @@ public class FacebookController {
         		String updateTime = (String) feedjo.get("updated_time");
         		String[] dateTime = updateTime.split("T");
         		String updateDate = dateTime[0];
-        		updateTime = dateTime[0] + "  " + dateTime[1];
+        		
+        		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
+    					"ENGLISH", "CHINA"));
+    			Date tempdate = format.parse(updateTime);
+    			// format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
+    			format.applyPattern("yyyy年MM月dd日 HH时mm分");
+    			updateTime = format.format(tempdate);
         		
         		//主要获取当日好友微博，判断是否有这个内容，并把所需要的内容存入dto
         		if(updateDate.equals(nowDate) && (feedjo.has("message") || feedjo.has("picture"))){
@@ -210,7 +224,8 @@ public class FacebookController {
         	
         	resultData = jsonArray.toString();
         }
-//        System.out.println("resultData::" + resultData);
+        System.out.println("friendList" + friendList);
+        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
 }
