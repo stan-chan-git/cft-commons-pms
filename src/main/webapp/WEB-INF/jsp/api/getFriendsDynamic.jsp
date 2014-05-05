@@ -157,43 +157,41 @@ $(function(){
 	}
 	
 	//发出请求前先判断Facebook是否授权
-	if(facebook_token != "null" && facebook_token != ""){
-		//alert("i come in getFriendsDyn.js");
+	 if(facebook_token != "null" && facebook_token != ""){
 		//facebook--获取好友最新动态函数                
 		facebookFriendsDyn(function(data){
 							if(data != "empty"){
+								console.log(11111111);
 					            var obj = JSON.parse(data);
-				            		if(obj[i].images == "null"){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>来自facebook</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "</tr>");
-				            		}else{
-				            			wbTable.append("<tr align='center'>" +
+			            		if(obj[i].images == "null"){
+				            		wbTable.append("<tr align='center'>" +
 				            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
 				            		               "<td>来自facebook</td>" +
 				            		               "<td>"+ obj[i].time +"</td>" +
 				            		               "<td>"+ obj[i].name +"</td>" +
-				            		               "<td>"+ obj[i].content +
-	                    		                   "<br><img src="+ obj[i].images +" />"+
-	                    		                   "</td>" +
+				            		               "<td>"+ obj[i].content +"</td>" +
 				            		               "</tr>");
-				            		}
-				            	})
-					            	
+			            		}else{
+			            			wbTable.append("<tr align='center'>" +
+			            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
+			            		               "<td>来自facebook</td>" +
+			            		               "<td>"+ obj[i].time +"</td>" +
+			            		               "<td>"+ obj[i].name +"</td>" +
+			            		               "<td>"+ obj[i].content +
+                    		                   "<br><img src="+ obj[i].images +" />"+
+                    		                   "</td>" +
+			            		               "</tr>");
+			            		}	
 					         }else{
 					            data_msg.append("您的Facebook的好友目前没有动态<br>");	
 					            data_msg.show();
 					         }
-		                   });
+		});
 	}else{
 		auth_msg.append("Facebook还未进行授权,不能获取好友动态!<br>");
 		auth_msg.show();
 	}
-})
+}) 
 </script>
 </head>
 <body>
