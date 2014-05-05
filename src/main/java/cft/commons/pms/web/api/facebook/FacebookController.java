@@ -210,7 +210,7 @@ public class FacebookController {
         	
         	resultData = jsonArray.toString();
         }
-        System.out.println("resultData::" + resultData);
+//        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
 }
