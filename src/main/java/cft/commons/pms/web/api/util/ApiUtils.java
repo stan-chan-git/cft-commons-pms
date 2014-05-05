@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cft.commons.core.util.HttpClientUtils;
+import cft.commons.pms.dto.facebook.FacebookDTO;
 import cft.commons.pms.dto.tencent.WeiBoDTO;
 
 public class ApiUtils {
@@ -238,4 +239,44 @@ public class ApiUtils {
 		return nowDate;
 	}
 
+	
+	///////////////////////////////Facebook工具方法////////////////////////////////
+	/* 日期格式化(具体到时分) 获取到的格式是2014-04-24T02:42:37+0000*/
+	public static String FacebookTimeFormat(String date) throws ParseException {
+	
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
+		"ENGLISH", "CHINA"));
+		Date tempdate = format.parse(date);
+		// format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
+		format.applyPattern("yyyy年MM月dd日 HH时mm分");
+		return format.format(tempdate);
+	}
+	
+	/* 日期格式化(具体到年月日) */
+	public static String FacebookDateFormat(String date) throws ParseException {
+	
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
+		"ENGLISH", "CHINA"));
+		Date tempdate = format.parse(date);
+		format.applyPattern("yyyy-MM-dd");
+		return format.format(tempdate);
+	}
+	
+	/* 按时间排序 */
+	public static List<FacebookDTO> FacebookOrderByUpdateTime(List<FacebookDTO> list){
+		for (int i = 0; i < list.size() - 1; i++) {  
+            for (int j = 1; j < list.size() - i; j++) {
+                String a = list.get(j - 1).getUpdate_time();
+                String b = list.get(j).getUpdate_time();
+  
+                if (a.compareTo(b) < 0) { // 比较两个时间的大小  
+  
+                    FacebookDTO temp = list.get(j - 1);  
+                    list.set((j - 1), list.get(j));  
+                    list.set(j, temp);  
+                }
+            }
+        }
+		return list;
+	}
 }

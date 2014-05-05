@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.facebook.FacebookDTO;
+import cft.commons.pms.web.api.util.ApiUtils;
 
 /**
  * facebook 请求处理
@@ -104,16 +105,10 @@ public class FacebookController {
 			//获取微博发表时间
 			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
 			String myUpdateTime = (String) myInfojo.get("updated_time");
-			String[] mydateTime = myUpdateTime.split("T");
-			String myUpdateDate = mydateTime[0];
-			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
-					"ENGLISH", "CHINA"));
-			Date tempdate = format.parse(myUpdateTime);
-			// format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
-			format.applyPattern("yyyy年MM月dd日 HH时mm分");
-			myUpdateTime = format.format(tempdate);
-//			System.out.println("时间转换::::::" + format.format(tempdate));
+				//取得发表日期，并格式化
+			String myUpdateDate = ApiUtils.FacebookDateFormat(myUpdateTime);
+				//取得发表时间，并格式化
+			myUpdateTime = ApiUtils.FacebookTimeFormat(myUpdateTime);
 			
 			//获取当天微博信息，及必须要有文字信息或者图片
 			if (myUpdateDate.equals(nowDate) && (myInfojo.has("message") || myInfojo.has("picture"))) {
@@ -141,7 +136,7 @@ public class FacebookController {
 		JSONObject friendJson = new JSONObject(friends);
 		JSONArray friendData = friendJson.getJSONArray("data");
         
-		//1.循环取出授权用户的朋友的id，先取5个好友，若要取全部则friendData.length()
+		//1.循环取出授权用户的朋友的id，先取10个好友，若要取全部则friendData.length()
         for (int i = 0; i < 11; i++) {
 			JSONObject friendjo = (JSONObject) friendData.get(i);
             String userId = friendjo.getString("id");
@@ -165,15 +160,10 @@ public class FacebookController {
         		//获取微博发表时间
         			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
         		String updateTime = (String) feedjo.get("updated_time");
-        		String[] dateTime = updateTime.split("T");
-        		String updateDate = dateTime[0];
-        		
-        		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
-    					"ENGLISH", "CHINA"));
-    			Date tempdate = format.parse(updateTime);
-    			// format.applyPattern("yyyy年MM月dd日 HH时mm分ss秒");
-    			format.applyPattern("yyyy年MM月dd日 HH时mm分");
-    			updateTime = format.format(tempdate);
+        			//取得发表日期（年月日）
+        		String updateDate = ApiUtils.FacebookDateFormat(updateTime);
+        			//取得发表时间（时分秒）
+        		updateTime = ApiUtils.FacebookTimeFormat(updateTime);
         		
         		//主要获取当日好友微博，判断是否有这个内容，并把所需要的内容存入dto
         		if(updateDate.equals(nowDate) && (feedjo.has("message") || feedjo.has("picture"))){
@@ -195,6 +185,7 @@ public class FacebookController {
         				fbDto.setImageUrl((String) feedjo.get("picture"));
         			}
         			friendList.add(fbDto);
+        			
     			}
         		
 //	        	//判断此微博是不是转发的
@@ -205,6 +196,9 @@ public class FacebookController {
             }//2.for
     		
         }//1.for
+        //获取的好友动态按时间先后排序
+        friendList = ApiUtils.FacebookOrderByUpdateTime(friendList);
+//        System.out.println(friendList);
       //拼成所需要的json
         String resultData = "";
         
@@ -224,8 +218,8 @@ public class FacebookController {
         	
         	resultData = jsonArray.toString();
         }
-        System.out.println("friendList" + friendList);
-        System.out.println("resultData::" + resultData);
+//        System.out.println("friendList" + friendList);
+//        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
 }
