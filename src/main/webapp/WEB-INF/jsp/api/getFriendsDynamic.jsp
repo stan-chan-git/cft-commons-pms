@@ -175,7 +175,7 @@ $(function(){
 				            		}else{
 				            			wbTable.append("<tr align='center'>" +
 		                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-		                    		               "<td>来自新浪微博</td>" +
+		                    		               "<td>来自Facebook</td>" +
 		                    		               "<td>"+ obj[i].time +"</td>" +
 		                    		               "<td>"+ obj[i].name +"</td>" +
 		                    		               //将图片显示在文字下方
