@@ -54,7 +54,7 @@ function postFBmsg(msg,facebookToken,callback){
 } 
 
 /**
- * 发布一条文字带图片信息（不能实现）
+ * 发布一条文字带图片信息
  */
 function writeNewPostPic(msg,callback){
 	//初始化
@@ -70,13 +70,12 @@ function writeNewPostPic(msg,callback){
 			
 			var uid = response.authResponse.userID;
 			var facebookToken = response.authResponse.accessToken;
-			postFBmsgpic(msg,facebookToken,callback);
+			postFBmsg(msg,facebookToken,callback);
 		} else {
 			FB.login(function (response){
 				
 				if (response.status === 'connected') {
 					console.log("回调");
-					
 					var facebookToken = response.authResponse.accessToken;
 					postFBmsgpic(msg,facebookToken,callback);
 				}
@@ -90,10 +89,9 @@ function writeNewPostPic(msg,callback){
 function postFBmsgpic(msg,facebookToken,callback){
 	FB.api('/me/feed', "POST",
     {
-		"message":msg
-		,"link": "https://www.facebook.com/photo.php?fbid=1397928103820640&set=a.1397927633820687.1073741827.100008103913868&type=1&relevant_count=1"
-        ,"access_token":facebookToken
-           // "link":"https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn2/t1.0-9/1491654_1397928103820640_3770911688229799288_n.jpg"
+		message : msg
+        ,access_token : facebookToken
+        ,picture : "http://t1.qpic.cn/mblogpic/35336114f525ad38b2ec/460"
     }, function(response) {
 		if (!response || response.error) {
 			alert('Error occured:'+response.error.message);
