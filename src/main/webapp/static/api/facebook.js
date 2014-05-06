@@ -70,7 +70,8 @@ function writeNewPostPic(msg,callback){
 			
 			var uid = response.authResponse.userID;
 			var facebookToken = response.authResponse.accessToken;
-			postFBmsg(msg,facebookToken,callback);
+			alert(facebookToken);
+			postFBmsgpic(msg,facebookToken,callback);
 		} else {
 			FB.login(function (response){
 				
