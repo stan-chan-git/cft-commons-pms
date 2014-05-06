@@ -10,7 +10,7 @@ $(function(){
 	var tencent = $("#tencent");//腾讯微博复选框
 	var sina = $("#sina");//新浪微博复选框
 	//var instagram = $("#instagram");//Instagram复选框
-	//var facebook = $("#facebook");//FaceBook复选框
+	var facebook = $("#facebook");//FaceBook复选框
 	var send = $("#send");//发送按钮
 	
 	var path = "<%=request.getContextPath() %>";
@@ -18,7 +18,7 @@ $(function(){
 	var tencent_label = $("#tencent_label");//Tencent label
 	var sina_label = $("#sina_label");//Sina label
 	//var instagram_label = $("#instagram_label");//Instagram label
-	//var facebook_label = $("#facebook_label");//FaceBook label
+	var facebook_label = $("#facebook_label");//FaceBook label
 	
 	
 	//发送按钮点击事件
@@ -27,7 +27,7 @@ $(function(){
 		var content = $("#content").val();
 		
 		//判断是否选择了平台
-		if(tencent.is(":checked") == false && sina.is(":checked") == false){
+		if(tencent.is(":checked") == false && sina.is(":checked") == false && facebook.is(":checked") == false){
 			//先清空提示div
 			$("#tip").remove();
 			send.after("<div id='tip' class='alert alert-warning' style='margin-left:115px;margin-top:20px'>Please Select A Platform At Least!</div>");
@@ -35,9 +35,9 @@ $(function(){
 		}
 		
 		//判断是否进行了选中
-		if(tencent.is(":checked") == true || sina.is(":checked") == true){	
+		if(tencent.is(":checked") == true || sina.is(":checked") == true || facebook.is(":checked") == false){	
 			//判断是否授权，如果已授权，则$("#tencent_tip").text()为空，其他平台类推
-			if($("#tencent_tip").text() != "" || $("#sina_tip").text() != ""){	
+			if($("#tencent_tip").text() != "" || $("#sina_tip").text() != "" || $("#facebook_tip").text() != ""){	
 				$("#tip").remove();
 				send.after("<div id='tip' class='alert alert-warning' style='margin-left:115px;margin-top:20px'>Please According To The Instructions!</div>");
 				return false;
@@ -63,6 +63,18 @@ $(function(){
 			if(sina.is(":checked") == true){
 				//新浪微博    发布带图新微博API调用函数
 				sinaStatusesUpload(content,
+						           //回调函数，提示是否发布成功
+						           function(msg){
+			                          if(typeof(msg) != "undefined"){
+			                        	 $("#info").append(msg+"<br>");
+			                          }
+				                   }
+				                );
+			}
+			
+			if(facebook.is(":checked") == true){
+				//新浪微博    发布带图新微博API调用函数
+				writeNewPostPic(content,
 						           //回调函数，提示是否发布成功
 						           function(msg){
 			                          if(typeof(msg) != "undefined"){
@@ -114,7 +126,7 @@ $(function(){
 				$("#instagram_tip").append("请先授权!");
 			}
 		}
-	});
+	});--%>
 
 	facebook.click(function(){
 		$("#tip").remove();
@@ -127,7 +139,7 @@ $(function(){
 				$("#facebook_tip").append("请先授权!");
 			}
 		}
-	}); --%>
+	}); 
 	
 });
 </script>
@@ -152,8 +164,8 @@ $(function(){
 <div class="form-group" style="margin-left:115px;padding-top:110px">
 	<input type="checkbox" id="tencent" />&nbsp;<label class="label label-info" id="tencent_label">腾讯微博</label><label id="tencent_tip" style="color:red"></label><br>
 	<input type="checkbox" id="sina" />&nbsp;<label class="label label-danger" id="sina_label">新浪微博</label><label id="sina_tip" style="color:red"></label><br>
-	<!-- <input type="checkbox" id="instagram" />&nbsp;<label class="label label-default" id="instagram_label">Instagram</label><label id="instagram_tip" style="color:red"></label><br>
-	<input type="checkbox" id="facebook" />&nbsp;<label class="label label-primary" id="facebook_label">FaceBook</label><label id="facebook_tip" style="color:red"></label><br> -->
+	<!-- <input type="checkbox" id="instagram" />&nbsp;<label class="label label-default" id="instagram_label">Instagram</label><label id="instagram_tip" style="color:red"></label><br> -->
+	<input type="checkbox" id="facebook" />&nbsp;<label class="label label-primary" id="facebook_label">FaceBook</label><label id="facebook_tip" style="color:red"></label><br>
 </div>
 
 <div class="form-group">
