@@ -7,11 +7,11 @@
 <title>Insert title here</title>
 <style type="text/css">
 .w1{
-    width:200px;
+    width:300px;
    }
    
 .w2{
-    width:120px;
+    width:220px;
    }
 </style>
 
