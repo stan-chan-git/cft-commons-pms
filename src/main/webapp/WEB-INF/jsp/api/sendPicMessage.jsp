@@ -73,7 +73,7 @@ $(function(){
 			}
 			
 			if(facebook.is(":checked") == true){
-				//新浪微博    发布带图新微博API调用函数
+				//Facebook    发布带图新微博API调用函数
 				writeNewPostPic(content,
 						           //回调函数，提示是否发布成功
 						           function(msg){
