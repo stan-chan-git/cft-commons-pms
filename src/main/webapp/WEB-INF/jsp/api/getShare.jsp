@@ -28,7 +28,8 @@ $(function(){
    
    //Facebook分享文字
    $("#sina_share_text").click(function(){
-	  
+	   url = "http://10.211.55.3:8080/pms/getShare.do";
+	   facebookShare(wenzi,picArray,url);
    });
    
 /*********************
