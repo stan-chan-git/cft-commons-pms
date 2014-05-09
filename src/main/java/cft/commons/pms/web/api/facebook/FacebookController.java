@@ -222,7 +222,7 @@ public class FacebookController {
 	}//friendDyn
 	
 	/**
-	 * js分享（只是用于跳转）
+	 * js分享（只是用于跳转，不为整合部分）
 	 */
 	@RequestMapping(value = "sharePost.do")
 	public String SharePost(HttpServletRequest request){

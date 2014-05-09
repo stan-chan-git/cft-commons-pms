@@ -125,3 +125,33 @@ function facebookFriendsDyn(callback){
 		   //返回的数据类型
 	       "json");
 }
+
+/**
+ * 分享
+ */
+function facebookShare(facebook_text,facebook_pic,facebook_url){
+	FB.init({
+		appId : '137410796429161',
+		status : true,
+		cookie : true,
+		xfbml : true
+	});
+	if(0 == facebook_pic.length){
+		facebook_pic = '';
+	}
+	FB.ui({
+         method: 'feed',
+         name: facebook_text,//分享的内容（文字）
+         link: facebook_url,//分享的链接
+         picture: facebook_pic,
+         caption: 'showcase',
+         description: 'myApp'
+     },
+     function (response) {
+         if (response && response.post_id) {
+       	  alert('Posting completed.');
+         } else {
+       	  alert('Error while posting.');
+         }
+     });
+}
