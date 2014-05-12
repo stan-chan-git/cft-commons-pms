@@ -75,7 +75,7 @@ $(function(){
    
    //Facebook分享多张图片
    $("#facebook_share_pics").click(function(){
-	  
+	  alert("sorry,can't use");
    });
 })
 </script>

@@ -26,9 +26,9 @@
          },
          function (response) {
              if (response && response.post_id) {
-           	  alert('Posting completed.');
+            	 console.log('Posting completed.');
              } else {
-           	  alert('Error while posting.');
+            	 console.log('Error while posting.');
              }
          });
 	}

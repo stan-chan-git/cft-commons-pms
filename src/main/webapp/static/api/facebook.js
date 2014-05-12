@@ -70,7 +70,6 @@ function writeNewPostPic(msg,callback){
 			
 			var uid = response.authResponse.userID;
 			var facebookToken = response.authResponse.accessToken;
-			alert(facebookToken);
 			postFBmsgpic(msg,facebookToken,callback);
 		} else {
 			FB.login(function (response){
@@ -95,7 +94,7 @@ function postFBmsgpic(msg,facebookToken,callback){
         ,picture : "http://t1.qpic.cn/mblogpic/35336114f525ad38b2ec/460"
     }, function(response) {
 		if (!response || response.error) {
-			alert('Error occured:'+response.error.message);
+			console.log('Error occured:'+response.error.message);
 			
 			if(typeof(callback) != "undefined"){
 				callback("Facebook发布失败!");
@@ -149,9 +148,9 @@ function facebookShare(facebook_text,facebook_pic,facebook_url){
      },
      function (response) {
          if (response && response.post_id) {
-       	  alert('Posting completed.');
+        	 console.log('Posting completed.');
          } else {
-       	  alert('Error while posting.');
+        	 console.log('Error while posting.');
          }
      });
 }
