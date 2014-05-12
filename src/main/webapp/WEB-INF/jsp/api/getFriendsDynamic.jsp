@@ -180,7 +180,7 @@ $(function(){
 		                    		               "<td>"+ obj[i].name +"</td>" +
 		                    		               //将图片显示在文字下方
 		                    		               "<td>"+ obj[i].content +
-		                    		                    "<br><img src="+ obj[i].images +" />"+
+		                    		                    "<br><img width='40%' height='40%' src="+ obj[i].images +" />"+
 		                    		               "</td>" +
 		                    		               "</tr>");
 				            		}
