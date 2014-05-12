@@ -152,7 +152,7 @@ public class InstagramController {
 		uid = (String) request.getSession().getAttribute("instagramId");
 		instagram_token = (String) request.getSession().getAttribute("instagram_token");
 		String followByUrl = "https://api.instagram.com/v1/users/"+uid+"/follows?access_token="+instagram_token;
-		//String followByUr = "https://api.instagram.com/v1/users/self/requested-by?access_token="+instagram_token;
+		//String followByU = "https://api.instagram.com/v1/users/self/requested-by?access_token="+instagram_token;
 		
 		String followByUrl2 ="https://api.instagram.com/v1/users/self/feed?access_token="+instagram_token;
 		
