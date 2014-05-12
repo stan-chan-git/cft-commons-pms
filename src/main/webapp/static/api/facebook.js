@@ -70,7 +70,6 @@ function writeNewPostPic(msg,callback){
 			
 			var uid = response.authResponse.userID;
 			var facebookToken = response.authResponse.accessToken;
-			alert(facebookToken);
 			postFBmsgpic(msg,facebookToken,callback);
 		} else {
 			FB.login(function (response){
@@ -95,7 +94,7 @@ function postFBmsgpic(msg,facebookToken,callback){
         ,picture : "http://t1.qpic.cn/mblogpic/35336114f525ad38b2ec/460"
     }, function(response) {
 		if (!response || response.error) {
-			alert('Error occured:'+response.error.message);
+			console.log('Error occured:'+response.error.message);
 			
 			if(typeof(callback) != "undefined"){
 				callback("Facebook发布失败!");
@@ -124,4 +123,34 @@ function facebookFriendsDyn(callback){
 	
 		   //返回的数据类型
 	       "json");
+}
+
+/**
+ * 分享
+ */
+function facebookShare(facebook_text,facebook_pic,facebook_url){
+	FB.init({
+		appId : '137410796429161',
+		status : true,
+		cookie : true,
+		xfbml : true
+	});
+	if(0 == facebook_pic.length){
+		facebook_pic = '';
+	}
+	FB.ui({
+         method: 'feed',
+         name: facebook_text,//分享的内容（文字）
+         link: facebook_url,//分享的链接
+         picture: facebook_pic,
+         caption: 'showcase',
+         description: 'myApp'
+     },
+     function (response) {
+         if (response && response.post_id) {
+        	 console.log('Posting completed.');
+         } else {
+        	 console.log('Error while posting.');
+         }
+     });
 }

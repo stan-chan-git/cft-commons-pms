@@ -27,8 +27,9 @@ $(function(){
    });
    
    //Facebook分享文字
-   $("#sina_share_text").click(function(){
-	  
+   $("#facebook_share_text").click(function(){
+	   url = "http://10.211.55.3:8080/pms/getShare.do";
+	   facebookShare(wenzi,picArray,url);
    });
    
 /*********************
@@ -43,14 +44,16 @@ $(function(){
    
    //新浪分享单张图片
    $("#sina_share_onepic").click(function(){
-	   url = "http://10.211.55.3:8080/pms/getShare.do";  
+	   url = "http://10.211.55.3:8080/pms/getShare.do";
 	   picArray.push($("#pic").attr("src"));
 	   sinaShare("#分享图片#",picArray,url);
    });
    
    //Facebook分享单张图片
-   $("#sina_share_onepic").click(function(){
-	  
+   $("#facebook_share_onepic").click(function(){
+	   url = "http://10.211.55.3:8080/pms/getShare.do";  
+	   var picUrl = 'http://www.ttcnn.com/jpg/img/jpg10/201202183.jpg';//只能分享单张图片，picture url需要改变
+	   facebookShare("#分享图片",picUrl,url);
    });
    
 ////////////////////////////////////////////////////////////////////   
@@ -71,8 +74,8 @@ $(function(){
    });
    
    //Facebook分享多张图片
-   $("#sina_share_pics").click(function(){
-	  
+   $("#facebook_share_pics").click(function(){
+	  alert("sorry,can't use");
    });
 })
 </script>

@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
@@ -222,4 +220,12 @@ public class FacebookController {
 //        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
+	
+	/**
+	 * js分享（只是用于跳转，不为整合部分）
+	 */
+	@RequestMapping(value = "sharePost.do")
+	public String SharePost(HttpServletRequest request){
+		return "facebook/sharePost";
+	}
 }

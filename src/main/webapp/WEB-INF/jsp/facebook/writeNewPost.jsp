@@ -87,11 +87,11 @@
 
 <body>
 	<div
-		style="width: 600px; height: 300px; border: 2px solid #7CFC00; background-color: #E0FFFF">
-		<label class="col-sm-3 control-label">内容:</label>
+		style="width: 600px; height: 300px; ">
+		<label class="col-sm-2 control-label" style="background-color: green; color: white;">内容:</label>
 		<textarea  class="form-control" id="msg" rows="5" cols="60">这是测试微博.......</textarea>
 		<br>
-		<label class="col-sm-8 control-label">图片地址（Facebook相册图片不可以）:</label>
+		<label class="col-sm-6 control-label" style="background-color: green; color: white;">图片地址（Facebook相册图片不可以）:</label>
 		<br>
 		<input id ="pictureUrl" type="text" class="col-md-8" value="http://img4.duitang.com/uploads/item/201302/06/20130206195233_dHdt5.thumb.600_0.jpeg"/>
 		&nbsp;&nbsp;
