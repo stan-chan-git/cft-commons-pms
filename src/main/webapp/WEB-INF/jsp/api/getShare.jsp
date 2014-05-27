@@ -74,9 +74,9 @@ $(function(){
    });
    
    //Facebook分享多张图片
-   $("#facebook_share_pics").click(function(){
+  /* $("#facebook_share_pics").click(function(){
 	  alert("sorry,can't use");
-   });
+   }); */
 })
 </script>
 </head>
@@ -114,7 +114,7 @@ $(function(){
     <label>分享到:</label>
     <a href="#" id="tencent_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/tencent.jpg"></a>
     <a href="#" id="sina_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/sina.jpg"></a>
-    <a href="#" id="facebook_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/facebook.jpg"></a>
+   <!--  <a href="#" id="facebook_share_pics"><img style="width:18px;height:19px" src="${pageContext.request.contextPath}/static/images/facebook.jpg"></a> -->
 </div>
 <div style="border-bottom:1px solid #000;width:800px;margin-top:10px"></div>
 </body>
