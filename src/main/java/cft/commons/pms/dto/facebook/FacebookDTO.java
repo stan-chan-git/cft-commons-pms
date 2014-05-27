@@ -19,5 +19,9 @@ public class FacebookDTO {
 	private String imageUrl;//图片url
 	private String type;
 	private String update_time;// 微博创建时间
+	private int shareNum;//分享数
+	private int likeNum;//点赞数
+	private int commentNum;//评论数
+	private String comment;//评论内容
 	
 }
