@@ -81,6 +81,15 @@
 	function clean(){
 		document.getElementById("pictureUrl").value = "";
 	}
+	/* 图片预览 */
+	function preview(){
+		if(null != document.getElementById("pictureUrl").value || "" != document.getElementById("pictureUrl").value){
+			document.getElementById("previewPic").src = document.getElementById("pictureUrl").value;
+		}else{
+			document.getElementById("previewPic").src = "";
+		}
+		
+	}
 	
 </script>
 </head>
@@ -96,6 +105,10 @@
 		<input id ="pictureUrl" type="text" class="col-md-8" value="http://img4.duitang.com/uploads/item/201302/06/20130206195233_dHdt5.thumb.600_0.jpeg"/>
 		&nbsp;&nbsp;
 		<button onclick="clean();">清空</button>
+		<br>
+		<button onclick="preview();">图片预览</button>
+		<br>
+		<img id = "previewPic" src = ""></img>
 		<br><br>
 		<button onclick="writeNewPost();" style="float: right;">发布</button>
 	</div>

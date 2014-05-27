@@ -3,7 +3,9 @@ package cft.commons.pms.web.api.util;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -241,7 +243,7 @@ public class ApiUtils {
 
 	
 	///////////////////////////////Facebook工具方法////////////////////////////////
-	/* 日期格式化(具体到时分) 获取到的格式是2014-04-24T02:42:37+0000*/
+	/* 日期格式化(具体到时分) 获取到的格式：2014-04-24T02:42:37+0000；返回格式：yyyy年MM月dd日 HH时mm分*/
 	public static String FacebookTimeFormat(String date) throws ParseException {
 	
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
@@ -252,7 +254,7 @@ public class ApiUtils {
 		return format.format(tempdate);
 	}
 	
-	/* 日期格式化(具体到年月日) */
+	/* 日期格式化(具体到年月日) 获取到的格式：2014-04-24T02:42:37+0000；返回格式：yyyy-MM-dd*/
 	public static String FacebookDateFormat(String date) throws ParseException {
 	
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", new Locale(
@@ -262,7 +264,7 @@ public class ApiUtils {
 		return format.format(tempdate);
 	}
 	
-	/* 按时间排序 */
+	/* 按时间冒泡排序 */
 	public static List<FacebookDTO> FacebookOrderByUpdateTime(List<FacebookDTO> list){
 		for (int i = 0; i < list.size() - 1; i++) {  
             for (int j = 1; j < list.size() - i; j++) {
@@ -279,4 +281,31 @@ public class ApiUtils {
         }
 		return list;
 	}
+	
+	/* 程序请求，获取到跳转后的地址*/
+	//连接对象  
+	private static HttpURLConnection conn;   
+	/** *//** 
+	* 根据url连接某地址，并返回返回码. 
+	* 返回码说明： 
+	* 0~200为正常情况，其中200为OK 
+	* 其余都为错误的情况，具体请参见w3 
+	* @param urlStr 需连接的url字符串 
+	*/  
+	public static String connect(String urlStr) throws Exception {  
+		URL url = new URL(urlStr);   
+		conn = (HttpURLConnection) url.openConnection();   
+//		System.out.println("返回码: " + conn.getResponseCode());   
+		//如果定向的地址经过重定向，  
+		//那么conn.getURL().toString()显示的是重定向后的地址  
+//		System.out.println(conn.getURL().toString());   
+		return conn.getURL().toString();   
+	}  
+	/** *//** 
+	* 中断连接. 
+	*/  
+	public static void disconnect() {  
+	conn.disconnect();   
+	}
+	
 }

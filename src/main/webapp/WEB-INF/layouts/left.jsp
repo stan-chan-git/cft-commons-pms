@@ -41,12 +41,12 @@
 			
 		</li>
 		
-		<li id="one" class="files"><a href="#one">FaceBook API</a>
+		<li id="one" class="files"><a href="#one">Facebook API</a>
 			<ul class="sub-menu">
-				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write new post(with picture)</a></li>
-				<li><a href=""><em>02</em>Get friendlist(not use)</a></li>
+				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write New Post(with picture)</a></li>
+				<li><a href="${ctx}/facebook/getFriends.do"><em>02</em>My Friend List</a></li>
 				<li><a href="${ctx}/facebook/sharePost.do"><em>03</em>Share</a></li>
-				<li><a href=""><em>04</em>...</a></li>
+				<li><a href="${ctx}/facebook/getMyPosts1.do"><em>04</em>My Posts</a></li>
 				<li><a href=""><em>05</em>...</a></li>
 				<li><a href=""><em>06</em>...</a></li>
 			</ul>
