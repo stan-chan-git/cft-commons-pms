@@ -141,11 +141,7 @@ $(function(){
 				            		               "<td>"+ obj[i].time +"</td>" +
 				            		               "<td>"+ obj[i].name +"</td>" +
 				            		               "<td>"+ obj[i].content +
-<<<<<<< HEAD
 	                    		                    "<br><img width='250px' height='240px' src="+ obj[i].images +" />"+
-=======
-	                    		                    "<br><img  width='250px' height='240px'  src="+ obj[i].images +" />"+
->>>>>>> refs/remotes/origin/social_platform
 	                    		                   "</td>" +
 				            		               "</tr>");
 				            	})
@@ -183,13 +179,8 @@ $(function(){
 		                    		               "<td>"+ obj[i].time +"</td>" +
 		                    		               "<td>"+ obj[i].name +"</td>" +
 		                    		               //将图片显示在文字下方
-<<<<<<< HEAD
 		                    		               "<td>"+ obj[i].content +
 		                    		                    "<br><img width='250px' height='240px' src="+ obj[i].images +" />"+
-=======
-		                    		               "<td>"+ obj[i].content +
-		                    		                  "<br><img width='250px' height='240px' src="+ obj[i].images +" />"+
->>>>>>> refs/remotes/origin/social_platform
 		                    		               "</td>" +
 		                    		               "</tr>");
 				            		}

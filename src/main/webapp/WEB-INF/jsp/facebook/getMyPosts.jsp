@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,90 +12,20 @@
    }
 </style>
 
-<script type="text/javascript">
-<!-- facebook分享点赞必须script -->
-(function(d, s, id) {
+<script>
+
+	(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
 	  if (d.getElementById(id)) return;
 	  js = d.createElement(s); js.id = id;
 	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.0";
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));
-	
-$(function(){
-	 var facebook_token = "<%=session.getAttribute("facebook_token") %>";
-	
-	 var wbTable = $("#wbTable");//插入数据的表格
-	 var auth_msg = $("#auth_msg");//是否授权提示消息
-	 
-	 if((facebook_token != "null" && facebook_token != "")){
-		wbTable.append("<tr align='center' class='success'>" +
-						"<td style='display:none'>微博ID</td>" +
-						"<td class='w1'>微博内容</td>" +
-						"<td>发表时间</td>" +
-						"<td ></td>" +
-			   			"</tr>");
-	 }else{
-		 auth_msg.empty();
-		 auth_msg.append("Facebook还未进行授权,不能获取我的消息!<br><br>");
-		 auth_msg.show();
-		 
-		 return false;
-	 }
-
-	//发出请求前先判断Facebook是否授权
-	 if(facebook_token != "null" && facebook_token != ""){
-		//facebook--获取好友列表函数               
-		getMyAllPosts(function(data){
-							if(data != "empty"){
-					            var obj = JSON.parse(data);
-					            $.each(obj,function(i){
-				            		if(obj[i].images == "null"){
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+ obj[i].content +"</td>" +
-					            		               "<td>"+ obj[i].time +"</td>" +
-					            		               "<td><div class='fb-like' data-href='https://www.facebook.com/"+ obj[i].paraPostId0 +"/posts/"+ obj[i].paraPostId1 +"' data-layout='standard' data-action='like' data-show-faces='true' data-share='true'></div>" +
-					            		               "<br><a>share("+ obj[i].shareNum+")</a>"+
-					            		               "<br><a>comment()</a></td>" +
-					            		               "</tr>");
-				            		}else{
-				            			wbTable.append("<tr align='center'>" +
-		                    		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-		                    		               //将图片显示在文字下方
-		                    		               "<td>"+ obj[i].content +
-		                    		                    "<br><img src="+ obj[i].images +" />"+
-		                    		               "</td>" +
-		                    		               "<td>"+ obj[i].time +"</td>" +
-		                    		               "<td><div class='fb-like' data-href='https://www.facebook.com/"+ obj[i].paraPostId0 +"/posts/"+ obj[i].paraPostId1 +"' data-layout='standard' data-action='like' data-show-faces='true' data-share='true'></div>" +
-		                    		               "<br><a>share("+ obj[i].shareNum+")</a>"+
-		                    		               "<br><a>comment()</a></td>" +
-		                    		               "</tr>");
-				            		}
-				            	});
-					         }else{
-					            data_msg.append("您目前没有消息");	
-					            data_msg.show();
-					         }
-		});
-	}else{
-		auth_msg.append("Facebook还未进行授权,不能获取我的消息!<br>");
-		auth_msg.show();
-	}
-})
-
-function getMyAllPosts(callback){
-	$.post("/pms/facebook/getMyPosts2.do",
-		   function(data){
-		      callback(data); 
-	       },
-		   //返回的数据类型
-	       "json");
-}
 </script>
+
 </head>
 <body>
-<div class="fb-like" data-href="https://www.facebook.com/100008103913868/posts/1414768545469929" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
 <div style="width:800px;padding-top: 30px;">			
             
             <span id="auth_msg" class="alert alert-danger" style="display:none;float:left;margin-left:250px"></span>
@@ -103,12 +34,61 @@ function getMyAllPosts(callback){
 			
 			<div class="form-group">
 				<div id="dd" class="col-sm-11" >
-					<table id="wbTable" class="table" style="argin-left:40px">
+					<table id="wbTable" class="table" style="argin-left:40px" class="myList">
+						<thead>
+						<!-- 判断Facebook是否有授权 -->
+							<c:choose>
+								<c:when test="${sessionScope.facebook_token != null && sessionScope.facebook_token != ''}">
+									<tr align='center' class='success'>
+										<td style='display:none'>微博ID</td>
+										<td class='w1'>微博内容</td>
+										<td>发表时间</td>
+										<td ></td>
+				   					</tr>
+								</c:when>
+								<c:otherwise>
+									Facebook is not for authorization, can't get my message!<br><br>
+								</c:otherwise>
+							</c:choose>
+						</thead>
+						<tbody>
+							<!-- 判断当前用户是否有消息 -->
+		   					<c:choose>
+		   						<c:when test="${myList != null && myList != ''}">
+		   							<c:forEach items="${myList}" var="myposts">
+		   								<tr align='center'>
+		            		            	<td style='display:none'>${myposts.postID}</td>
+		            		            	<td class='w1'>
+		            		            		${myposts.message}
+		            		            		<!-- 如果有图片则显示 -->
+		            		            		<c:if test="${'null' != myposts.imageUrl && '' != myposts.imageUrl}">
+		            		            			<br><img src="${myposts.imageUrl}" />
+		            		            		</c:if>
+		            		            		${allDyn.comment}
+		            		            		<%-- <br><div class="fb-comments" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-numposts="3" data-colorscheme="light"></div> --%>
+		            		            	</td>
+		            		           		<td>${myposts.update_time}</td>
+		            		            	<td>
+			            		            	<div class="fb-like" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-width="10" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+			            		            	<br><div class="fb-share-button" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-width="10" data-type="button_count"></div>
+		            		            	</td>
+	            		            	</tr>
+		   							</c:forEach>
+		   						</c:when>
+		   						<c:otherwise>
+		   							<c:if test="${sessionScope.facebook_token != null && sessionScope.facebook_token != ''}">
+		   								You don't have post anything, let's post!
+		   							</c:if>
+		   						</c:otherwise>
+		   					</c:choose>
+						</tbody>
 					</table>
 				</div>
 			</div>
 			
 </div>
+
 <div id="fb-root"></div>
+
 </body>
 </html>

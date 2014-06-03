@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,61 +13,13 @@
    
 </style>
 
-<script type="text/javascript">
-$(function(){
-	 var facebook_token = "<%=session.getAttribute("facebook_token") %>";
-	
-	 var wbTable = $("#wbTable");//插入数据的表格
-	 var auth_msg = $("#auth_msg");//是否授权提示消息
-	 
-	 if((facebook_token != "null" && facebook_token != "")){
-		wbTable.append("<tr align='center' class='success'>" +
-								"<td style='display:none'>微博ID</td>" +
-							    "<td class='w1'>My Friends:</td>" +
-							    "<td class='w1'></td>" +
-					   "</tr>");
-	 }else{
-		 auth_msg.empty();
-		 auth_msg.append("Facebook还未进行授权,不能获取好友列表!<br><br>");
-		 auth_msg.show();
-		 
-		 return false;
-	 }
-
-	//发出请求前先判断Facebook是否授权
-	 if(facebook_token != "null" && facebook_token != ""){
-		//facebook--获取好友列表函数               
-		getFriendlistFB(function(data){
-							if(data != "empty"){
-					            var obj = JSON.parse(data);
-					            $.each(obj,function(i){
-				            			//alert(obj[i].id + "," + obj[i].name + "," + obj[i].portrait);
-					            		wbTable.append("<tr align='center'>" +
-					            		               "<td style='display:none'>"+ obj[i].id +"</td>" +
-					            		               "<td>"+"<img src="+ obj[i].portrait + " />"+"</td>" +
-					            		               "<td>"+ obj[i].name +"</td>" +
-					            		               "</tr>");
-				            	});
-					         }else{
-					            data_msg.append("您目前没有好友");	
-					            data_msg.show();
-					         }
-		});
-	}else{
-		auth_msg.append("Facebook还未进行授权,不能获取好友列表!<br>");
-		auth_msg.show();
-	}
-})
-
-function getFriendlistFB(callback){
-	$.post("/pms/facebook/getFriendlist.do",
-		   function(data){
-		      callback(data); 
-	       },
-	
-		   //返回的数据类型
-	       "json");
-}
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 </script>
 </head>
 <body>
@@ -78,11 +31,52 @@ function getFriendlistFB(callback){
 			
 			<div class="form-group">
 				<div id="dd" class="col-sm-11" >
-					<table id="wbTable" class="table" style="argin-left:40px">
+					<table id="wbTable" class="table" style="argin-left:40px" class="friendList">
+						<thead>
+						<!-- 判断Facebook是否有授权 -->
+							<c:choose>
+								<c:when test="${sessionScope.facebook_token != null && sessionScope.facebook_token != ''}">
+									<tr align='center' class='success'>
+										<td style='display:none'>微博ID</td>
+										<td>My Friends:(follow function by the user open)</td>
+										<td></td>
+										<td></td>
+				   					</tr>
+								</c:when>
+								<c:otherwise>
+									Facebook is not for authorization, cannot get friend list!<br><br>
+								</c:otherwise>
+							</c:choose>
+						</thead>
+						<tbody>
+							<!-- 判断当前用户是否有消息 -->
+		   					<c:choose>
+		   						<c:when test="${friendList != null && friendList != ''}">
+		   							<c:forEach items="${friendList}" var="myfriends">
+		   								<tr align='center'>
+		            		            	<td style='display:none'>${myfriends.userId}</td>
+		            		            	<td>
+		            		            		<img src="${myfriends.userHead}" />
+		            		            	</td>
+		            		           		<td>${myfriends.userName}</td>
+		            		            	<td>
+		            		            	 	<div class="fb-follow" data-href="https://www.facebook.com/${myfriends.userId}" data-width="10" data-colorscheme="light" data-layout="button_count" data-show-faces="false"></div>
+	            		            		<td>
+	            		            	</tr>
+		   							</c:forEach>
+		   						</c:when>
+		   						<c:otherwise>
+		   							<c:if test="${sessionScope.facebook_token != null && sessionScope.facebook_token != ''}">
+		   								You don't have any friend, let's add your friend! 
+		   							</c:if>
+		   						</c:otherwise>
+		   					</c:choose>
+						</tbody>
 					</table>
 				</div>
 			</div>
 			
 </div>
+<div id="fb-root"></div>
 </body>
 </html>

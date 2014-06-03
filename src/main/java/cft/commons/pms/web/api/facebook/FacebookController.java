@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cft.commons.core.util.HttpClientUtils;
 import cft.commons.pms.dto.facebook.FacebookDTO;
-import cft.commons.pms.dto.facebook.UserDTO;
 import cft.commons.pms.web.api.util.ApiUtils;
 
 /**
@@ -30,7 +29,7 @@ public class FacebookController {
 	private static final String REDIRECT_URL = "http://localhost:8080/pms/facebook/facebook.do";
     
 	/**
-	 * facebook授权处理
+	 * 1.facebook授权处理
 	 */
 	@RequestMapping(value = "facebook.do")
 	public String facebook(String code,HttpServletRequest request) throws Exception {
@@ -60,15 +59,7 @@ public class FacebookController {
 	}
 	
 	/**
-	 * 用js发布消息（只用于跳转，不为整合部分）
-	 */
-	@RequestMapping(value = "writeNewPost.do")
-	public String writeNewPost(HttpServletRequest request){
-		return "facebook/writeNewPost";
-	}
-	
-	/**
-	 * 获取好友以及当前用户的动态
+	 * 2.获取好友以及当前用户的动态
 	 */
 	@RequestMapping(value="facebookFriendsDyn.do")
 	public @ResponseBody
@@ -222,179 +213,5 @@ public class FacebookController {
 //        System.out.println("resultData::" + resultData);
         return resultData;
 	}//friendDyn
-	
-	/**
-	 * js分享（只是用于跳转，不为整合部分）
-	 */
-	@RequestMapping(value = "sharePost.do")
-	public String SharePost(HttpServletRequest request){
-		return "facebook/sharePost";
-	}
-	
-	/**
-	 * 获取好友列表1（只是用于跳转，不为整合部分）
-	 */
-	@RequestMapping(value = "getFriends.do")
-	public String getFriends(HttpServletRequest request){
-		return "facebook/getFriendlist";
-	}
-	
-	/**
-	 * 获取好友列表2（数据获取部分，不为整合部分）
-	 * @throws Exception 
-	 */
-	@RequestMapping(value = "getFriendlist.do")
-	public @ResponseBody
-	String getFriendlist(HttpServletRequest request) throws Exception{
-		List<UserDTO> friendList = new ArrayList<UserDTO>();
-		//拼成所需要的json
-        String friendInfo = "";
-		
-		String facebook_token = (String) request.getSession().getAttribute("facebook_token");
-		String friendsUrl = "https://graph.facebook.com/me/friends?access_token=" + facebook_token;
-		
-		//Get friend list
-		String friends = HttpClientUtils.httpGet(friendsUrl, 10000, 10000);
-		/*将返回的字符串转换成JSON,获取需要的数据*/
-		JSONObject friendsJson = new JSONObject(friends);
-		JSONArray friendsData = friendsJson.getJSONArray("data");
-		for (int i = 0; i < friendsData.length(); i++) {
-			
-			//get friend id , name
-			JSONObject friendsjo = (JSONObject) friendsData.get(i);
-            String friendId = friendsjo.getString("id");
-            String friendName = friendsjo.getString("name");
-//			System.out.println("friend info::::" + friendId + " , " + friendName);
-			
-			//according friendId, get friend headPortrait
-			String friendPortraitUrl = "https://graph.facebook.com/"
-					+ friendId
-					+ "/picture?type=small&access_token="
-					+ facebook_token;
-			
-			//ApiUtils.connect() 获取跳转后的url
-			String friendPortrait = ApiUtils.connect(friendPortraitUrl);
-			ApiUtils.disconnect();  
-//			System.out.println("friendPortrait::" +friendPortrait);
-            UserDTO friendDTO = new UserDTO();
-			friendDTO.setUserId(friendId);
-			friendDTO.setUserName(friendName);
-			friendDTO.setUserHead(friendPortrait);
-			friendList.add(friendDTO);
-			//处理返回数据
-	        if(friendList == null || friendList.isEmpty()){
-	             return "empty";
-	        }else{
-	        	JSONArray jsonArray = new JSONArray();
-	        	for(int j = 0 ; j < friendList.size(); j++){
-	        		JSONObject contentObj = new JSONObject();
-	        		contentObj.put("id",friendList.get(j).getUserId());
-	        		contentObj.put("name",friendList.get(j).getUserName());
-	        		contentObj.put("portrait",friendList.get(j).getUserHead());
-	        		jsonArray.put(contentObj);
-	        	}
-	        	friendInfo = jsonArray.toString();
-	        }
-		}
-//		System.out.println("friendInfo:::::" + friendInfo);
-		return friendInfo;
-	}
-	
-	/**
-	 * Get My All Posts1（只是用于跳转，不为整合部分）
-	 */
-	@RequestMapping(value = "getMyPosts1.do")
-	public String getMyPosts1(HttpServletRequest request){
-		return "facebook/getMyPosts";
-	}
-	
-	/**
-	 * Get My All Posts2(数据获取，不为整合部分)
-	 */
-	@RequestMapping(value="getMyPosts2.do")
-	public @ResponseBody
-	String getMyPosts2(HttpServletRequest request) throws Exception{
-		
-		List<FacebookDTO> friendList = new ArrayList<FacebookDTO>();
-		String facebook_token = (String) request.getSession().getAttribute("facebook_token");
-		
-		//把自己的动态设置进去
-		String myInfoURL = "https://graph.facebook.com/me/feed?"
-			     + "&access_token=" + facebook_token;
-		String myInfo = HttpClientUtils.httpGet(myInfoURL, 10000, 10000);
-		
-		/*将返回的字符串转换成JSON,获取需要的数据*/
-		JSONObject myInfoJson = new JSONObject(myInfo);
-		JSONArray myInfoData = myInfoJson.getJSONArray("data");
-		
-		
-		for (int i = 0; i < myInfoData.length(); i++) {//或者可以先取当前用户的前10条微博
-			
-			FacebookDTO myDTO = new FacebookDTO();
-			//初始设置
-			myDTO.setImageUrl("null");
-			myDTO.setMessage("分享");
-			myDTO.setShareNum(0);
-			
-			JSONObject myInfojo = (JSONObject) myInfoData.get(i);//当前用户的全部信息
-			
-			JSONObject fromJson = (JSONObject) myInfojo.get("from");//当前用户的id和name
-			
-			//获取微博发表时间
-			//对时间进行处理，返回格式是2014-04-24T02:42:37+0000
-			String myUpdateTime = (String) myInfojo.get("updated_time");
-				//取得发表时间，并格式化
-			myUpdateTime = ApiUtils.FacebookTimeFormat(myUpdateTime);
-			
-			//获取当天微博信息，及必须要有文字信息或者图片
-			if ((myInfojo.has("message") || myInfojo.has("picture"))) {
-				myDTO.setUserId((String) fromJson.get("id"));
-				myDTO.setPostID((String) myInfojo.get("id"));
-				myDTO.setUpdate_time(myUpdateTime);
-				if (myInfojo.has("message")) {
-					myDTO.setMessage((String) myInfojo.get("message"));
-				}
-				if (myInfojo.has("picture")) {
-					myDTO.setImageUrl((String) myInfojo.get("picture"));
-				}
-				if (myInfojo.has("shares")) {
-					JSONObject shareOJ = (JSONObject) myInfojo.get("shares");
-					myDTO.setShareNum((Integer) shareOJ.get("count"));
-				}
-				friendList.add(myDTO);//添加显示自己的动态
-			}
-		}
-		
-        //获取的好友动态按时间先后排序
-        friendList = ApiUtils.FacebookOrderByUpdateTime(friendList);
-//        System.out.println(friendList);
-      //拼成所需要的json
-        String resultData = "";
-        
-        if(friendList == null || friendList.isEmpty()){
-             return "empty";
-        }else{
-        	JSONArray jsonArray = new JSONArray();
-        	for(int i = 0 ; i < friendList.size(); i++){
-        		JSONObject contentObj = new JSONObject();
-        		contentObj.put("id",friendList.get(i).getPostID());
-        		contentObj.put("content",friendList.get(i).getMessage());
-        		contentObj.put("time",friendList.get(i).getUpdate_time());
-        		contentObj.put("images",friendList.get(i).getImageUrl());
-        		contentObj.put("shareNum",friendList.get(i).getShareNum());
-        		//分割post id，适应前台调用
-        		String paraPostId[] = friendList.get(i).getPostID().split("_");
-        		System.out.println(paraPostId[0] + "," + paraPostId[1]);
-        		contentObj.put("paraPostId0",paraPostId[0]);
-        		contentObj.put("paraPostId1",paraPostId[1]);
-        		
-        		jsonArray.put(contentObj);
-        	}
-        	
-        	resultData = jsonArray.toString();
-        }
-//        System.out.println("resultData::" + resultData);
-        return resultData;
-	}
 	
 }

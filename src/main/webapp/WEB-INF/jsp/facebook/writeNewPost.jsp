@@ -19,10 +19,10 @@
 			
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
-					alert("已登录");
+					console.log("已登录");
 					var uid = response.authResponse.userID;
 					var facebookToken = response.authResponse.accessToken;
-					/* alert(facebookToken); */
+					//console.log(facebookToken); 
 					/* 判断是否有图片 */
 					if(document.getElementById("pictureUrl").value != "" || null != document.getElementById("pictureUrl").value){
 						postFBmsg(document.getElementById("msg").value,document.getElementById("pictureUrl").value,facebookToken);
@@ -34,7 +34,7 @@
 					FB.login(function (response){
 						
 						if (response.status === 'connected') {
-							alert("回调");
+							console.log("回调");
 							var facebookToken = response.authResponse.accessToken;
 							
 							/* 判断是否有图片 */
@@ -56,9 +56,9 @@
 			access_token : facebookToken
 		}, function(response) {
 			if (!response || response.error) {
-				alert('Error occured:'+response.error);
+				console.log('Error occured:'+response.error);
 			} else {
-				alert('Post ID: ' + response.id);
+				console.log('Post ID: ' + response.id);
 			}
 		});
 	}
@@ -70,9 +70,9 @@
 			picture : pictureUrl
 		}, function(response) {
 			if (!response || response.error) {
-				alert('Error occured:'+response.error);
+				console.log('Error occured:'+response.error);
 			} else {
-				alert('Post ID: ' + response.id);
+				console.log('Post ID: ' + response.id);
 			}
 		});
 	}

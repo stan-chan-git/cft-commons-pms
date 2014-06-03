@@ -43,11 +43,11 @@
 		
 		<li id="one" class="files"><a href="#one">Facebook API</a>
 			<ul class="sub-menu">
-				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write New Post(with picture)</a></li>
-				<li><a href="${ctx}/facebook/getFriends.do"><em>02</em>My Friend List</a></li>
+				<li><a href="${ctx}/facebook/writeNewPost.do"><em>01</em>Write New Post (With Picture)</a></li>
+				<li><a href="${ctx}/facebook/getFriendlist.do"><em>02</em>My Friend List</a></li>
 				<li><a href="${ctx}/facebook/sharePost.do"><em>03</em>Share</a></li>
-				<li><a href="${ctx}/facebook/getMyPosts1.do"><em>04</em>My Posts</a></li>
-				<li><a href=""><em>05</em>...</a></li>
+				<li><a href="${ctx}/facebook/getMyPosts.do"><em>04</em>My Posts</a></li>
+				<li><a href="${ctx}/facebook/getAllDyn.do"><em>05</em>Home Page (All Dynamic)</a></li>
 				<li><a href=""><em>06</em>...</a></li>
 			</ul>
 		</li>

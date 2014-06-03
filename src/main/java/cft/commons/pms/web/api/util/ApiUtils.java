@@ -294,7 +294,8 @@ public class ApiUtils {
 	*/  
 	public static String connect(String urlStr) throws Exception {  
 		URL url = new URL(urlStr);   
-		conn = (HttpURLConnection) url.openConnection();   
+		conn = (HttpURLConnection) url.openConnection();
+		conn.getResponseCode();
 //		System.out.println("返回码: " + conn.getResponseCode());   
 		//如果定向的地址经过重定向，  
 		//那么conn.getURL().toString()显示的是重定向后的地址  
