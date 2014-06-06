@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Your Friends</title>
+<title>Home Page (Today Posts)</title>
 <style type="text/css">
 .w1{
     width:300px;
@@ -34,48 +34,49 @@
 			
 			<div class="form-group">
 				<div id="dd" class="col-sm-11" >
-					<table id="wbTable" class="table" style="argin-left:40px" class="myList">
+					<table id="wbTable" class="table" style="argin-left:40px" class="allDyn">
 						<thead>
 						<!-- 判断Facebook是否有授权 -->
 							<c:choose>
 								<c:when test="${sessionScope.facebook_token != null && sessionScope.facebook_token != ''}">
 									<tr align='center' class='success'>
 										<td style='display:none'>微博ID</td>
-										<td class='w1'>My Posts:</td>
+										<td class='w1'>Home Page (Today Posts)</td>
 				   					</tr>
 								</c:when>
 								<c:otherwise>
-									Facebook is not for authorization, can't get my message!<br><br>
+									Facebook is not for authorization, can't get posts!<br><br>
 								</c:otherwise>
 							</c:choose>
 						</thead>
 						<tbody>
 							<!-- 判断当前用户是否有消息 -->
 		   					<c:choose>
-		   						<c:when test="${myList != null && myList != ''}">
-		   							<c:forEach items="${myList}" var="myposts">
+		   						<c:when test="${allDyn != null && allDyn != ''}">
+		   							<c:forEach items="${allDyn}" var="allDyn">
 		   								<tr align='center'>
-		            		            	<td style='display:none'>${myposts.postID}</td>
+		            		            	<td style='display:none'>${allDyn.postID}</td>
 		            		            	<td class='w1'>
-			            		            	<div align="left">
-			            		            		<font size="2px" color="#8e7437">${myposts.update_time}</font>
-			            		            		<br>${myposts.message}
+		            		            		<div align="left"><a href="https://www.facebook.com/${allDyn.userId}"><font size="5" color="#8f4b2e">${allDyn.userName}</font></a>&nbsp;<font size="2px" color="#8e7437">${allDyn.update_time}</font></div>
+		            		            		<div align="left">
+			            		            		<br>${allDyn.message}
 			            		            		<!-- 如果有图片则显示 -->
-			            		            		<c:if test="${'null' != myposts.imageUrl && '' != myposts.imageUrl}">
-			            		            			<br><img src="${myposts.imageUrl}" />
+			            		            		<c:if test="${'null' != allDyn.imageUrl && '' != allDyn.imageUrl}">
+			            		            			<br><img src="${allDyn.imageUrl}" />
 			            		            		</c:if>
+		            		            		</div>
+		            		            		<div align="right">
+		            		            			<font color="#f58220">Comment(&nbsp;${allDyn.commentNum}&nbsp;)</font>
+		            		            			&nbsp;&nbsp;&nbsp;
+			            		            		<div class="fb-like" data-href="https://www.facebook.com/${fn:replace(allDyn.postID,'_','/posts/')}" data-width="10" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+				            		            	<div class="fb-share-button" data-href="https://www.facebook.com/${fn:replace(allDyn.postID,'_','/posts/')}" data-width="10" data-type="box_count"></div>
+		            		            		</div>
+		            		            		<div align="left">
+		            		            			<br><div class="fb-comments" data-href="https://www.facebook.com/${fn:replace(allDyn.postID,'_','/posts/')}" data-numposts="3" data-colorscheme="light"></div>
 		            		            			<br>
-		            		            			<div align="right">
-		            		            				<font color="#f58220">Comment(&nbsp;${myposts.commentNum}&nbsp;)</font>
-		            		            				&nbsp;&nbsp;&nbsp;
-			            		            			<div class="fb-like" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-width="10" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
-				            		            		<div class="fb-share-button" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-width="10" data-type="button_count"></div>
-		            		            			</div>
-		            		            			<br><div class="fb-comments" data-href="https://www.facebook.com/${fn:replace(myposts.postID,'_','/posts/')}" data-numposts="3" data-colorscheme="light"></div>
-		            		            			<br>
-		            		            			<c:forEach items="${myposts.comDTO}" var="mycommments">
-			            		            			<font ></font> ${mycommments.fromName}&nbsp;&nbsp;&nbsp;<font size="2px" color="#8e7437">${mycommments.createTime}</font><br>
-			            		            			${mycommments.message}<br>
+		            		            			<c:forEach items="${allDyn.comDTO}" var="friendcommments">
+			            		            			<font size="3" color="#8f4b2e">${friendcommments.fromName}</font>&nbsp;&nbsp;&nbsp;<font size="2px" color="#8e7437">${friendcommments.createTime}</font><br>
+			            		            			${friendcommments.message}<br>
 			            		            		</c:forEach>
 		            		            		</div>
 		            		            	</td>

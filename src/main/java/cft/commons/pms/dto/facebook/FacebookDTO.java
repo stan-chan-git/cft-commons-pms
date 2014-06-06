@@ -1,10 +1,12 @@
 package cft.commons.pms.dto.facebook;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
  * 
- * @author Tifffany
+ * @author Tify
  *
  */
 
@@ -22,6 +24,5 @@ public class FacebookDTO {
 	private int shareNum;//分享数
 	private int likeNum;//点赞数
 	private int commentNum;//评论数
-	private String comment;//评论内容
-	
+	private List<CommentDTO> comDTO;
 }

@@ -80,6 +80,7 @@
 	/* 点击删除pictureUrl */
 	function clean(){
 		document.getElementById("pictureUrl").value = "";
+		document.getElementById("previewPic").src = "";
 	}
 	/* 图片预览 */
 	function preview(){

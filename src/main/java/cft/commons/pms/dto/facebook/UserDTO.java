@@ -2,6 +2,11 @@ package cft.commons.pms.dto.facebook;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author Tify
+ *
+ */
 @Data
 public class UserDTO {
 	private String userId;//user id
